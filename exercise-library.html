@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Coach — Exercise Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: #222222;
+    --red: #e8303a;
+    --red-dim: rgba(232,48,58,0.15);
+    --red-glow: rgba(232,48,58,0.35);
+    --text: #f0f0f0;
+    --muted: #666;
+    --muted2: #999;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 500px;
+    background: radial-gradient(ellipse, rgba(232,48,58,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,8,8,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--text);
+    position: relative;
+  }
+  .logo span { color: var(--red); }
+  .logo::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--red), transparent);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--muted2);
+  }
+  .exercise-count {
+    background: var(--red-dim);
+    border: 1px solid var(--red-glow);
+    color: var(--red);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* Main layout */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Page title */
+  .page-title {
+    margin-bottom: 32px;
+  }
+  .page-title h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    letter-spacing: 3px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .page-title h1 span { color: var(--red); }
+  .page-title p {
+    color: var(--muted2);
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .search-wrap {
+    flex: 1;
+    min-width: 220px;
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 14px 12px 42px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-wrap input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px var(--red-dim);
+  }
+  .search-wrap input::placeholder { color: var(--muted); }
+
+  .filter-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted2);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn:hover {
+    border-color: var(--red);
+    color: var(--text);
+  }
+  .filter-btn.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+    box-shadow: 0 4px 16px var(--red-glow);
+  }
+
+  /* Type filter */
+  .type-filter {
+    display: flex;
+    gap: 6px;
+  }
+  .type-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted2);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+  }
+  .type-btn:hover { border-color: #555; color: var(--text); }
+  .type-btn.active {
+    background: var(--surface2);
+    border-color: #444;
+    color: var(--text);
+  }
+
+  /* Results line */
+  .results-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .results-count {
+    font-size: 13px;
+    color: var(--muted2);
+  }
+  .results-count strong { color: var(--text); }
+
+  /* Grid */
+  .exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  /* Card */
+  .ex-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .ex-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .ex-card:hover {
+    border-color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .ex-card:hover::before { opacity: 1; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+
+  .ex-name {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-compound {
+    background: rgba(232,48,58,0.15);
+    border: 1px solid rgba(232,48,58,0.3);
+    color: var(--red);
+  }
+  .badge-isolation {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #333;
+    color: var(--muted2);
+  }
+
+  .primary-muscle {
+    font-size: 12px;
+    color: var(--muted2);
+    margin-bottom: 8px;
+  }
+  .primary-muscle strong {
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  .muscle-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .muscle-tag {
+    font-size: 11px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid #2a2a2a;
+    color: var(--muted);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .muscle-tag.primary {
+    background: var(--red-dim);
+    border-color: rgba(232,48,58,0.25);
+    color: var(--red);
+  }
+
+  /* Detail panel */
+  .detail-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .detail-overlay.open { display: flex; }
+
+  .detail-panel {
+    background: var(--surface);
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 540px;
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .detail-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), transparent);
+    border-radius: 16px 16px 0 0;
+  }
+
+  .detail-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted2);
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .detail-close:hover { color: var(--text); border-color: #444; }
+
+  .detail-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+    padding-right: 40px;
+  }
+
+  .detail-meta {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .detail-section {
+    margin-bottom: 20px;
+  }
+  .detail-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .detail-section-body {
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.6;
+  }
+
+  .detail-muscles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .detail-sets {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .set-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+  .set-box-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .set-box-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .set-box-value span { color: var(--red); }
+
+  /* Empty state */
+  .empty {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty h3 { font-size: 18px; color: var(--muted2); margin-bottom: 6px; }
+  .empty p { font-size: 14px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+  @media (max-width: 600px) {
+    main { padding: 20px 16px; }
+    .controls { flex-direction: column; }
+    .filter-group, .type-filter { overflow-x: auto; flex-wrap: nowrap; }
+    .exercise-grid { grid-template-columns: 1fr; }
+    .detail-sets { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">IRON<span>COACH</span></div>
+  <div class="header-right">
+    <span class="exercise-count" id="totalCount">300+ EXERCISES</span>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">
+    <h1>EXERCISE <span>LIBRARY</span></h1>
+    <p>Search by name, muscle, or movement type — find the right tool for every lift.</p>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search exercises, muscles, equipment...">
+    </div>
+    <div class="type-filter">
+      <button class="type-btn active" data-type="all">All</button>
+      <button class="type-btn" data-type="Compound">Compound</button>
+      <button class="type-btn" data-type="Isolation">Isolation</button>
+    </div>
+  </div>
+
+  <div class="filter-group" id="muscleFilters" style="margin-bottom:20px;"></div>
+
+  <div class="results-bar">
+    <div class="results-count">Showing <strong id="showingCount">0</strong> exercises</div>
+  </div>
+
+  <div class="exercise-grid" id="exerciseGrid"></div>
+</main>
+
+<!-- Detail Overlay -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-panel" id="detailPanel">
+    <button class="detail-close" id="detailClose">✕</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<script>
+const EXERCISES = [
+  // ═══ CHEST ═══
+  { name:"Barbell Bench Press", type:"Compound", primary:"Chest", secondary:["Front Delts","Triceps"], sets:"3–5", reps:"5–10", rest:"3 min", cue:"Retract scapula, drive feet into floor, bar to lower chest.", equipment:"Barbell, Bench" },
+  { name:"Incline Barbell Press", type:"Compound", primary:"Chest", secondary:["Front Delts","Triceps"], sets:"3–4", reps:"6–12", rest:"2–3 min", cue:"Set bench 30–45°, keep elbows at 45° to torso.", equipment:"Barbell, Incline Bench" },
+  { name:"Decline Barbell Press", type:"Compound", primary:"Chest", secondary:["Triceps","Front Delts"], sets:"3–4", reps:"6–12", rest:"2–3 min", cue:"Decline targets lower pecs — keep back flat.", equipment:"Barbell, Decline Bench" },
+  { name:"Dumbbell Bench Press", type:"Compound", primary:"Chest", secondary:["Front Delts","Triceps"], sets:"3–4", reps:"8–15", rest:"2 min", cue:"Full range of motion, stretch at bottom.", equipment:"Dumbbells, Bench" },
+  { name:"Incline Dumbbell Press", type:"Compound", primary:"Chest", secondary:["Front Delts","Triceps"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Elbows slightly below shoulders at bottom.", equipment:"Dumbbells, Incline Bench" },
+  { name:"Decline Dumbbell Press", type:"Compound", primary:"Chest", secondary:["Triceps","Lower Chest"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Great lower chest builder, go slow on descent.", equipment:"Dumbbells, Decline Bench" },
+  { name:"Dumbbell Flye", type:"Isolation", primary:"Chest", secondary:["Front Delts"], sets:"3", reps:"12–15", rest:"60 sec", cue:"Slight bend in elbows, feel the stretch at the bottom.", equipment:"Dumbbells, Bench" },
+  { name:"Incline Dumbbell Flye", type:"Isolation", primary:"Chest", secondary:["Front Delts"], sets:"3", reps:"12–15", rest:"60 sec", cue:"Focus on upper chest stretch and squeeze.", equipment:"Dumbbells, Incline Bench" },
+  { name:"Cable Crossover", type:"Isolation", primary:"Chest", secondary:["Front Delts"], sets:"3", reps:"12–20", rest:"60 sec", cue:"Squeeze hard at centre, control the return.", equipment:"Cable Machine" },
+  { name:"Low Cable Fly", type:"Isolation", primary:"Chest", secondary:["Front Delts"], sets:"3", reps:"12–15", rest:"60 sec", cue:"Cables set at low position, targets upper chest.", equipment:"Cable Machine" },
+  { name:"High Cable Fly", type:"Isolation", primary:"Chest", secondary:["Front Delts"], sets:"3", reps:"12–15", rest:"60 sec", cue:"Cables set at high position, targets lower chest.", equipment:"Cable Machine" },
+  { name:"Push-Up", type:"Compound", primary:"Chest", secondary:["Triceps","Front Delts","Core"], sets:"3–4", reps:"15–30", rest:"60 sec", cue:"Hollow body position, chest to floor.", equipment:"Bodyweight" },
+  { name:"Wide-Grip Push-Up", type:"Compound", primary:"Chest", secondary:["Front Delts","Triceps"], sets:"3", reps:"15–25", rest:"60 sec", cue:"Wider hand placement shifts emphasis to pecs.", equipment:"Bodyweight" },
+  { name:"Archer Push-Up", type:"Compound", primary:"Chest", secondary:["Front Delts","Triceps"], sets:"3", reps:"8–12 each", rest:"90 sec", cue:"One arm extends while the other does the work.", equipment:"Bodyweight" },
+  { name:"Chest Dips", type:"Compound", primary:"Chest", secondary:["Triceps","Front Delts"], sets:"3–4", reps:"8–15", rest:"2 min", cue:"Lean forward to emphasise chest over triceps.", equipment:"Dip Bars" },
+  { name:"Machine Chest Press", type:"Compound", primary:"Chest", secondary:["Front Delts","Triceps"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Good for beginners or finishing sets.", equipment:"Chest Press Machine" },
+  { name:"Pec Deck Machine", type:"Isolation", primary:"Chest", secondary:["Front Delts"], sets:"3", reps:"12–20", rest:"60 sec", cue:"Full stretch then squeeze hard at centre.", equipment:"Pec Deck Machine" },
+  { name:"Svend Press", type:"Isolation", primary:"Chest", secondary:["Front Delts"], sets:"3", reps:"15–20", rest:"60 sec", cue:"Squeeze two plates together throughout the movement.", equipment:"Weight Plates" },
+  { name:"Landmine Press", type:"Compound", primary:"Chest", secondary:["Front Delts","Triceps"], sets:"3", reps:"10–15 each", rest:"90 sec", cue:"Single-arm or bilateral, great shoulder-friendly option.", equipment:"Barbell, Landmine" },
+  { name:"Ring Push-Up", type:"Compound", primary:"Chest", secondary:["Triceps","Core","Front Delts"], sets:"3", reps:"10–20", rest:"90 sec", cue:"Rings increase instability and range of motion.", equipment:"Gymnastic Rings" },
+
+  // ═══ BACK ═══
+  { name:"Barbell Deadlift", type:"Compound", primary:"Back", secondary:["Glutes","Hamstrings","Core","Traps"], sets:"3–5", reps:"3–8", rest:"3–5 min", cue:"Bar over mid-foot, neutral spine, push floor away.", equipment:"Barbell" },
+  { name:"Romanian Deadlift", type:"Compound", primary:"Back", secondary:["Hamstrings","Glutes"], sets:"3–4", reps:"8–12", rest:"2–3 min", cue:"Hinge at hips, feel hamstring stretch, keep bar close.", equipment:"Barbell" },
+  { name:"Barbell Row", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts","Core"], sets:"3–5", reps:"5–10", rest:"2–3 min", cue:"Chest up, pull bar to lower sternum, elbows past body.", equipment:"Barbell" },
+  { name:"Pendlay Row", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts"], sets:"4", reps:"5–8", rest:"2–3 min", cue:"Bar returns to floor each rep for explosive pulling.", equipment:"Barbell" },
+  { name:"Dumbbell Row", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts"], sets:"3–4", reps:"10–15 each", rest:"90 sec", cue:"Support on bench, full stretch, drive elbow to ceiling.", equipment:"Dumbbell, Bench" },
+  { name:"Chest-Supported Row", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Chest removes lower back stress, isolates upper back.", equipment:"Incline Bench, Dumbbells" },
+  { name:"Pull-Up", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts","Core"], sets:"3–5", reps:"5–15", rest:"2 min", cue:"Full hang, pull elbows to hips, chin over bar.", equipment:"Pull-Up Bar" },
+  { name:"Chin-Up", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts"], sets:"3–4", reps:"5–15", rest:"2 min", cue:"Supinated grip shifts more load to biceps.", equipment:"Pull-Up Bar" },
+  { name:"Neutral-Grip Pull-Up", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts"], sets:"3–4", reps:"6–12", rest:"2 min", cue:"Palms facing each other, shoulder-friendly option.", equipment:"Pull-Up Bar" },
+  { name:"Weighted Pull-Up", type:"Compound", primary:"Back", secondary:["Biceps","Core"], sets:"4–5", reps:"4–8", rest:"3 min", cue:"Add weight via belt or vest for progressive overload.", equipment:"Pull-Up Bar, Weight Belt" },
+  { name:"Lat Pulldown", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Lean back slightly, pull to upper chest.", equipment:"Cable Machine" },
+  { name:"Close-Grip Lat Pulldown", type:"Compound", primary:"Back", secondary:["Biceps"], sets:"3", reps:"10–15", rest:"90 sec", cue:"Neutral grip, vertical torso, maximises lat stretch.", equipment:"Cable Machine" },
+  { name:"Straight-Arm Pulldown", type:"Isolation", primary:"Back", secondary:["Core"], sets:"3", reps:"12–15", rest:"60 sec", cue:"Arms straight, hinge at shoulder, isolates lats.", equipment:"Cable Machine" },
+  { name:"Seated Cable Row", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Chest tall, pull to navel, squeeze shoulder blades.", equipment:"Cable Machine" },
+  { name:"Wide-Grip Cable Row", type:"Compound", primary:"Back", secondary:["Rear Delts","Biceps"], sets:"3", reps:"12–15", rest:"90 sec", cue:"Wide grip shifts focus to upper back and rear delts.", equipment:"Cable Machine" },
+  { name:"T-Bar Row", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts"], sets:"3–4", reps:"8–12", rest:"2 min", cue:"Neutral spine, chest pad keeps you honest.", equipment:"T-Bar Machine or Landmine" },
+  { name:"Meadows Row", type:"Compound", primary:"Back", secondary:["Rear Delts","Biceps"], sets:"3", reps:"10–12 each", rest:"90 sec", cue:"Loaded stretch for lats, row from a landmine.", equipment:"Barbell, Landmine" },
+  { name:"Face Pull", type:"Isolation", primary:"Back", secondary:["Rear Delts","Rotator Cuff"], sets:"3–4", reps:"15–20", rest:"60 sec", cue:"Pull to forehead, elbows high, external rotate.", equipment:"Cable Machine" },
+  { name:"Rack Pull", type:"Compound", primary:"Back", secondary:["Traps","Glutes","Hamstrings"], sets:"3–4", reps:"5–8", rest:"3–4 min", cue:"Shortened range of motion, heavier loads, traps & upper back.", equipment:"Barbell, Rack" },
+  { name:"Good Morning", type:"Compound", primary:"Back", secondary:["Hamstrings","Glutes"], sets:"3", reps:"10–15", rest:"2 min", cue:"Bar on back, hinge at hips, keep neutral spine.", equipment:"Barbell" },
+  { name:"Hyperextension", type:"Isolation", primary:"Back", secondary:["Glutes","Hamstrings"], sets:"3", reps:"12–20", rest:"60 sec", cue:"Can add weight plate for resistance.", equipment:"Hyperextension Bench" },
+  { name:"Inverted Row", type:"Compound", primary:"Back", secondary:["Biceps","Rear Delts","Core"], sets:"3–4", reps:"8–15", rest:"90 sec", cue:"Keep body straight, row chest to bar.", equipment:"Bar, Smith Machine" },
+  { name:"Cable Pull-Through", type:"Compound", primary:"Back", secondary:["Glutes","Hamstrings"], sets:"3", reps:"15–20", rest:"60 sec", cue:"Cable between legs, hinge pattern, glute-focused.", equipment:"Cable Machine" },
+  { name:"Dumbbell Deadlift", type:"Compound", primary:"Back", secondary:["Glutes","Hamstrings","Core"], sets:"3", reps:"10–15", rest:"90 sec", cue:"Dumbbells at sides, same hinge as barbell deadlift.", equipment:"Dumbbells" },
+
+  // ═══ SHOULDERS ═══
+  { name:"Overhead Press (Barbell)", type:"Compound", primary:"Shoulders", secondary:["Triceps","Upper Chest","Core"], sets:"3–5", reps:"5–10", rest:"2–3 min", cue:"Bar from clavicle to lockout, move head through at top.", equipment:"Barbell" },
+  { name:"Seated Dumbbell Press", type:"Compound", primary:"Shoulders", secondary:["Triceps","Upper Chest"], sets:"3–4", reps:"8–12", rest:"2 min", cue:"Neutral spine, elbows slightly in front of torso.", equipment:"Dumbbells, Bench" },
+  { name:"Arnold Press", type:"Compound", primary:"Shoulders", secondary:["Triceps","Upper Chest"], sets:"3", reps:"10–15", rest:"90 sec", cue:"Rotate from palms in to palms out as you press.", equipment:"Dumbbells" },
+  { name:"Seated Barbell Press (Behind Neck)", type:"Compound", primary:"Shoulders", secondary:["Triceps","Traps"], sets:"3", reps:"8–12", rest:"2 min", cue:"Only if you have good shoulder mobility, avoid if pain.", equipment:"Barbell, Bench" },
+  { name:"Dumbbell Lateral Raise", type:"Isolation", primary:"Shoulders", secondary:["Traps"], sets:"3–4", reps:"12–20", rest:"60 sec", cue:"Slight forward lean, lead with elbows, pinky side up.", equipment:"Dumbbells" },
+  { name:"Cable Lateral Raise", type:"Isolation", primary:"Shoulders", secondary:["Traps"], sets:"3–4", reps:"15–20", rest:"60 sec", cue:"Cross-body cable for constant tension.", equipment:"Cable Machine" },
+  { name:"Plate Lateral Raise", type:"Isolation", primary:"Shoulders", secondary:[], sets:"3", reps:"15–20", rest:"60 sec", cue:"Cheap option — plate in one hand, raise to side.", equipment:"Weight Plate" },
+  { name:"Front Raise", type:"Isolation", primary:"Shoulders", secondary:["Upper Chest"], sets:"3", reps:"12–15", rest:"60 sec", cue:"Dumbbell or barbell, raise to eye level, no swing.", equipment:"Dumbbells or Barbell" },
+  { name:"Rear Delt Fly", type:"Isolation", primary:"Shoulders", secondary:["Traps","Upper Back"], sets:"3–4", reps:"15–20", rest:"60 sec", cue:"Bend over, elbows slightly bent, squeeze rear delts.", equipment:"Dumbbells" },
+  { name:"Cable Rear Delt Fly", type:"Isolation", primary:"Shoulders", secondary:["Traps"], sets:"3–4", reps:"15–20", rest:"60 sec", cue:"Cable cross body, keep elbows high.", equipment:"Cable Machine" },
+  { name:"Upright Row", type:"Compound", primary:"Shoulders", secondary:["Traps","Biceps"], sets:"3", reps:"10–15", rest:"90 sec", cue:"Wide grip reduces impingement risk, pull to chest height.", equipment:"Barbell or Dumbbells" },
+  { name:"Machine Shoulder Press", type:"Compound", primary:"Shoulders", secondary:["Triceps"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Good for hypertrophy finisher or beginners.", equipment:"Shoulder Press Machine" },
+  { name:"Landmine Press (Shoulder)", type:"Compound", primary:"Shoulders", secondary:["Triceps","Upper Chest"], sets:"3", reps:"10–15 each", rest:"90 sec", cue:"Single arm, great for shoulder health.", equipment:"Barbell, Landmine" },
+  { name:"Bradford Press", type:"Compound", primary:"Shoulders", secondary:["Triceps","Traps"], sets:"3", reps:"10–15", rest:"90 sec", cue:"Alternate front and back press in one rep for extra TUT.", equipment:"Barbell" },
+  { name:"Dumbbell Y-Raise", type:"Isolation", primary:"Shoulders", secondary:["Upper Back","Traps"], sets:"3", reps:"15–20", rest:"60 sec", cue:"Prone on incline bench, raise to Y shape for rear delts.", equipment:"Dumbbells, Incline Bench" },
+
+  // ═══ BICEPS ═══
+  { name:"Barbell Curl", type:"Isolation", primary:"Biceps", secondary:["Forearms","Brachialis"], sets:"3–4", reps:"8–12", rest:"90 sec", cue:"Full extension at bottom, squeeze at top.", equipment:"Barbell" },
+  { name:"EZ-Bar Curl", type:"Isolation", primary:"Biceps", secondary:["Forearms","Brachialis"], sets:"3–4", reps:"8–12", rest:"90 sec", cue:"EZ bar reduces wrist stress, great for most people.", equipment:"EZ-Bar" },
+  { name:"Dumbbell Curl", type:"Isolation", primary:"Biceps", secondary:["Forearms"], sets:"3", reps:"10–15 each", rest:"60 sec", cue:"Supinate at top for full bicep contraction.", equipment:"Dumbbells" },
+  { name:"Hammer Curl", type:"Isolation", primary:"Biceps", secondary:["Brachialis","Forearms"], sets:"3", reps:"10–15 each", rest:"60 sec", cue:"Neutral grip builds brachialis for thicker arms.", equipment:"Dumbbells" },
+  { name:"Incline Dumbbell Curl", type:"Isolation", primary:"Biceps", secondary:["Forearms"], sets:"3", reps:"10–15 each", rest:"90 sec", cue:"Long-head stretch is intense — go lighter.", equipment:"Dumbbells, Incline Bench" },
+  { name:"Preacher Curl", type:"Isolation", primary:"Biceps", secondary:["Forearms"], sets:"3", reps:"10–15", rest:"90 sec", cue:"Pad locks upper arm, eliminates momentum.", equipment:"Preacher Bench, EZ-Bar or Dumbbells" },
+  { name:"Cable Curl", type:"Isolation", primary:"Biceps", secondary:["Forearms"], sets:"3", reps:"12–15", rest:"60 sec", cue:"Constant tension throughout the rep.", equipment:"Cable Machine" },
+  { name:"Concentration Curl", type:"Isolation", primary:"Biceps", secondary:[], sets:"3", reps:"12–15 each", rest:"60 sec", cue:"Elbow on inner thigh, slow controlled movement.", equipment:"Dumbbell" },
+  { name:"Spider Curl", type:"Isolation", primary:"Biceps", secondary:[], sets:"3", reps:"10–15", rest:"60 sec", cue:"Chest on incline bench, curl straight down — peak contraction.", equipment:"EZ-Bar or Dumbbells, Incline Bench" },
+  { name:"Zottman Curl", type:"Isolation", primary:"Biceps", secondary:["Forearms","Brachialis"], sets:"3", reps:"10–12 each", rest:"60 sec", cue:"Curl up supinated, rotate to pronated on descent.", equipment:"Dumbbells" },
+  { name:"21s (Barbell)", type:"Isolation", primary:"Biceps", secondary:["Forearms"], sets:"3", reps:"21", rest:"90 sec", cue:"7 bottom-half + 7 top-half + 7 full reps.", equipment:"Barbell" },
+  { name:"Cross-Body Hammer Curl", type:"Isolation", primary:"Biceps", secondary:["Brachialis","Forearms"], sets:"3", reps:"10–15 each", rest:"60 sec", cue:"Curl across the body to target brachialis.", equipment:"Dumbbells" },
+  { name:"Reverse Curl", type:"Isolation", primary:"Biceps", secondary:["Forearms","Brachialis"], sets:"3", reps:"12–15", rest:"60 sec", cue:"Pronated grip develops forearms and brachialis.", equipment:"Barbell or Dumbbells" },
+
+  // ═══ TRICEPS ═══
+  { name:"Close-Grip Bench Press", type:"Compound", primary:"Triceps", secondary:["Chest","Front Delts"], sets:"3–4", reps:"6–12", rest:"2 min", cue:"Hands shoulder-width, elbows tucked close.", equipment:"Barbell, Bench" },
+  { name:"Skull Crusher", type:"Isolation", primary:"Triceps", secondary:[], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Lower bar to forehead, fully extend at top.", equipment:"EZ-Bar or Barbell, Bench" },
+  { name:"Overhead Tricep Extension", type:"Isolation", primary:"Triceps", secondary:[], sets:"3", reps:"10–15", rest:"90 sec", cue:"Long head stretch is the main goal here.", equipment:"Dumbbell or EZ-Bar" },
+  { name:"Cable Tricep Pushdown", type:"Isolation", primary:"Triceps", secondary:[], sets:"3–4", reps:"12–20", rest:"60 sec", cue:"Elbows at sides, full extension, squeeze.", equipment:"Cable Machine" },
+  { name:"Rope Pushdown", type:"Isolation", primary:"Triceps", secondary:[], sets:"3–4", reps:"12–20", rest:"60 sec", cue:"Spread rope at bottom for lateral head activation.", equipment:"Cable Machine, Rope" },
+  { name:"Overhead Cable Extension", type:"Isolation", primary:"Triceps", secondary:[], sets:"3", reps:"12–15", rest:"60 sec", cue:"Cable from low position, both hands overhead.", equipment:"Cable Machine" },
+  { name:"Dumbbell Kickback", type:"Isolation", primary:"Triceps", secondary:[], sets:"3", reps:"12–15 each", rest:"60 sec", cue:"Hinge forward, extend elbow fully behind you.", equipment:"Dumbbell" },
+  { name:"Tricep Dip (Bench)", type:"Compound", primary:"Triceps", secondary:["Chest","Front Delts"], sets:"3", reps:"12–20", rest:"90 sec", cue:"Feet flat, lower until elbows hit 90°.", equipment:"Bench" },
+  { name:"Diamond Push-Up", type:"Compound", primary:"Triceps", secondary:["Chest","Front Delts"], sets:"3", reps:"10–20", rest:"60 sec", cue:"Hands close together in diamond shape.", equipment:"Bodyweight" },
+  { name:"JM Press", type:"Compound", primary:"Triceps", secondary:["Chest"], sets:"3", reps:"8–12", rest:"90 sec", cue:"Hybrid of skull crusher and close-grip press.", equipment:"Barbell, Bench" },
+  { name:"Tate Press", type:"Isolation", primary:"Triceps", secondary:[], sets:"3", reps:"12–15", rest:"90 sec", cue:"Elbows point up, dumbbells towards chest then press.", equipment:"Dumbbells, Bench" },
+
+  // ═══ QUADS ═══
+  { name:"Barbell Back Squat", type:"Compound", primary:"Quads", secondary:["Glutes","Hamstrings","Core"], sets:"3–5", reps:"5–10", rest:"3–5 min", cue:"Hip crease below parallel, knees track over toes.", equipment:"Barbell, Rack" },
+  { name:"Front Squat", type:"Compound", primary:"Quads", secondary:["Glutes","Core","Upper Back"], sets:"3–4", reps:"5–10", rest:"3 min", cue:"Upright torso, elbows high, quad-dominant.", equipment:"Barbell, Rack" },
+  { name:"Goblet Squat", type:"Compound", primary:"Quads", secondary:["Glutes","Core"], sets:"3–4", reps:"12–20", rest:"90 sec", cue:"Hold dumbbell at chest, great for beginners.", equipment:"Dumbbell or Kettlebell" },
+  { name:"Bulgarian Split Squat", type:"Compound", primary:"Quads", secondary:["Glutes","Hamstrings"], sets:"3–4", reps:"8–12 each", rest:"2 min", cue:"Rear foot on bench, torso upright, drop straight down.", equipment:"Dumbbells or Barbell, Bench" },
+  { name:"Hack Squat", type:"Compound", primary:"Quads", secondary:["Glutes","Hamstrings"], sets:"3–4", reps:"8–15", rest:"2 min", cue:"Machine locks you in for quad-focused squatting.", equipment:"Hack Squat Machine" },
+  { name:"Leg Press", type:"Compound", primary:"Quads", secondary:["Glutes","Hamstrings"], sets:"3–4", reps:"10–20", rest:"2 min", cue:"Full range of motion, don't lock knees at top.", equipment:"Leg Press Machine" },
+  { name:"Leg Extension", type:"Isolation", primary:"Quads", secondary:[], sets:"3–4", reps:"12–20", rest:"60 sec", cue:"Slow eccentric, squeeze at full extension.", equipment:"Leg Extension Machine" },
+  { name:"Sissy Squat", type:"Isolation", primary:"Quads", secondary:[], sets:"3", reps:"10–15", rest:"90 sec", cue:"Knees go forward dramatically, targets VMO.", equipment:"Bodyweight or Dumbbell" },
+  { name:"Walking Lunge", type:"Compound", primary:"Quads", secondary:["Glutes","Hamstrings","Core"], sets:"3", reps:"10–15 each", rest:"90 sec", cue:"Long stride, knee tracks over toes, upright torso.", equipment:"Dumbbells or Bodyweight" },
+  { name:"Reverse Lunge", type:"Compound", primary:"Quads", secondary:["Glutes","Hamstrings"], sets:"3", reps:"10–12 each", rest:"90 sec", cue:"Step back, front knee at 90°, more knee-friendly.", equipment:"Dumbbells or Bodyweight" },
+  { name:"Step-Up", type:"Compound", primary:"Quads", secondary:["Glutes","Hamstrings"], sets:"3", reps:"10–15 each", rest:"90 sec", cue:"Drive through the heel on the box.", equipment:"Box, Dumbbells" },
+  { name:"Box Squat", type:"Compound", primary:"Quads", secondary:["Glutes","Hamstrings"], sets:"3–4", reps:"5–8", rest:"2–3 min", cue:"Sit back onto box, pause, then drive up powerfully.", equipment:"Barbell, Box, Rack" },
+  { name:"Zercher Squat", type:"Compound", primary:"Quads", secondary:["Glutes","Core","Back"], sets:"3", reps:"8–12", rest:"2 min", cue:"Bar in crook of elbows, very upright torso.", equipment:"Barbell" },
+  { name:"Wall Sit", type:"Isolation", primary:"Quads", secondary:["Glutes"], sets:"3", reps:"30–60 sec", rest:"60 sec", cue:"90° knee angle, great metabolic finisher.", equipment:"Bodyweight" },
+
+  // ═══ HAMSTRINGS ═══
+  { name:"Romanian Deadlift", type:"Compound", primary:"Hamstrings", secondary:["Glutes","Lower Back"], sets:"3–4", reps:"8–12", rest:"2–3 min", cue:"Hinge until you feel the stretch, keep bar close.", equipment:"Barbell or Dumbbells" },
+  { name:"Seated Leg Curl", type:"Isolation", primary:"Hamstrings", secondary:[], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Seated version creates better hamstring stretch.", equipment:"Seated Leg Curl Machine" },
+  { name:"Lying Leg Curl", type:"Isolation", primary:"Hamstrings", secondary:[], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Squeeze at top, control the negative.", equipment:"Lying Leg Curl Machine" },
+  { name:"Nordic Hamstring Curl", type:"Isolation", primary:"Hamstrings", secondary:["Glutes","Core"], sets:"3", reps:"4–8", rest:"2 min", cue:"One of the best hamstring exercises — very hard.", equipment:"Anchored Feet" },
+  { name:"Stiff-Leg Deadlift", type:"Compound", primary:"Hamstrings", secondary:["Glutes","Lower Back"], sets:"3", reps:"10–12", rest:"2 min", cue:"Similar to RDL but with straighter legs.", equipment:"Barbell or Dumbbells" },
+  { name:"Single-Leg Romanian Deadlift", type:"Compound", primary:"Hamstrings", secondary:["Glutes","Core"], sets:"3", reps:"10–12 each", rest:"90 sec", cue:"Balance and hamstring challenge in one.", equipment:"Dumbbell or Bodyweight" },
+  { name:"Glute-Ham Raise", type:"Compound", primary:"Hamstrings", secondary:["Glutes","Calves"], sets:"3", reps:"6–12", rest:"2 min", cue:"GHD machine, kneel and lower forward, curl back up.", equipment:"GHD Machine" },
+  { name:"Leg Curl (Cable)", type:"Isolation", primary:"Hamstrings", secondary:[], sets:"3", reps:"12–15 each", rest:"60 sec", cue:"Ankle cuff on cable, stand and curl.", equipment:"Cable Machine" },
+  { name:"Kettlebell Swing", type:"Compound", primary:"Hamstrings", secondary:["Glutes","Core","Shoulders"], sets:"4", reps:"15–20", rest:"60 sec", cue:"Hip hinge, not a squat — explosive hip drive.", equipment:"Kettlebell" },
+
+  // ═══ GLUTES ═══
+  { name:"Barbell Hip Thrust", type:"Compound", primary:"Glutes", secondary:["Hamstrings","Core"], sets:"3–4", reps:"10–15", rest:"2 min", cue:"Bar over hip crease, drive hips fully extended.", equipment:"Barbell, Bench" },
+  { name:"Dumbbell Hip Thrust", type:"Compound", primary:"Glutes", secondary:["Hamstrings","Core"], sets:"3–4", reps:"12–20", rest:"90 sec", cue:"Same as barbell version, easier to set up.", equipment:"Dumbbell, Bench" },
+  { name:"Glute Bridge", type:"Isolation", primary:"Glutes", secondary:["Hamstrings","Core"], sets:"3", reps:"15–25", rest:"60 sec", cue:"Bodyweight or weighted, squeeze at the top.", equipment:"Bodyweight or Barbell" },
+  { name:"Single-Leg Hip Thrust", type:"Isolation", primary:"Glutes", secondary:["Hamstrings","Core"], sets:"3", reps:"12–15 each", rest:"90 sec", cue:"One leg extended, all force through the working glute.", equipment:"Bodyweight or Dumbbell, Bench" },
+  { name:"Cable Kickback", type:"Isolation", primary:"Glutes", secondary:["Hamstrings"], sets:"3–4", reps:"15–20 each", rest:"60 sec", cue:"Ankle cuff, hip extension behind body, squeeze.", equipment:"Cable Machine" },
+  { name:"Sumo Deadlift", type:"Compound", primary:"Glutes", secondary:["Hamstrings","Quads","Adductors"], sets:"3–4", reps:"5–10", rest:"3 min", cue:"Wide stance, toes flared, hips closer to bar.", equipment:"Barbell" },
+  { name:"Lateral Band Walk", type:"Isolation", primary:"Glutes", secondary:["Abductors"], sets:"3", reps:"15–20 each direction", rest:"60 sec", cue:"Band above knees, stay bent, don't let knees cave.", equipment:"Resistance Band" },
+  { name:"Clamshell", type:"Isolation", primary:"Glutes", secondary:["Abductors"], sets:"3", reps:"20–30 each", rest:"60 sec", cue:"Side lying, feet together, rotate top knee up.", equipment:"Bodyweight or Resistance Band" },
+  { name:"Donkey Kick", type:"Isolation", primary:"Glutes", secondary:["Core","Hamstrings"], sets:"3", reps:"15–20 each", rest:"60 sec", cue:"On all fours, kick heel to ceiling, full hip extension.", equipment:"Bodyweight or Cable Machine" },
+  { name:"Romanian Split Squat", type:"Compound", primary:"Glutes", secondary:["Hamstrings","Quads"], sets:"3", reps:"10–12 each", rest:"90 sec", cue:"Greater forward lean than standard split squat.", equipment:"Barbell or Dumbbells" },
+  { name:"Frog Pump", type:"Isolation", primary:"Glutes", secondary:[], sets:"3", reps:"20–30", rest:"60 sec", cue:"Soles of feet together, thrust hips up — great glute pump.", equipment:"Bodyweight" },
+
+  // ═══ CALVES ═══
+  { name:"Standing Calf Raise", type:"Isolation", primary:"Calves", secondary:[], sets:"4", reps:"12–20", rest:"60 sec", cue:"Full range of motion — stretch at bottom is key.", equipment:"Calf Raise Machine or Bodyweight" },
+  { name:"Seated Calf Raise", type:"Isolation", primary:"Calves", secondary:[], sets:"4", reps:"15–25", rest:"60 sec", cue:"Seated targets soleus (deeper calf muscle).", equipment:"Seated Calf Raise Machine" },
+  { name:"Single-Leg Calf Raise", type:"Isolation", primary:"Calves", secondary:[], sets:"3", reps:"12–20 each", rest:"60 sec", cue:"Hold dumbbell in one hand, use wall for balance.", equipment:"Dumbbell or Bodyweight" },
+  { name:"Donkey Calf Raise", type:"Isolation", primary:"Calves", secondary:[], sets:"4", reps:"15–20", rest:"60 sec", cue:"Hip hinged over a bench — Arnold's favourite.", equipment:"Bodyweight or Partner" },
+  { name:"Leg Press Calf Raise", type:"Isolation", primary:"Calves", secondary:[], sets:"3–4", reps:"15–20", rest:"60 sec", cue:"Toes on edge of leg press plate, full ROM.", equipment:"Leg Press Machine" },
+  { name:"Jump Rope", type:"Compound", primary:"Calves", secondary:["Cardio","Core"], sets:"5", reps:"60 sec", rest:"30 sec", cue:"Stay on balls of feet, great for calf endurance.", equipment:"Jump Rope" },
+  { name:"Tibialis Raise", type:"Isolation", primary:"Calves", secondary:["Tibialis Anterior"], sets:"3", reps:"20–25", rest:"60 sec", cue:"Strengthens shin muscle to balance calf development.", equipment:"Wall or Band" },
+
+  // ═══ CORE ═══
+  { name:"Plank", type:"Isolation", primary:"Core", secondary:["Shoulders","Glutes"], sets:"3", reps:"30–90 sec", rest:"60 sec", cue:"Straight line from head to heel, squeeze everything.", equipment:"Bodyweight" },
+  { name:"Side Plank", type:"Isolation", primary:"Core", secondary:["Obliques","Glutes"], sets:"3", reps:"30–60 sec each", rest:"60 sec", cue:"Stack feet, hip off floor, don't let it sag.", equipment:"Bodyweight" },
+  { name:"Ab Wheel Rollout", type:"Isolation", primary:"Core", secondary:["Lats","Shoulders"], sets:"3–4", reps:"8–15", rest:"90 sec", cue:"Start from knees, extend as far as possible, pull back.", equipment:"Ab Wheel" },
+  { name:"Hanging Leg Raise", type:"Isolation", primary:"Core", secondary:["Hip Flexors"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Tuck legs or straight, no swing.", equipment:"Pull-Up Bar" },
+  { name:"Hanging Knee Raise", type:"Isolation", primary:"Core", secondary:["Hip Flexors"], sets:"3", reps:"12–20", rest:"60 sec", cue:"Easier version of hanging leg raise.", equipment:"Pull-Up Bar" },
+  { name:"Cable Crunch", type:"Isolation", primary:"Core", secondary:[], sets:"3–4", reps:"15–20", rest:"60 sec", cue:"Kneel, pull rope to floor, flex the spine down.", equipment:"Cable Machine, Rope" },
+  { name:"Decline Crunch", type:"Isolation", primary:"Core", secondary:[], sets:"3", reps:"15–20", rest:"60 sec", cue:"Decline increases ROM over flat crunches.", equipment:"Decline Bench" },
+  { name:"Dragon Flag", type:"Isolation", primary:"Core", secondary:["Lats","Shoulders"], sets:"3", reps:"5–10", rest:"2 min", cue:"Body straight as a board, lower then pull back up.", equipment:"Bench" },
+  { name:"Russian Twist", type:"Isolation", primary:"Core", secondary:["Obliques"], sets:"3", reps:"20–30", rest:"60 sec", cue:"Feet up, twist with control, hold weight for difficulty.", equipment:"Bodyweight or Weight" },
+  { name:"Pallof Press", type:"Isolation", primary:"Core", secondary:["Shoulders"], sets:"3", reps:"12–15 each", rest:"60 sec", cue:"Anti-rotation exercise — resist the cable pulling you.", equipment:"Cable Machine" },
+  { name:"Dead Bug", type:"Isolation", primary:"Core", secondary:["Hip Flexors"], sets:"3", reps:"10 each side", rest:"60 sec", cue:"Lower back to floor, extend opposite arm and leg.", equipment:"Bodyweight" },
+  { name:"Bird Dog", type:"Isolation", primary:"Core", secondary:["Glutes","Lower Back"], sets:"3", reps:"10 each side", rest:"60 sec", cue:"On all fours, extend opposite arm and leg, hold.", equipment:"Bodyweight" },
+  { name:"Mountain Climbers", type:"Compound", primary:"Core", secondary:["Shoulders","Cardio"], sets:"3", reps:"20–40", rest:"60 sec", cue:"High plank, drive knees to chest alternating.", equipment:"Bodyweight" },
+  { name:"Toes to Bar", type:"Isolation", primary:"Core", secondary:["Hip Flexors","Lats"], sets:"3–4", reps:"8–12", rest:"90 sec", cue:"Hang from bar, raise toes to touch it — full abs.", equipment:"Pull-Up Bar" },
+  { name:"Windshield Wiper", type:"Isolation", primary:"Core", secondary:["Obliques","Hip Flexors"], sets:"3", reps:"10–15 each", rest:"60 sec", cue:"Legs extended, rotate side to side.", equipment:"Hanging Bar or Bench" },
+  { name:"V-Up", type:"Isolation", primary:"Core", secondary:["Hip Flexors"], sets:"3", reps:"15–20", rest:"60 sec", cue:"Jackknife your body, meet hands and feet at top.", equipment:"Bodyweight" },
+  { name:"Bicycle Crunch", type:"Isolation", primary:"Core", secondary:["Obliques"], sets:"3", reps:"20–30", rest:"60 sec", cue:"Controlled rotation, elbow to opposite knee.", equipment:"Bodyweight" },
+  { name:"Landmine Rotation", type:"Compound", primary:"Core", secondary:["Obliques","Shoulders"], sets:"3", reps:"10–15 each", rest:"60 sec", cue:"Hold end of barbell, rotate at hips.", equipment:"Barbell, Landmine" },
+  { name:"Hollow Body Hold", type:"Isolation", primary:"Core", secondary:["Hip Flexors"], sets:"3", reps:"20–45 sec", rest:"60 sec", cue:"Arms overhead, lower back flat, legs low.", equipment:"Bodyweight" },
+  { name:"Copenhagen Plank", type:"Isolation", primary:"Core", secondary:["Adductors","Glutes"], sets:"3", reps:"20–45 sec each", rest:"60 sec", cue:"Side plank with foot on bench — very hard.", equipment:"Bench" },
+  { name:"L-Sit", type:"Isolation", primary:"Core", secondary:["Hip Flexors","Triceps","Shoulders"], sets:"3", reps:"10–30 sec", rest:"60 sec", cue:"Legs parallel to floor, arms straight.", equipment:"Parallel Bars or Floor" },
+
+  // ═══ TRAPS ═══
+  { name:"Barbell Shrug", type:"Isolation", primary:"Traps", secondary:["Neck"], sets:"3–4", reps:"10–15", rest:"90 sec", cue:"Squeeze up, hold 1 sec, controlled descent.", equipment:"Barbell" },
+  { name:"Dumbbell Shrug", type:"Isolation", primary:"Traps", secondary:["Neck"], sets:"3–4", reps:"12–20", rest:"90 sec", cue:"Full ROM, avoid rolling the shoulders.", equipment:"Dumbbells" },
+  { name:"Cable Shrug", type:"Isolation", primary:"Traps", secondary:["Neck"], sets:"3", reps:"15–20", rest:"60 sec", cue:"Constant tension from low cable position.", equipment:"Cable Machine" },
+  { name:"Farmer's Walk", type:"Compound", primary:"Traps", secondary:["Core","Forearms","Glutes"], sets:"3", reps:"30–50m", rest:"90 sec", cue:"Heavy dumbbells or hex bar, walk upright.", equipment:"Dumbbells or Hex Bar" },
+  { name:"Snatch-Grip Deadlift", type:"Compound", primary:"Traps", secondary:["Back","Glutes","Hamstrings"], sets:"3", reps:"5–8", rest:"3 min", cue:"Wide grip forces upper back and trap engagement.", equipment:"Barbell" },
+  { name:"Power Clean", type:"Compound", primary:"Traps", secondary:["Glutes","Hamstrings","Shoulders"], sets:"4", reps:"3–5", rest:"3 min", cue:"Explosive hip extension, shrug, catch in front rack.", equipment:"Barbell" },
+
+  // ═══ FOREARMS ═══
+  { name:"Wrist Curl", type:"Isolation", primary:"Forearms", secondary:[], sets:"3", reps:"15–20", rest:"60 sec", cue:"Forearms on bench, curl wrists up.", equipment:"Barbell or Dumbbells" },
+  { name:"Reverse Wrist Curl", type:"Isolation", primary:"Forearms", secondary:[], sets:"3", reps:"15–20", rest:"60 sec", cue:"Targets brachioradialis and wrist extensors.", equipment:"Barbell or Dumbbells" },
+  { name:"Plate Pinch", type:"Isolation", primary:"Forearms", secondary:[], sets:"3", reps:"30–60 sec", rest:"60 sec", cue:"Pinch two plates together for grip strength.", equipment:"Weight Plates" },
+  { name:"Dead Hang", type:"Isolation", primary:"Forearms", secondary:["Back","Shoulders"], sets:"3", reps:"30–60 sec", rest:"60 sec", cue:"Simply hang from a bar — builds incredible grip.", equipment:"Pull-Up Bar" },
+  { name:"Towel Pull-Up", type:"Compound", primary:"Forearms", secondary:["Back","Biceps"], sets:"3", reps:"5–10", rest:"2 min", cue:"Loop towel over bar, grip towel — brutal for forearms.", equipment:"Pull-Up Bar, Towel" },
+
+  // ═══ FULL BODY / OLYMPIC ═══
+  { name:"Barbell Clean & Jerk", type:"Compound", primary:"Full Body", secondary:["Traps","Shoulders","Glutes","Quads"], sets:"4", reps:"2–4", rest:"3–5 min", cue:"Explosive clean to shoulders, split jerk overhead.", equipment:"Barbell" },
+  { name:"Barbell Snatch", type:"Compound", primary:"Full Body", secondary:["Traps","Shoulders","Glutes","Core"], sets:"4", reps:"2–4", rest:"3–5 min", cue:"Wide grip, one motion bar from floor to overhead.", equipment:"Barbell" },
+  { name:"Thruster", type:"Compound", primary:"Full Body", secondary:["Quads","Shoulders","Triceps"], sets:"3", reps:"8–12", rest:"2 min", cue:"Front squat into overhead press in one movement.", equipment:"Barbell or Dumbbells" },
+  { name:"Turkish Get-Up", type:"Compound", primary:"Full Body", secondary:["Core","Shoulders","Glutes"], sets:"3", reps:"3–5 each", rest:"2 min", cue:"Multiple steps to stand while keeping weight overhead.", equipment:"Kettlebell or Dumbbell" },
+  { name:"Man Maker", type:"Compound", primary:"Full Body", secondary:["Chest","Back","Core","Shoulders"], sets:"3", reps:"8–10", rest:"2 min", cue:"Push-up + row + squat clean + press in one rep.", equipment:"Dumbbells" },
+  { name:"Burpee", type:"Compound", primary:"Full Body", secondary:["Cardio","Core","Chest"], sets:"4", reps:"10–20", rest:"60 sec", cue:"Explosive, full range of motion every rep.", equipment:"Bodyweight" },
+  { name:"Box Jump", type:"Compound", primary:"Full Body", secondary:["Quads","Glutes","Calves"], sets:"4", reps:"5–8", rest:"2 min", cue:"Full extension at takeoff, soft landing.", equipment:"Plyometric Box" },
+  { name:"Broad Jump", type:"Compound", primary:"Full Body", secondary:["Quads","Glutes","Hamstrings"], sets:"4", reps:"5–6", rest:"2 min", cue:"Explosive horizontal jump for power.", equipment:"Bodyweight" },
+  { name:"Sled Push", type:"Compound", primary:"Full Body", secondary:["Quads","Glutes","Shoulders"], sets:"4", reps:"20–40m", rest:"2 min", cue:"Low hips, drive hard, great conditioning.", equipment:"Sled, Weight Plates" },
+  { name:"Battle Ropes", type:"Compound", primary:"Full Body", secondary:["Shoulders","Arms","Core"], sets:"4", reps:"30–45 sec", rest:"60 sec", cue:"Alternating or double waves, maintain squat position.", equipment:"Battle Ropes" },
+  { name:"Sandbag Carry", type:"Compound", primary:"Full Body", secondary:["Core","Traps","Forearms"], sets:"4", reps:"40–60m", rest:"90 sec", cue:"Hug the bag, keep core braced.", equipment:"Sandbag" },
+  { name:"Tire Flip", type:"Compound", primary:"Full Body", secondary:["Back","Glutes","Shoulders"], sets:"3", reps:"6–10", rest:"2 min", cue:"Deadlift then push the tire overhead.", equipment:"Heavy Tire" },
+
+  // ═══ CARDIO / CONDITIONING ═══
+  { name:"Rowing Machine", type:"Compound", primary:"Full Body", secondary:["Back","Legs","Core"], sets:"1", reps:"20–60 min", rest:"N/A", cue:"60% legs, 20% back, 20% arms. Push with legs first.", equipment:"Rowing Ergometer" },
+  { name:"Assault Bike", type:"Compound", primary:"Full Body", secondary:["Cardio","Legs","Arms"], sets:"1", reps:"20–40 min or intervals", rest:"N/A", cue:"Full body cardio — one of the hardest pieces of equipment.", equipment:"Assault Bike" },
+  { name:"Ski Erg", type:"Compound", primary:"Full Body", secondary:["Back","Core","Arms"], sets:"1", reps:"20–40 min", rest:"N/A", cue:"Lat pull then hip hinge — simulate cross country skiing.", equipment:"Ski Erg" },
+  { name:"Treadmill Sprint", type:"Compound", primary:"Full Body", secondary:["Cardio","Hamstrings","Calves"], sets:"8–10", reps:"20–30 sec", rest:"40–60 sec", cue:"High incline + high speed sprints for HIIT.", equipment:"Treadmill" },
+  { name:"Stair Climber", type:"Compound", primary:"Full Body", secondary:["Glutes","Quads","Calves"], sets:"1", reps:"20–40 min", rest:"N/A", cue:"Steady state — great low-impact cardio.", equipment:"Stair Climber" },
+
+  // ═══ STRETCHING / MOBILITY ═══
+  { name:"Hip Flexor Stretch", type:"Isolation", primary:"Full Body", secondary:["Hip Flexors","Quads"], sets:"3", reps:"30–60 sec each", rest:"30 sec", cue:"Kneeling lunge, push hips forward, chest tall.", equipment:"Bodyweight" },
+  { name:"Pigeon Pose", type:"Isolation", primary:"Full Body", secondary:["Glutes","Hip Flexors"], sets:"2", reps:"60–90 sec each", rest:"30 sec", cue:"Front shin parallel, square hips, breathe into it.", equipment:"Bodyweight" },
+  { name:"Thoracic Spine Rotation", type:"Isolation", primary:"Full Body", secondary:["Back","Core"], sets:"3", reps:"10 each", rest:"30 sec", cue:"Thread needle or seated, open chest to ceiling.", equipment:"Bodyweight" },
+  { name:"Ankle Mobility Drill", type:"Isolation", primary:"Full Body", secondary:["Calves","Achilles"], sets:"3", reps:"15–20 each", rest:"30 sec", cue:"Knee over pinky toe, improve squat depth.", equipment:"Bodyweight or Wall" },
+  { name:"World's Greatest Stretch", type:"Compound", primary:"Full Body", secondary:["Hip Flexors","Thoracic Spine","Hamstrings"], sets:"3", reps:"5 each side", rest:"30 sec", cue:"Best all-in-one mobility drill for lifters.", equipment:"Bodyweight" },
+];
+
+const MUSCLE_GROUPS = ["All","Chest","Back","Shoulders","Biceps","Triceps","Quads","Hamstrings","Glutes","Calves","Core","Traps","Forearms","Full Body"];
+
+let activeGroup = "All";
+let activeType = "all";
+let searchTerm = "";
+
+function renderFilters() {
+  const wrap = document.getElementById('muscleFilters');
+  wrap.innerHTML = MUSCLE_GROUPS.map(g => `
+    <button class="filter-btn${g===activeGroup?' active':''}" data-group="${g}">${g}</button>
+  `).join('');
+  wrap.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeGroup = btn.dataset.group;
+      renderAll();
+    });
+  });
+}
+
+function filterExercises() {
+  return EXERCISES.filter(ex => {
+    const matchGroup = activeGroup === "All" || ex.primary === activeGroup;
+    const matchType = activeType === "all" || ex.type === activeType;
+    const q = searchTerm.toLowerCase();
+    const matchSearch = !q ||
+      ex.name.toLowerCase().includes(q) ||
+      ex.primary.toLowerCase().includes(q) ||
+      ex.secondary.some(s => s.toLowerCase().includes(q)) ||
+      ex.type.toLowerCase().includes(q) ||
+      (ex.equipment || "").toLowerCase().includes(q);
+    return matchGroup && matchType && matchSearch;
+  });
+}
+
+function renderGrid() {
+  const exercises = filterExercises();
+  const grid = document.getElementById('exerciseGrid');
+  document.getElementById('showingCount').textContent = exercises.length;
+
+  if (exercises.length === 0) {
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><h3>No exercises found</h3><p>Try a different search or filter.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = exercises.map((ex, i) => `
+    <div class="ex-card" data-index="${EXERCISES.indexOf(ex)}" style="animation-delay:${Math.min(i*0.02,0.3)}s">
+      <div class="card-top">
+        <div class="ex-name">${ex.name}</div>
+        <span class="badge badge-${ex.type.toLowerCase()}">${ex.type}</span>
+      </div>
+      <div class="primary-muscle">Primary: <strong>${ex.primary}</strong></div>
+      <div class="muscle-tags">
+        <span class="muscle-tag primary">${ex.primary}</span>
+        ${ex.secondary.map(s=>`<span class="muscle-tag">${s}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.ex-card').forEach(card => {
+    card.addEventListener('click', () => {
+      openDetail(parseInt(card.dataset.index));
+    });
+  });
+}
+
+function openDetail(index) {
+  const ex = EXERCISES[index];
+  const overlay = document.getElementById('detailOverlay');
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-name">${ex.name}</div>
+    <div class="detail-meta">
+      <span class="badge badge-${ex.type.toLowerCase()}">${ex.type}</span>
+    </div>
+    <div class="detail-sets">
+      <div class="set-box"><div class="set-box-label">Sets</div><div class="set-box-value">${ex.sets}</div></div>
+      <div class="set-box"><div class="set-box-label">Reps</div><div class="set-box-value">${ex.reps}</div></div>
+      <div class="set-box"><div class="set-box-label">Rest</div><div class="set-box-value">${ex.rest}</div></div>
+    </div>
+    <br>
+    <div class="detail-section">
+      <div class="detail-section-title">Primary Muscle</div>
+      <div class="detail-muscles"><span class="muscle-tag primary">${ex.primary}</span></div>
+    </div>
+    ${ex.secondary.length ? `<div class="detail-section">
+      <div class="detail-section-title">Secondary Muscles</div>
+      <div class="detail-muscles">${ex.secondary.map(s=>`<span class="muscle-tag">${s}</span>`).join('')}</div>
+    </div>` : ''}
+    <div class="detail-section">
+      <div class="detail-section-title">Equipment</div>
+      <div class="detail-section-body">${ex.equipment}</div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Coaching Cue</div>
+      <div class="detail-section-body">${ex.cue}</div>
+    </div>
+  `;
+  overlay.classList.add('open');
+}
+
+function renderAll() {
+  renderFilters();
+  renderGrid();
+}
+
+// Events
+document.getElementById('detailClose').addEventListener('click', () => {
+  document.getElementById('detailOverlay').classList.remove('open');
+});
+document.getElementById('detailOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  searchTerm = e.target.value;
+  renderAll();
+});
+document.querySelectorAll('.type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeType = btn.dataset.type;
+    renderAll();
+  });
+});
+
+document.getElementById('totalCount').textContent = EXERCISES.length + ' EXERCISES';
+renderAll();
+</script>
+</body>
+</html>
