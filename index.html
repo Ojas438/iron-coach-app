@@ -15,47 +15,114 @@
     --border: #2e2e2e;
     --text: #f0f0f0;
     --muted: #888;
+    --green: #639922;
     --font-display: 'Barlow Condensed', sans-serif;
     --font-body: 'DM Sans', sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: var(--font-body); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; gap: 14px; height: 60px; flex-shrink: 0; }
-  .logo { font-family: var(--font-display); font-size: 26px; font-weight: 800; letter-spacing: 0.04em; color: var(--text); }
+
+  /* ONBOARDING */
+  #onboarding {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px 20px;
+  }
+  .ob-logo { font-family: var(--font-display); font-size: 42px; font-weight: 800; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .ob-logo span { color: var(--red); }
+  .ob-sub { color: var(--muted); font-size: 14px; margin-bottom: 30px; }
+  .ob-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    width: 100%;
+    max-width: 480px;
+  }
+  .ob-card h2 { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.05em; color: var(--red); margin-bottom: 4px; text-transform: uppercase; }
+  .ob-card p { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+  .field label { font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .field input, .field select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-family: var(--font-body);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .field input:focus, .field select:focus { border-color: var(--red); }
+  .field select option { background: var(--surface); }
+  .field input::placeholder { color: #555; }
+  .chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ob-chip {
+    font-size: 12px; padding: 6px 14px; border-radius: 20px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; transition: all 0.15s;
+    font-family: var(--font-body);
+  }
+  .ob-chip.active { background: var(--red); border-color: var(--red); color: #fff; }
+  .ob-chip.multi.active { background: var(--surface2); border-color: var(--red); color: var(--red); }
+  .start-btn {
+    width: 100%; padding: 13px;
+    background: var(--red); border: none; border-radius: 8px;
+    color: #fff; font-size: 16px; font-family: var(--font-display);
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer; margin-top: 20px; transition: background 0.15s;
+  }
+  .start-btn:hover { background: var(--red-dark); }
+  .error-msg { color: var(--red); font-size: 12px; margin-top: 10px; display: none; }
+  .error-msg.show { display: block; }
+  .skip-btn { width: 100%; padding: 10px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: 13px; font-family: var(--font-body); cursor: pointer; margin-top: 8px; transition: all 0.15s; }
+  .skip-btn:hover { border-color: var(--muted); color: var(--text); }
+
+  /* APP */
+  #app { flex: 1; display: none; flex-direction: column; overflow: hidden; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; gap: 14px; height: 56px; flex-shrink: 0; }
+  .logo { font-family: var(--font-display); font-size: 24px; font-weight: 800; letter-spacing: 0.04em; color: var(--text); }
   .logo span { color: var(--red); }
   .badge { font-size: 10px; padding: 3px 8px; border-radius: 4px; background: var(--red); color: #fff; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
-  .free-tag { margin-left: auto; font-size: 12px; color: var(--muted); }
-  .free-tag strong { color: #639922; }
-  .goal-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
-  .chip { font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .user-tag { margin-left: auto; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .user-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .goal-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 20px; display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
+  .chip { font-family: var(--font-display); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
   .chip:hover { border-color: var(--red); color: var(--text); }
   .chip.active { background: var(--red); border-color: var(--red); color: #fff; }
-  .messages { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 18px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   .msg { display: flex; gap: 12px; align-items: flex-start; animation: fadeUp 0.2s ease; }
   .msg.user { flex-direction: row-reverse; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .avatar { width: 34px; height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-family: var(--font-display); letter-spacing: 0.04em; }
-  .avatar.ai { background: var(--red); color: #fff; font-size: 14px; }
-  .avatar.user { background: var(--surface2); color: var(--muted); font-size: 11px; }
-  .bubble { max-width: 75%; padding: 12px 16px; border-radius: 8px; font-size: 14px; line-height: 1.7; }
+  .avatar { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-family: var(--font-display); letter-spacing: 0.04em; font-size: 12px; }
+  .avatar.ai { background: var(--red); color: #fff; }
+  .avatar.user { background: var(--surface2); color: var(--muted); }
+  .bubble { max-width: 78%; padding: 11px 15px; border-radius: 8px; font-size: 13.5px; line-height: 1.7; }
   .bubble.ai { background: var(--surface); border: 1px solid var(--border); border-radius: 4px 8px 8px 8px; color: var(--text); }
   .bubble.user { background: var(--red); color: #fff; border-radius: 8px 4px 8px 8px; }
   .bubble strong { font-weight: 600; }
   .bubble.ai strong { color: var(--red); }
   .bubble ul { margin: 8px 0 8px 18px; }
-  .bubble li { margin-bottom: 4px; }
-  .quick-bar { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; background: var(--surface); flex-shrink: 0; }
+  .bubble li { margin-bottom: 3px; }
+  .quick-bar { padding: 8px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; background: var(--surface); flex-shrink: 0; }
   .qr { font-size: 12px; padding: 5px 12px; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-family: var(--font-body); transition: all 0.15s; }
   .qr:hover { border-color: var(--red); color: var(--text); }
-  .input-area { padding: 14px 20px; border-top: 1px solid var(--border); background: var(--surface); display: flex; gap: 10px; align-items: flex-end; flex-shrink: 0; }
-  .input-area textarea { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 14px; font-family: var(--font-body); color: var(--text); resize: none; height: 42px; max-height: 120px; overflow-y: auto; outline: none; transition: border-color 0.2s; line-height: 1.5; }
+  .input-area { padding: 12px 20px; border-top: 1px solid var(--border); background: var(--surface); display: flex; gap: 10px; align-items: flex-end; flex-shrink: 0; }
+  .input-area textarea { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 9px 13px; font-size: 13.5px; font-family: var(--font-body); color: var(--text); resize: none; height: 40px; max-height: 120px; overflow-y: auto; outline: none; transition: border-color 0.2s; line-height: 1.5; }
   .input-area textarea:focus { border-color: var(--red); }
   .input-area textarea::placeholder { color: #555; }
-  .send { width: 42px; height: 42px; background: var(--red); border: none; border-radius: 6px; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; }
+  .send { width: 40px; height: 40px; background: var(--red); border: none; border-radius: 6px; color: #fff; font-size: 17px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; }
   .send:hover { background: var(--red-dark); }
   .send:disabled { opacity: 0.4; cursor: default; }
   .typing-dots { display: flex; gap: 4px; padding: 4px 0; }
-  .typing-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: pulse 1.2s infinite ease-in-out; }
+  .typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: pulse 1.2s infinite ease-in-out; }
   .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
   .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
   @keyframes pulse { 0%,80%,100%{opacity:0.2;transform:scale(0.85)} 40%{opacity:1;transform:scale(1)} }
@@ -63,38 +130,185 @@
 </head>
 <body>
 
-<header>
-  <div class="logo">IRON<span>COACH</span></div>
-  <div class="badge">AI</div>
-  <div class="free-tag">Powered by AI &nbsp;•&nbsp; <strong>100% Free</strong></div>
-</header>
+<!-- ONBOARDING -->
+<div id="onboarding">
+  <div class="ob-logo">IRON<span>COACH</span></div>
+  <div class="ob-sub">Your AI Weight Training Specialist • 100% Free</div>
 
-<div class="goal-bar">
-  <button class="chip active" onclick="setGoal(this, 'build muscle / hypertrophy')">🔥 Build Muscle</button>
-  <button class="chip" onclick="setGoal(this, 'increase strength and 1RM')">⚡ Get Stronger</button>
-  <button class="chip" onclick="setGoal(this, 'lose fat while preserving muscle')">🏃 Lose Fat</button>
-  <button class="chip" onclick="setGoal(this, 'improve athletic performance')">🏆 Athletic</button>
+  <div class="ob-card">
+    <h2>Let's build your profile</h2>
+    <p>Tell us about yourself so we can create a safe, personalized program just for you.</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Age</label>
+        <input type="number" id="age" placeholder="e.g. 22" min="13" max="90" />
+      </div>
+      <div class="field">
+        <label>Biological Sex</label>
+        <select id="sex">
+          <option value="">Select...</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="prefer not to say">Prefer not to say</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Height</label>
+        <input type="text" id="height" placeholder="e.g. 5'10 or 178cm" />
+      </div>
+      <div class="field">
+        <label>Weight</label>
+        <input type="text" id="weight" placeholder="e.g. 175lbs or 80kg" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Experience Level</label>
+      <div class="chips-row" id="exp-chips">
+        <div class="ob-chip" onclick="selectChip('exp', this, 'Beginner (0–1 years)')">Beginner</div>
+        <div class="ob-chip" onclick="selectChip('exp', this, 'Intermediate (1–3 years)')">Intermediate</div>
+        <div class="ob-chip" onclick="selectChip('exp', this, 'Advanced (3+ years)')">Advanced</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Primary Goal</label>
+      <div class="chips-row" id="goal-chips">
+        <div class="ob-chip" onclick="selectChip('goal', this, 'build muscle / hypertrophy')">🔥 Build Muscle</div>
+        <div class="ob-chip" onclick="selectChip('goal', this, 'increase strength')">⚡ Get Stronger</div>
+        <div class="ob-chip" onclick="selectChip('goal', this, 'lose fat while preserving muscle')">🏃 Lose Fat</div>
+        <div class="ob-chip" onclick="selectChip('goal', this, 'improve athletic performance')">🏆 Athletic</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Days per week available</label>
+      <div class="chips-row" id="days-chips">
+        <div class="ob-chip" onclick="selectChip('days', this, '2 days per week')">2</div>
+        <div class="ob-chip" onclick="selectChip('days', this, '3 days per week')">3</div>
+        <div class="ob-chip" onclick="selectChip('days', this, '4 days per week')">4</div>
+        <div class="ob-chip" onclick="selectChip('days', this, '5 days per week')">5</div>
+        <div class="ob-chip" onclick="selectChip('days', this, '6 days per week')">6</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Equipment Available</label>
+      <div class="chips-row" id="equip-chips">
+        <div class="ob-chip" onclick="selectChip('equip', this, 'full commercial gym')">🏋️ Full Gym</div>
+        <div class="ob-chip" onclick="selectChip('equip', this, 'home gym with barbells and dumbbells')">🏠 Home Gym</div>
+        <div class="ob-chip" onclick="selectChip('equip', this, 'dumbbells only')">💪 Dumbbells Only</div>
+        <div class="ob-chip" onclick="selectChip('equip', this, 'bodyweight only, no equipment')">🤸 Bodyweight</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Any injuries or limitations? <span style="color:#555;font-weight:400">(optional)</span></label>
+      <input type="text" id="injuries" placeholder="e.g. bad knees, lower back pain, shoulder issues..." />
+    </div>
+
+    <div class="error-msg" id="error-msg">⚠️ Please fill in all required fields (age, experience, goal, days, equipment)</div>
+    <button class="start-btn" onclick="startApp()">START TRAINING →</button>
+    <button class="skip-btn" onclick="skipOnboarding()">Skip for now →</button>
+  </div>
 </div>
 
-<div class="messages" id="messages"></div>
-
-<div class="quick-bar">
-  <button class="qr" onclick="sendQuick('Build me a 4-day weekly hypertrophy program for a full gym.')">4-day program</button>
-  <button class="qr" onclick="sendQuick('How do I improve my bench press? Give form tips and accessories.')">Bench press</button>
-  <button class="qr" onclick="sendQuick('What should I eat pre and post workout for muscle growth?')">Nutrition timing</button>
-  <button class="qr" onclick="sendQuick('Explain progressive overload and how to apply it week to week.')">Progressive overload</button>
-  <button class="qr" onclick="sendQuick('What is a deload week and when should I take one?')">Deload weeks</button>
-  <button class="qr" onclick="sendQuick('What supplements are backed by science for muscle growth?')">Supplements</button>
-</div>
-
-<div class="input-area">
-  <textarea id="user-input" placeholder="Ask your coach anything..." onkeydown="handleKey(event)" oninput="grow(this)"></textarea>
-  <button class="send" id="send-btn" onclick="send()">&#9658;</button>
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="logo">IRON<span>COACH</span></div>
+    <div class="badge">AI</div>
+    <div class="user-tag"><div class="user-dot"></div><span id="user-label">Loading...</span></div>
+  </header>
+  <div class="goal-bar">
+    <button class="chip active" onclick="setGoal(this, 'build muscle / hypertrophy')">🔥 Build Muscle</button>
+    <button class="chip" onclick="setGoal(this, 'increase strength')">⚡ Get Stronger</button>
+    <button class="chip" onclick="setGoal(this, 'lose fat while preserving muscle')">🏃 Lose Fat</button>
+    <button class="chip" onclick="setGoal(this, 'improve athletic performance')">🏆 Athletic</button>
+  </div>
+  <div class="messages" id="messages"></div>
+  <div class="quick-bar">
+    <button class="qr" onclick="sendQuick('Build me a personalized weekly workout program based on my profile.')">My program</button>
+    <button class="qr" onclick="sendQuick('What are the best exercises for my goal and experience level?')">Best exercises</button>
+    <button class="qr" onclick="sendQuick('What should I eat pre and post workout to maximize my results?')">Nutrition</button>
+    <button class="qr" onclick="sendQuick('How should I apply progressive overload given my experience level?')">Progressive overload</button>
+    <button class="qr" onclick="sendQuick('Am I ready for a deload week and how should I do it?')">Deload</button>
+    <button class="qr" onclick="sendQuick('What supplements are worth taking for my goal?')">Supplements</button>
+  </div>
+  <div class="input-area">
+    <textarea id="user-input" placeholder="Ask your coach anything..." onkeydown="handleKey(event)" oninput="grow(this)"></textarea>
+    <button class="send" id="send-btn" onclick="send()">&#9658;</button>
+  </div>
 </div>
 
 <script>
-const history = [];
+let userProfile = {};
 let goal = 'build muscle / hypertrophy';
+const history = [];
+const selections = { exp: '', goal: '', days: '', equip: '' };
+
+function skipOnboarding() {
+  userProfile = { age: "unknown", sex: "unknown", height: "unknown", weight: "unknown", experience: "unknown", goal: "build muscle", daysPerWeek: "not specified", equipment: "full gym", injuries: "none" };
+  goal = "build muscle / hypertrophy";
+  document.getElementById("onboarding").style.display = "none";
+  document.getElementById("app").style.display = "flex";
+  document.getElementById("user-label").textContent = "Guest";
+  addMsg("assistant", "💪 Welcome to **Iron Coach**!\n\nYou skipped the profile setup — no worries! I can still help you with programs, form tips, nutrition, and more.\n\nFor the most personalized advice, you can tell me your stats anytime (age, weight, experience level, goal, equipment). Otherwise just ask away!");
+}
+
+function selectChip(type, el, value) {
+  const container = el.parentElement;
+  container.querySelectorAll('.ob-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selections[type] = value;
+  if (type === 'goal') goal = value;
+}
+
+function startApp() {
+  const age = document.getElementById('age').value.trim();
+  const height = document.getElementById('height').value.trim();
+  const weight = document.getElementById('weight').value.trim();
+  const sex = document.getElementById('sex').value;
+  const injuries = document.getElementById('injuries').value.trim();
+  const err = document.getElementById('error-msg');
+
+  if (!age || !selections.exp || !selections.goal || !selections.days || !selections.equip) {
+    err.classList.add('show');
+    return;
+  }
+  err.classList.remove('show');
+
+  userProfile = {
+    age, sex,
+    height: height || 'not provided',
+    weight: weight || 'not provided',
+    experience: selections.exp,
+    goal: selections.goal,
+    daysPerWeek: selections.days,
+    equipment: selections.equip,
+    injuries: injuries || 'none'
+  };
+
+  document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('user-label').textContent = `${age}y • ${selections.exp.split(' ')[0]}`;
+
+  // Set active goal chip
+  document.querySelectorAll('.chip').forEach(c => {
+    c.classList.remove('active');
+    if (c.textContent.toLowerCase().includes(selections.goal.split('/')[0].trim().split(' ')[1] || selections.goal.split(' ')[0])) {
+      c.classList.add('active');
+    }
+  });
+  document.querySelector('.chip').classList.add('active');
+
+  const greeting = `💪 Profile locked in! Here's what I know about you:\n\n- **Age:** ${age} | **${sex || 'not specified'}**\n- **Height:** ${height || 'not provided'} | **Weight:** ${weight || 'not provided'}\n- **Level:** ${selections.exp}\n- **Goal:** ${selections.goal}\n- **Training:** ${selections.days}\n- **Equipment:** ${selections.equip}\n- **Injuries/Limitations:** ${injuries || 'none'}\n\nI'll use all of this to make sure every recommendation is safe and optimized for YOU. Tap **"My program"** below to get your personalized plan, or ask me anything!`;
+  addMsg('assistant', greeting);
+}
 
 function setGoal(el, g) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
@@ -102,11 +316,28 @@ function setGoal(el, g) {
   goal = g;
 }
 
+function buildSystemPrompt() {
+  return `You are Iron Coach, an elite AI personal weight training coach. You have the following user profile to work with:
+
+- Age: ${userProfile.age}
+- Sex: ${userProfile.sex || 'not specified'}
+- Height: ${userProfile.height}
+- Weight: ${userProfile.weight}
+- Experience Level: ${userProfile.experience}
+- Primary Goal: ${userProfile.goal}
+- Training Days Available: ${userProfile.daysPerWeek}
+- Equipment: ${userProfile.equipment}
+- Injuries/Limitations: ${userProfile.injuries}
+- Current goal context: ${goal}
+
+IMPORTANT: Always take their injuries and limitations into account. Never recommend exercises that could aggravate their injuries. Adjust all programs to their experience level — don't give advanced programming to beginners. Be motivating, direct, and specific. Use **bold** for key terms. Use bullet points and tables for programs. Keep responses under 300 words unless writing a full program.`;
+}
+
 function fmt(text) {
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^### (.+)$/gm, '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:#e24b4a;letter-spacing:.05em;margin-top:6px">$1</div>')
-    .replace(/^## (.+)$/gm, '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:17px;font-weight:800;color:#e24b4a;letter-spacing:.05em;margin-top:8px">$1</div>')
+    .replace(/^### (.+)$/gm, '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:#e24b4a;margin-top:6px">$1</div>')
+    .replace(/^## (.+)$/gm, '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:17px;font-weight:800;color:#e24b4a;margin-top:8px">$1</div>')
     .replace(/\n\n/g, '<br><br>')
     .replace(/\n- /g, '<br>• ')
     .replace(/\n(\d+)\. /g, '<br>$1. ')
@@ -149,7 +380,7 @@ async function send(override) {
   const btn = document.getElementById('send-btn');
   const text = override || input.value.trim();
   if (!text) return;
-  input.value = ''; input.style.height = '42px';
+  input.value = ''; input.style.height = '40px';
   btn.disabled = true;
   history.push({ role: 'user', content: text });
   addMsg('user', text);
@@ -158,7 +389,7 @@ async function send(override) {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history, goal })
+      body: JSON.stringify({ messages: history, goal, systemPrompt: buildSystemPrompt() })
     });
     const data = await res.json();
     const reply = data.reply || 'Something went wrong — try again.';
@@ -174,9 +405,7 @@ async function send(override) {
 
 function sendQuick(t) { send(t); }
 function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
-function grow(el) { el.style.height = '42px'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
-
-addMsg('assistant', `💪 Welcome to **Iron Coach** — your AI weight training specialist.\n\nNo sign-up needed. Just pick your goal above and start asking!\n\nI can build full programs, coach your form, plan your nutrition, and more.`);
+function grow(el) { el.style.height = '40px'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
 </script>
 </body>
 </html>
