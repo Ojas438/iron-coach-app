@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Coach — AI Weight Training</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e24b4a;
+    --red-dark: #c03b3a;
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: #2e2e2e;
+    --text: #f0f0f0;
+    --muted: #888;
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; gap: 14px; height: 60px; flex-shrink: 0; }
+  .logo { font-family: var(--font-display); font-size: 26px; font-weight: 800; letter-spacing: 0.04em; color: var(--text); }
+  .logo span { color: var(--red); }
+  .badge { font-size: 10px; padding: 3px 8px; border-radius: 4px; background: var(--red); color: #fff; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .free-tag { margin-left: auto; font-size: 12px; color: var(--muted); }
+  .free-tag strong { color: #639922; }
+  .goal-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
+  .chip { font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .chip:hover { border-color: var(--red); color: var(--text); }
+  .chip.active { background: var(--red); border-color: var(--red); color: #fff; }
+  .messages { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 18px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .msg { display: flex; gap: 12px; align-items: flex-start; animation: fadeUp 0.2s ease; }
+  .msg.user { flex-direction: row-reverse; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .avatar { width: 34px; height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-family: var(--font-display); letter-spacing: 0.04em; }
+  .avatar.ai { background: var(--red); color: #fff; font-size: 14px; }
+  .avatar.user { background: var(--surface2); color: var(--muted); font-size: 11px; }
+  .bubble { max-width: 75%; padding: 12px 16px; border-radius: 8px; font-size: 14px; line-height: 1.7; }
+  .bubble.ai { background: var(--surface); border: 1px solid var(--border); border-radius: 4px 8px 8px 8px; color: var(--text); }
+  .bubble.user { background: var(--red); color: #fff; border-radius: 8px 4px 8px 8px; }
+  .bubble strong { font-weight: 600; }
+  .bubble.ai strong { color: var(--red); }
+  .bubble ul { margin: 8px 0 8px 18px; }
+  .bubble li { margin-bottom: 4px; }
+  .quick-bar { padding: 10px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; background: var(--surface); flex-shrink: 0; }
+  .qr { font-size: 12px; padding: 5px 12px; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-family: var(--font-body); transition: all 0.15s; }
+  .qr:hover { border-color: var(--red); color: var(--text); }
+  .input-area { padding: 14px 20px; border-top: 1px solid var(--border); background: var(--surface); display: flex; gap: 10px; align-items: flex-end; flex-shrink: 0; }
+  .input-area textarea { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 14px; font-family: var(--font-body); color: var(--text); resize: none; height: 42px; max-height: 120px; overflow-y: auto; outline: none; transition: border-color 0.2s; line-height: 1.5; }
+  .input-area textarea:focus { border-color: var(--red); }
+  .input-area textarea::placeholder { color: #555; }
+  .send { width: 42px; height: 42px; background: var(--red); border: none; border-radius: 6px; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; }
+  .send:hover { background: var(--red-dark); }
+  .send:disabled { opacity: 0.4; cursor: default; }
+  .typing-dots { display: flex; gap: 4px; padding: 4px 0; }
+  .typing-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: pulse 1.2s infinite ease-in-out; }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%,80%,100%{opacity:0.2;transform:scale(0.85)} 40%{opacity:1;transform:scale(1)} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">IRON<span>COACH</span></div>
+  <div class="badge">AI</div>
+  <div class="free-tag">Powered by AI &nbsp;•&nbsp; <strong>100% Free</strong></div>
+</header>
+
+<div class="goal-bar">
+  <button class="chip active" onclick="setGoal(this, 'build muscle / hypertrophy')">🔥 Build Muscle</button>
+  <button class="chip" onclick="setGoal(this, 'increase strength and 1RM')">⚡ Get Stronger</button>
+  <button class="chip" onclick="setGoal(this, 'lose fat while preserving muscle')">🏃 Lose Fat</button>
+  <button class="chip" onclick="setGoal(this, 'improve athletic performance')">🏆 Athletic</button>
+</div>
+
+<div class="messages" id="messages"></div>
+
+<div class="quick-bar">
+  <button class="qr" onclick="sendQuick('Build me a 4-day weekly hypertrophy program for a full gym.')">4-day program</button>
+  <button class="qr" onclick="sendQuick('How do I improve my bench press? Give form tips and accessories.')">Bench press</button>
+  <button class="qr" onclick="sendQuick('What should I eat pre and post workout for muscle growth?')">Nutrition timing</button>
+  <button class="qr" onclick="sendQuick('Explain progressive overload and how to apply it week to week.')">Progressive overload</button>
+  <button class="qr" onclick="sendQuick('What is a deload week and when should I take one?')">Deload weeks</button>
+  <button class="qr" onclick="sendQuick('What supplements are backed by science for muscle growth?')">Supplements</button>
+</div>
+
+<div class="input-area">
+  <textarea id="user-input" placeholder="Ask your coach anything..." onkeydown="handleKey(event)" oninput="grow(this)"></textarea>
+  <button class="send" id="send-btn" onclick="send()">&#9658;</button>
+</div>
+
+<script>
+const history = [];
+let goal = 'build muscle / hypertrophy';
+
+function setGoal(el, g) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  goal = g;
+}
+
+function fmt(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^### (.+)$/gm, '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:#e24b4a;letter-spacing:.05em;margin-top:6px">$1</div>')
+    .replace(/^## (.+)$/gm, '<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:17px;font-weight:800;color:#e24b4a;letter-spacing:.05em;margin-top:8px">$1</div>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n- /g, '<br>• ')
+    .replace(/\n(\d+)\. /g, '<br>$1. ')
+    .replace(/\n/g, '<br>');
+}
+
+function addMsg(role, content) {
+  const msgs = document.getElementById('messages');
+  const wrap = document.createElement('div');
+  wrap.className = `msg ${role === 'user' ? 'user' : 'ai'}`;
+  const av = document.createElement('div');
+  av.className = `avatar ${role === 'user' ? 'user' : 'ai'}`;
+  av.textContent = role === 'user' ? 'YOU' : 'IC';
+  const bub = document.createElement('div');
+  bub.className = `bubble ${role === 'user' ? 'user' : 'ai'}`;
+  bub.innerHTML = fmt(content);
+  wrap.appendChild(av); wrap.appendChild(bub);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('messages');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ai'; wrap.id = 'typing';
+  const av = document.createElement('div');
+  av.className = 'avatar ai'; av.textContent = 'IC';
+  const bub = document.createElement('div');
+  bub.className = 'bubble ai';
+  bub.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+  wrap.appendChild(av); wrap.appendChild(bub);
+  msgs.appendChild(wrap);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function hideTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
+
+async function send(override) {
+  const input = document.getElementById('user-input');
+  const btn = document.getElementById('send-btn');
+  const text = override || input.value.trim();
+  if (!text) return;
+  input.value = ''; input.style.height = '42px';
+  btn.disabled = true;
+  history.push({ role: 'user', content: text });
+  addMsg('user', text);
+  showTyping();
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history, goal })
+    });
+    const data = await res.json();
+    const reply = data.reply || 'Something went wrong — try again.';
+    hideTyping();
+    history.push({ role: 'assistant', content: reply });
+    addMsg('assistant', reply);
+  } catch(e) {
+    hideTyping();
+    addMsg('assistant', '⚠️ Server error. Please try again in a moment.');
+  }
+  btn.disabled = false;
+}
+
+function sendQuick(t) { send(t); }
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+function grow(el) { el.style.height = '42px'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
+
+addMsg('assistant', `💪 Welcome to **Iron Coach** — your AI weight training specialist.\n\nNo sign-up needed. Just pick your goal above and start asking!\n\nI can build full programs, coach your form, plan your nutrition, and more.`);
+</script>
+</body>
+</html>
