@@ -3,111 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Iron Coach — AI Weight Training</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<title>Iron Coach — Elite AI Training</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root { --red:#e24b4a;--red-dark:#c03b3a;--bg:#0f0f0f;--surface:#1a1a1a;--surface2:#242424;--border:#2e2e2e;--text:#f0f0f0;--muted:#888;--green:#639922;--font-display:'Barlow Condensed',sans-serif;--font-body:'DM Sans',sans-serif; }
-  * { box-sizing:border-box;margin:0;padding:0; }
-  body { background:var(--bg);color:var(--text);font-family:var(--font-body);height:100vh;display:flex;flex-direction:column;overflow:hidden; }
+  :root {
+    --red:#e24b4a;--red-dark:#c03b3a;--red-glow:rgba(226,75,74,0.25);
+    --bg:#080808;--surface:#111;--surface2:#181818;--surface3:#1f1f1f;
+    --border:#242424;--border2:#2e2e2e;
+    --text:#f5f5f5;--muted:#666;--muted2:#888;
+    --gold:#c9a84c;--green:#5a9e2f;
+    --font-display:'Barlow Condensed',sans-serif;
+    --font-body:'DM Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 
-  /* ONBOARDING */
-  #onboarding { flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:30px 20px; }
-  .ob-logo { font-family:var(--font-display);font-size:42px;font-weight:800;letter-spacing:.04em;margin-bottom:6px; }
-  .ob-logo span { color:var(--red); }
-  .ob-sub { color:var(--muted);font-size:14px;margin-bottom:30px; }
-  .ob-card { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;width:100%;max-width:480px; }
-  .ob-card h2 { font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:.05em;color:var(--red);margin-bottom:4px;text-transform:uppercase; }
-  .ob-card p { font-size:13px;color:var(--muted);margin-bottom:22px; }
-  .field-row { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px; }
-  .field { display:flex;flex-direction:column;gap:5px;margin-bottom:14px; }
-  .field label { font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em; }
-  .field input,.field select { background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:9px 12px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;transition:border-color .2s;width:100%; }
-  .field input:focus,.field select:focus { border-color:var(--red); }
-  .field select option { background:var(--surface); }
-  .field input::placeholder { color:#555; }
-  .chips-row { display:flex;flex-wrap:wrap;gap:8px; }
-  .ob-chip { font-size:12px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;font-family:var(--font-body); }
-  .ob-chip.active { background:var(--red);border-color:var(--red);color:#fff; }
-  .start-btn { width:100%;padding:13px;background:var(--red);border:none;border-radius:8px;color:#fff;font-size:16px;font-family:var(--font-display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-top:20px;transition:background .15s; }
-  .start-btn:hover { background:var(--red-dark); }
-  .skip-btn { width:100%;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:13px;font-family:var(--font-body);cursor:pointer;margin-top:8px;transition:all .15s; }
-  .skip-btn:hover { border-color:var(--muted);color:var(--text); }
-  .error-msg { color:var(--red);font-size:12px;margin-top:10px;display:none; }
-  .error-msg.show { display:block; }
+  /* ── ONBOARDING ── */
+  #onboarding{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;background:radial-gradient(ellipse at 50% 0%,rgba(226,75,74,0.08) 0%,transparent 70%);}
 
-  /* APP */
-  #app { flex:1;display:none;flex-direction:column;overflow:hidden; }
-  header { background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:12px;height:54px;flex-shrink:0; }
-  .logo { font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:.04em;color:var(--text); }
-  .logo span { color:var(--red); }
-  .badge { font-size:10px;padding:3px 8px;border-radius:4px;background:var(--red);color:#fff;font-weight:600;letter-spacing:.05em;text-transform:uppercase; }
-  .header-right { margin-left:auto;display:flex;align-items:center;gap:8px; }
-  .user-tag { font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px; }
-  .user-dot { width:7px;height:7px;border-radius:50%;background:var(--green); }
-  .edit-profile-btn { font-size:11px;padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:var(--font-body);transition:all .15s; }
-  .edit-profile-btn:hover { border-color:var(--red);color:var(--red); }
+  .ob-eyebrow{font-family:var(--font-display);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .ob-eyebrow::before,.ob-eyebrow::after{content:'';flex:1;max-width:30px;height:1px;background:var(--red);opacity:.5;}
+  .ob-logo{font-family:var(--font-display);font-size:56px;font-weight:900;letter-spacing:.02em;line-height:1;margin-bottom:8px;}
+  .ob-logo span{color:var(--red);font-style:italic;}
+  .ob-tagline{color:var(--muted2);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px;}
 
-  /* TABS */
-  .tab-bar { background:var(--surface);border-bottom:1px solid var(--border);display:flex;flex-shrink:0; }
-  .tab { flex:1;padding:10px;font-size:12px;font-family:var(--font-display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer;text-align:center;border-bottom:2px solid transparent;transition:all .15s; }
-  .tab.active { color:var(--red);border-bottom-color:var(--red); }
-  .tab:hover { color:var(--text); }
+  .ob-card{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:16px;padding:32px;width:100%;max-width:500px;box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.03);}
+  .ob-card-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .ob-card-icon{width:36px;height:36px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .ob-card h2{font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:.04em;color:var(--text);text-transform:uppercase;}
+  .ob-card p{font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.6;margin-top:4px;}
 
-  /* CHAT VIEW */
-  #chat-view { flex:1;display:flex;flex-direction:column;overflow:hidden; }
-  .goal-bar { background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap; }
-  .chip { font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s; }
-  .chip:hover { border-color:var(--red);color:var(--text); }
-  .chip.active { background:var(--red);border-color:var(--red);color:#fff; }
-  .messages { flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;scrollbar-color:var(--border) transparent; }
-  .msg { display:flex;gap:12px;align-items:flex-start;animation:fadeUp .2s ease; }
-  .msg.user { flex-direction:row-reverse; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-  .avatar { width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-family:var(--font-display);letter-spacing:.04em;font-size:12px; }
-  .avatar.ai { background:var(--red);color:#fff; }
-  .avatar.user { background:var(--surface2);color:var(--muted); }
-  .bubble { max-width:78%;padding:11px 15px;border-radius:8px;font-size:13.5px;line-height:1.7; }
-  .bubble.ai { background:var(--surface);border:1px solid var(--border);border-radius:4px 8px 8px 8px;color:var(--text); }
-  .bubble.user { background:var(--red);color:#fff;border-radius:8px 4px 8px 8px; }
-  .bubble strong { font-weight:600; }
-  .bubble.ai strong { color:var(--red); }
-  .bubble ul { margin:8px 0 8px 18px; }
-  .bubble li { margin-bottom:3px; }
-  .quick-bar { padding:8px 20px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;background:var(--surface);flex-shrink:0; }
-  .qr { font-size:12px;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:var(--font-body);transition:all .15s; }
-  .qr:hover { border-color:var(--red);color:var(--text); }
-  .input-area { padding:12px 20px;border-top:1px solid var(--border);background:var(--surface);display:flex;gap:10px;align-items:flex-end;flex-shrink:0; }
-  .input-area textarea { flex:1;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:9px 13px;font-size:13.5px;font-family:var(--font-body);color:var(--text);resize:none;height:40px;max-height:120px;overflow-y:auto;outline:none;transition:border-color .2s;line-height:1.5; }
-  .input-area textarea:focus { border-color:var(--red); }
-  .input-area textarea::placeholder { color:#555; }
-  .send { width:40px;height:40px;background:var(--red);border:none;border-radius:6px;color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s; }
-  .send:hover { background:var(--red-dark); }
-  .send:disabled { opacity:.4;cursor:default; }
-  .typing-dots { display:flex;gap:4px;padding:4px 0; }
-  .typing-dots span { width:6px;height:6px;border-radius:50%;background:var(--muted);animation:pulse 1.2s infinite ease-in-out; }
-  .typing-dots span:nth-child(2){animation-delay:.2s} .typing-dots span:nth-child(3){animation-delay:.4s}
-  @keyframes pulse{0%,80%,100%{opacity:.2;transform:scale(.85)}40%{opacity:1;transform:scale(1)}}
+  .section-divider{font-family:var(--font-display);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:6px 0 12px;display:flex;align-items:center;gap:8px;}
+  .section-divider::after{content:'';flex:1;height:1px;background:var(--border2);}
+
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+  .field label{font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;}
+  .field input,.field select{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+  .field input:focus,.field select:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow);}
+  .field select option{background:var(--surface2);}
+  .field input::placeholder{color:#333;}
+
+  .chips-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .ob-chip{font-size:12px;font-weight:500;padding:7px 15px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--muted2);cursor:pointer;transition:all .15s;font-family:var(--font-body);}
+  .ob-chip:hover{border-color:var(--red);color:var(--text);}
+  .ob-chip.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 4px 14px rgba(226,75,74,.35);}
+
+  .start-btn{width:100%;padding:15px;background:var(--red);border:none;border-radius:10px;color:#fff;font-size:17px;font-family:var(--font-display);font-weight:800;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:22px;transition:all .2s;position:relative;overflow:hidden;box-shadow:0 6px 24px rgba(226,75,74,.4);}
+  .start-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,transparent 100%);}
+  .start-btn:hover{background:var(--red-dark);transform:translateY(-1px);box-shadow:0 10px 30px rgba(226,75,74,.5);}
+  .skip-btn{width:100%;padding:11px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--muted);font-size:13px;font-family:var(--font-body);cursor:pointer;margin-top:10px;transition:all .15s;}
+  .skip-btn:hover{border-color:var(--muted);color:var(--text);}
+  .error-msg{color:var(--red);font-size:12px;margin-top:10px;display:none;}
+  .error-msg.show{display:block;}
+
+  /* ── APP ── */
+  #app{flex:1;display:none;flex-direction:column;overflow:hidden;}
+
+  header{background:linear-gradient(90deg,#0d0d0d,#111);border-bottom:1px solid var(--border2);padding:0 20px;display:flex;align-items:center;gap:12px;height:56px;flex-shrink:0;position:relative;}
+  header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:.4;}
+  .logo{font-family:var(--font-display);font-size:26px;font-weight:900;letter-spacing:.03em;color:var(--text);}
+  .logo span{color:var(--red);font-style:italic;}
+  .logo-sub{font-family:var(--font-display);font-size:10px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-left:2px;}
+  .badge{font-size:9px;padding:3px 8px;border-radius:4px;background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;font-weight:700;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 2px 8px rgba(226,75,74,.4);}
+  .header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .user-tag{font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:5px;}
+  .user-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
+  .edit-profile-btn{font-size:11px;font-weight:500;padding:5px 11px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-family:var(--font-body);transition:all .15s;}
+  .edit-profile-btn:hover{border-color:var(--red);color:var(--red);}
+
+  .tab-bar{background:var(--surface);border-bottom:1px solid var(--border);display:flex;flex-shrink:0;}
+  .tab{flex:1;padding:11px;font-size:11px;font-family:var(--font-display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;text-align:center;border-bottom:2px solid transparent;transition:all .2s;}
+  .tab.active{color:var(--red);border-bottom-color:var(--red);}
+  .tab:hover:not(.active){color:var(--muted2);}
+
+  /* CHAT */
+  #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+  .goal-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
+  .goal-label{font-family:var(--font-display);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:4px;}
+  .chip{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 13px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
+  .chip:hover{border-color:var(--red);color:var(--text);}
+  .chip.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 2px 10px rgba(226,75,74,.35);}
+
+  .messages{flex:1;overflow-y:auto;padding:24px 20px;display:flex;flex-direction:column;gap:18px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+  .msg{display:flex;gap:12px;align-items:flex-start;animation:fadeUp .25s ease;}
+  .msg.user{flex-direction:row-reverse;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  .avatar{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-family:var(--font-display);letter-spacing:.04em;font-size:12px;}
+  .avatar.ai{background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;box-shadow:0 4px 12px rgba(226,75,74,.3);}
+  .avatar.user{background:var(--surface3);color:var(--muted2);border:1px solid var(--border2);}
+
+  .bubble{max-width:78%;padding:12px 16px;border-radius:10px;font-size:13.5px;line-height:1.75;}
+  .bubble.ai{background:linear-gradient(145deg,var(--surface2),var(--surface3));border:1px solid var(--border2);border-radius:4px 10px 10px 10px;color:var(--text);box-shadow:0 4px 20px rgba(0,0,0,.3);}
+  .bubble.user{background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;border-radius:10px 4px 10px 10px;box-shadow:0 4px 16px rgba(226,75,74,.3);}
+  .bubble strong{font-weight:600;}
+  .bubble.ai strong{color:var(--red);}
+  .bubble ul{margin:8px 0 8px 18px;}
+  .bubble li{margin-bottom:4px;}
+
+  .quick-bar{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:7px;flex-wrap:wrap;background:var(--surface);flex-shrink:0;}
+  .qr{font-size:11px;font-weight:500;padding:6px 13px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--muted2);cursor:pointer;font-family:var(--font-body);transition:all .15s;}
+  .qr:hover{border-color:var(--red);color:var(--text);background:rgba(226,75,74,.06);}
+
+  .input-area{padding:12px 16px;border-top:1px solid var(--border);background:var(--surface);display:flex;gap:10px;align-items:flex-end;flex-shrink:0;}
+  .input-area textarea{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;font-size:13.5px;font-family:var(--font-body);color:var(--text);resize:none;height:42px;max-height:120px;overflow-y:auto;outline:none;transition:border-color .2s,box-shadow .2s;line-height:1.5;}
+  .input-area textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow);}
+  .input-area textarea::placeholder{color:#333;}
+  .send{width:42px;height:42px;background:linear-gradient(135deg,var(--red),var(--red-dark));border:none;border-radius:8px;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;box-shadow:0 4px 14px rgba(226,75,74,.35);}
+  .send:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(226,75,74,.5);}
+  .send:disabled{opacity:.35;cursor:default;transform:none;box-shadow:none;}
+
+  .typing-dots{display:flex;gap:5px;padding:4px 0;}
+  .typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--red);opacity:.4;animation:pulse 1.2s infinite ease-in-out;}
+  .typing-dots span:nth-child(2){animation-delay:.2s}
+  .typing-dots span:nth-child(3){animation-delay:.4s}
+  @keyframes pulse{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 
   /* PROFILE VIEW */
-  #profile-view { flex:1;overflow-y:auto;padding:20px;display:none; }
-  .profile-card { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:480px;margin:0 auto; }
-  .profile-card h2 { font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px; }
-  .profile-card p { font-size:13px;color:var(--muted);margin-bottom:20px; }
-  .save-btn { width:100%;padding:12px;background:var(--red);border:none;border-radius:8px;color:#fff;font-size:15px;font-family:var(--font-display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-top:16px;transition:background .15s; }
-  .save-btn:hover { background:var(--red-dark); }
-  .saved-msg { text-align:center;color:var(--green);font-size:13px;margin-top:10px;display:none; }
-  .saved-msg.show { display:block; }
+  #profile-view{flex:1;overflow-y:auto;padding:24px 20px;display:none;background:radial-gradient(ellipse at 50% 0%,rgba(226,75,74,.05) 0%,transparent 60%);}
+  .profile-card{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:16px;padding:28px;max-width:500px;margin:0 auto;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+  .profile-card-header{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .profile-card-icon{width:34px;height:34px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .profile-card h2{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.05em;}
+  .profile-card p{font-size:13px;color:var(--muted2);margin-bottom:22px;margin-top:4px;line-height:1.6;}
+  .save-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--red),var(--red-dark));border:none;border-radius:10px;color:#fff;font-size:16px;font-family:var(--font-display);font-weight:800;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:18px;transition:all .2s;box-shadow:0 6px 20px rgba(226,75,74,.35);}
+  .save-btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(226,75,74,.5);}
+  .saved-msg{text-align:center;color:var(--green);font-size:13px;font-weight:500;margin-top:12px;display:none;letter-spacing:.02em;}
+  .saved-msg.show{display:block;}
 </style>
 </head>
 <body>
 
 <!-- ONBOARDING -->
 <div id="onboarding">
+  <div class="ob-eyebrow">Elite AI Coaching</div>
   <div class="ob-logo">IRON<span>COACH</span></div>
-  <div class="ob-sub">Your AI Weight Training Specialist • 100% Free</div>
+  <div class="ob-tagline">Train Smarter. Lift Heavier. Look Better.</div>
+
   <div class="ob-card">
-    <h2>Let's build your profile</h2>
-    <p>Tell us about yourself so we can create a safe, personalized program just for you.</p>
+    <div class="ob-card-header">
+      <div class="ob-card-icon">⚡</div>
+      <h2>Build Your Profile</h2>
+    </div>
+    <p>Give us your stats and we'll build a program that's 100% tailored to your body, your goals, and your limits — safe and optimized from day one.</p>
+
+    <div class="section-divider">Basic Info</div>
     <div class="field-row">
       <div class="field"><label>Age</label><input type="number" id="ob-age" placeholder="e.g. 22" min="13" max="90"/></div>
       <div class="field"><label>Biological Sex</label>
@@ -118,23 +159,25 @@
       <div class="field"><label>Height</label><input type="text" id="ob-height" placeholder="e.g. 5'10 or 178cm"/></div>
       <div class="field"><label>Weight</label><input type="text" id="ob-weight" placeholder="e.g. 175lbs or 80kg"/></div>
     </div>
+
+    <div class="section-divider">Training</div>
     <div class="field"><label>Experience Level</label>
-      <div class="chips-row" id="exp-chips">
-        <div class="ob-chip" onclick="selectChip('exp',this,'Beginner (0–1 years)')">Beginner</div>
-        <div class="ob-chip" onclick="selectChip('exp',this,'Intermediate (1–3 years)')">Intermediate</div>
-        <div class="ob-chip" onclick="selectChip('exp',this,'Advanced (3+ years)')">Advanced</div>
+      <div class="chips-row">
+        <div class="ob-chip" onclick="selectChip('exp',this,'Beginner (0–1 years)')">🌱 Beginner</div>
+        <div class="ob-chip" onclick="selectChip('exp',this,'Intermediate (1–3 years)')">💪 Intermediate</div>
+        <div class="ob-chip" onclick="selectChip('exp',this,'Advanced (3+ years)')">🔥 Advanced</div>
       </div>
     </div>
     <div class="field"><label>Primary Goal</label>
-      <div class="chips-row" id="goal-chips">
+      <div class="chips-row">
         <div class="ob-chip" onclick="selectChip('goal',this,'build muscle / hypertrophy')">🔥 Build Muscle</div>
         <div class="ob-chip" onclick="selectChip('goal',this,'increase strength')">⚡ Get Stronger</div>
         <div class="ob-chip" onclick="selectChip('goal',this,'lose fat while preserving muscle')">🏃 Lose Fat</div>
         <div class="ob-chip" onclick="selectChip('goal',this,'improve athletic performance')">🏆 Athletic</div>
       </div>
     </div>
-    <div class="field"><label>Days per week</label>
-      <div class="chips-row" id="days-chips">
+    <div class="field"><label>Days Per Week</label>
+      <div class="chips-row">
         <div class="ob-chip" onclick="selectChip('days',this,'2 days per week')">2</div>
         <div class="ob-chip" onclick="selectChip('days',this,'3 days per week')">3</div>
         <div class="ob-chip" onclick="selectChip('days',this,'4 days per week')">4</div>
@@ -143,65 +186,77 @@
       </div>
     </div>
     <div class="field"><label>Equipment</label>
-      <div class="chips-row" id="equip-chips">
+      <div class="chips-row">
         <div class="ob-chip" onclick="selectChip('equip',this,'full commercial gym')">🏋️ Full Gym</div>
         <div class="ob-chip" onclick="selectChip('equip',this,'home gym with barbells and dumbbells')">🏠 Home Gym</div>
-        <div class="ob-chip" onclick="selectChip('equip',this,'dumbbells only')">💪 Dumbbells Only</div>
+        <div class="ob-chip" onclick="selectChip('equip',this,'dumbbells only')">💪 Dumbbells</div>
         <div class="ob-chip" onclick="selectChip('equip',this,'bodyweight only')">🤸 Bodyweight</div>
       </div>
     </div>
-    <div class="field"><label>Injuries / Limitations <span style="color:#555;font-weight:400">(optional)</span></label>
-      <input type="text" id="ob-injuries" placeholder="e.g. bad knees, lower back pain..."/>
+
+    <div class="section-divider">Safety</div>
+    <div class="field"><label>Injuries / Limitations <span style="color:#333;font-weight:400">(optional)</span></label>
+      <input type="text" id="ob-injuries" placeholder="e.g. bad knees, lower back pain, shoulder issues..."/>
     </div>
+
     <div class="error-msg" id="error-msg">⚠️ Please fill in age, experience, goal, days, and equipment</div>
-    <button class="start-btn" onclick="startApp()">START TRAINING →</button>
-    <button class="skip-btn" onclick="skipOnboarding()">Skip for now →</button>
+    <button class="start-btn" onclick="startApp()">⚡ START MY PROGRAM</button>
+    <button class="skip-btn" onclick="skipOnboarding()">Skip setup, just coach me →</button>
   </div>
 </div>
 
 <!-- APP -->
 <div id="app">
   <header>
-    <div class="logo">IRON<span>COACH</span></div>
-    <div class="badge">AI</div>
+    <div>
+      <div class="logo">IRON<span>COACH</span></div>
+    </div>
+    <div class="badge">AI Elite</div>
     <div class="header-right">
       <div class="user-tag"><div class="user-dot"></div><span id="user-label">Guest</span></div>
-      <button class="edit-profile-btn" onclick="showTab('profile')">Edit Profile</button>
+      <button class="edit-profile-btn" onclick="showTab('profile')">✏️ Profile</button>
     </div>
   </header>
 
   <div class="tab-bar">
-    <div class="tab active" id="tab-chat" onclick="showTab('chat')">💬 Coach</div>
-    <div class="tab" id="tab-profile" onclick="showTab('profile')">👤 My Profile</div>
+    <div class="tab active" id="tab-chat" onclick="showTab('chat')">⚡ Coach</div>
+    <div class="tab" id="tab-profile" onclick="showTab('profile')">👤 My Stats</div>
   </div>
 
   <!-- CHAT -->
   <div id="chat-view">
     <div class="goal-bar">
-      <button class="chip active" onclick="setGoal(this,'build muscle / hypertrophy')">🔥 Build Muscle</button>
-      <button class="chip" onclick="setGoal(this,'increase strength')">⚡ Get Stronger</button>
-      <button class="chip" onclick="setGoal(this,'lose fat while preserving muscle')">🏃 Lose Fat</button>
+      <span class="goal-label">Goal:</span>
+      <button class="chip active" onclick="setGoal(this,'build muscle / hypertrophy')">🔥 Muscle</button>
+      <button class="chip" onclick="setGoal(this,'increase strength')">⚡ Strength</button>
+      <button class="chip" onclick="setGoal(this,'lose fat while preserving muscle')">🏃 Fat Loss</button>
       <button class="chip" onclick="setGoal(this,'improve athletic performance')">🏆 Athletic</button>
     </div>
     <div class="messages" id="messages"></div>
     <div class="quick-bar">
-      <button class="qr" onclick="sendQuick('Build me a personalized weekly workout program based on my profile.')">My program</button>
-      <button class="qr" onclick="sendQuick('What are the best exercises for my goal and experience level?')">Best exercises</button>
-      <button class="qr" onclick="sendQuick('What should I eat pre and post workout to maximize my results?')">Nutrition</button>
-      <button class="qr" onclick="sendQuick('How should I apply progressive overload given my experience level?')">Progressive overload</button>
-      <button class="qr" onclick="sendQuick('What supplements are worth taking for my goal?')">Supplements</button>
+      <button class="qr" onclick="sendQuick('Build me a personalized weekly workout program based on my profile.')">🗓 My Program</button>
+      <button class="qr" onclick="sendQuick('What are the best exercises for my goal and experience level?')">💪 Best Exercises</button>
+      <button class="qr" onclick="sendQuick('What should I eat pre and post workout to maximize results?')">🥗 Nutrition</button>
+      <button class="qr" onclick="sendQuick('How do I apply progressive overload given my experience?')">📈 Overload</button>
+      <button class="qr" onclick="sendQuick('What supplements are actually worth taking for my goal?')">💊 Supplements</button>
+      <button class="qr" onclick="sendQuick('Should I take a deload week and how do I do it?')">🔄 Deload</button>
     </div>
     <div class="input-area">
-      <textarea id="user-input" placeholder="Ask your coach anything..." onkeydown="handleKey(event)" oninput="grow(this)"></textarea>
+      <textarea id="user-input" placeholder="Ask your elite coach anything..." onkeydown="handleKey(event)" oninput="grow(this)"></textarea>
       <button class="send" id="send-btn" onclick="send()">&#9658;</button>
     </div>
   </div>
 
-  <!-- PROFILE EDITOR -->
+  <!-- PROFILE -->
   <div id="profile-view">
     <div class="profile-card">
-      <h2>Your Profile</h2>
-      <p>Update your stats anytime — the coach will use the latest info.</p>
+      <div class="profile-card-header">
+        <div class="profile-card-icon">👤</div>
+        <h2>Your Stats</h2>
+      </div>
+      <p>Keep your profile up to date — your coach uses every data point to give you safer, smarter programming.</p>
+
+      <div class="section-divider">Basic Info</div>
       <div class="field-row">
         <div class="field"><label>Age</label><input type="number" id="p-age" placeholder="e.g. 22"/></div>
         <div class="field"><label>Biological Sex</label>
@@ -209,14 +264,16 @@
         </div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Height</label><input type="text" id="p-height" placeholder="e.g. 5'10 or 178cm"/></div>
-        <div class="field"><label>Weight</label><input type="text" id="p-weight" placeholder="e.g. 175lbs or 80kg"/></div>
+        <div class="field"><label>Height</label><input type="text" id="p-height" placeholder="e.g. 5'10"/></div>
+        <div class="field"><label>Weight</label><input type="text" id="p-weight" placeholder="e.g. 175lbs"/></div>
       </div>
+
+      <div class="section-divider">Training</div>
       <div class="field"><label>Experience Level</label>
         <div class="chips-row" id="p-exp-chips">
-          <div class="ob-chip" onclick="selectProfileChip('p-exp',this,'Beginner (0–1 years)')">Beginner</div>
-          <div class="ob-chip" onclick="selectProfileChip('p-exp',this,'Intermediate (1–3 years)')">Intermediate</div>
-          <div class="ob-chip" onclick="selectProfileChip('p-exp',this,'Advanced (3+ years)')">Advanced</div>
+          <div class="ob-chip" onclick="selectProfileChip('p-exp',this,'Beginner (0–1 years)')">🌱 Beginner</div>
+          <div class="ob-chip" onclick="selectProfileChip('p-exp',this,'Intermediate (1–3 years)')">💪 Intermediate</div>
+          <div class="ob-chip" onclick="selectProfileChip('p-exp',this,'Advanced (3+ years)')">🔥 Advanced</div>
         </div>
       </div>
       <div class="field"><label>Primary Goal</label>
@@ -227,7 +284,7 @@
           <div class="ob-chip" onclick="selectProfileChip('p-goal',this,'improve athletic performance')">🏆 Athletic</div>
         </div>
       </div>
-      <div class="field"><label>Days per week</label>
+      <div class="field"><label>Days Per Week</label>
         <div class="chips-row" id="p-days-chips">
           <div class="ob-chip" onclick="selectProfileChip('p-days',this,'2 days per week')">2</div>
           <div class="ob-chip" onclick="selectProfileChip('p-days',this,'3 days per week')">3</div>
@@ -240,156 +297,144 @@
         <div class="chips-row" id="p-equip-chips">
           <div class="ob-chip" onclick="selectProfileChip('p-equip',this,'full commercial gym')">🏋️ Full Gym</div>
           <div class="ob-chip" onclick="selectProfileChip('p-equip',this,'home gym with barbells and dumbbells')">🏠 Home Gym</div>
-          <div class="ob-chip" onclick="selectProfileChip('p-equip',this,'dumbbells only')">💪 Dumbbells Only</div>
+          <div class="ob-chip" onclick="selectProfileChip('p-equip',this,'dumbbells only')">💪 Dumbbells</div>
           <div class="ob-chip" onclick="selectProfileChip('p-equip',this,'bodyweight only')">🤸 Bodyweight</div>
         </div>
       </div>
+
+      <div class="section-divider">Safety</div>
       <div class="field"><label>Injuries / Limitations</label>
         <input type="text" id="p-injuries" placeholder="e.g. bad knees, lower back pain..."/>
       </div>
-      <button class="save-btn" onclick="saveProfile()">SAVE PROFILE ✓</button>
-      <div class="saved-msg" id="saved-msg">✅ Profile updated! The coach will use your new stats.</div>
+
+      <button class="save-btn" onclick="saveProfile()">✓ SAVE & UPDATE PROFILE</button>
+      <div class="saved-msg" id="saved-msg">✅ Profile updated — your coach is dialled in.</div>
     </div>
   </div>
 </div>
 
 <script>
-let userProfile = {};
-let goal = 'build muscle / hypertrophy';
-const history = [];
-const selections = { exp:'', goal:'', days:'', equip:'' };
-const pSelections = { 'p-exp':'', 'p-goal':'', 'p-days':'', 'p-equip':'' };
+let userProfile={};let goal='build muscle / hypertrophy';const history=[];
+const selections={exp:'',goal:'',days:'',equip:''};
+const pSelections={'p-exp':'','p-goal':'','p-days':'','p-equip':''};
 
-function showTab(tab) {
-  document.getElementById('chat-view').style.display = tab === 'chat' ? 'flex' : 'none';
-  document.getElementById('profile-view').style.display = tab === 'profile' ? 'block' : 'none';
-  document.getElementById('tab-chat').classList.toggle('active', tab === 'chat');
-  document.getElementById('tab-profile').classList.toggle('active', tab === 'profile');
-  if (tab === 'profile') populateProfileForm();
+function showTab(tab){
+  document.getElementById('chat-view').style.display=tab==='chat'?'flex':'none';
+  document.getElementById('profile-view').style.display=tab==='profile'?'block':'none';
+  document.getElementById('tab-chat').classList.toggle('active',tab==='chat');
+  document.getElementById('tab-profile').classList.toggle('active',tab==='profile');
+  if(tab==='profile') populateProfileForm();
 }
 
-function populateProfileForm() {
-  document.getElementById('p-age').value = userProfile.age || '';
-  document.getElementById('p-sex').value = userProfile.sex || '';
-  document.getElementById('p-height').value = userProfile.height !== 'not provided' ? userProfile.height || '' : '';
-  document.getElementById('p-weight').value = userProfile.weight !== 'not provided' ? userProfile.weight || '' : '';
-  document.getElementById('p-injuries').value = userProfile.injuries !== 'none' ? userProfile.injuries || '' : '';
-  ['p-exp','p-goal','p-days','p-equip'].forEach(type => {
-    const key = type.replace('p-','');
-    const val = userProfile[key === 'exp' ? 'experience' : key === 'goal' ? 'goal' : key === 'days' ? 'daysPerWeek' : 'equipment'] || '';
-    pSelections[type] = val;
-    const chips = document.querySelectorAll(`#${type}-chips .ob-chip`);
-    chips.forEach(c => { c.classList.toggle('active', c.dataset.val === val || (val && c.textContent.trim().includes(val.split(' ')[0]))); });
-  });
+function populateProfileForm(){
+  document.getElementById('p-age').value=userProfile.age||'';
+  document.getElementById('p-sex').value=userProfile.sex||'';
+  document.getElementById('p-height').value=userProfile.height!=='not provided'?userProfile.height||'':'';
+  document.getElementById('p-weight').value=userProfile.weight!=='not provided'?userProfile.weight||'':'';
+  document.getElementById('p-injuries').value=userProfile.injuries!=='none'?userProfile.injuries||'':'';
 }
 
-function selectProfileChip(type, el, value) {
-  el.parentElement.querySelectorAll('.ob-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  pSelections[type] = value;
+function selectProfileChip(type,el,value){
+  el.parentElement.querySelectorAll('.ob-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); pSelections[type]=value;
 }
 
-function saveProfile() {
-  userProfile.age = document.getElementById('p-age').value || userProfile.age;
-  userProfile.sex = document.getElementById('p-sex').value || userProfile.sex;
-  userProfile.height = document.getElementById('p-height').value || userProfile.height || 'not provided';
-  userProfile.weight = document.getElementById('p-weight').value || userProfile.weight || 'not provided';
-  userProfile.injuries = document.getElementById('p-injuries').value || 'none';
-  if (pSelections['p-exp']) userProfile.experience = pSelections['p-exp'];
-  if (pSelections['p-goal']) { userProfile.goal = pSelections['p-goal']; goal = pSelections['p-goal']; }
-  if (pSelections['p-days']) userProfile.daysPerWeek = pSelections['p-days'];
-  if (pSelections['p-equip']) userProfile.equipment = pSelections['p-equip'];
-  document.getElementById('user-label').textContent = `${userProfile.age || '?'}y • ${(userProfile.experience || 'unknown').split(' ')[0]}`;
-  const msg = document.getElementById('saved-msg');
-  msg.classList.add('show');
-  setTimeout(() => msg.classList.remove('show'), 3000);
+function saveProfile(){
+  userProfile.age=document.getElementById('p-age').value||userProfile.age;
+  userProfile.sex=document.getElementById('p-sex').value||userProfile.sex;
+  userProfile.height=document.getElementById('p-height').value||userProfile.height||'not provided';
+  userProfile.weight=document.getElementById('p-weight').value||userProfile.weight||'not provided';
+  userProfile.injuries=document.getElementById('p-injuries').value||'none';
+  if(pSelections['p-exp']) userProfile.experience=pSelections['p-exp'];
+  if(pSelections['p-goal']){userProfile.goal=pSelections['p-goal'];goal=pSelections['p-goal'];}
+  if(pSelections['p-days']) userProfile.daysPerWeek=pSelections['p-days'];
+  if(pSelections['p-equip']) userProfile.equipment=pSelections['p-equip'];
+  document.getElementById('user-label').textContent=`${userProfile.age||'?'}y • ${(userProfile.experience||'unknown').split(' ')[0]}`;
+  const m=document.getElementById('saved-msg'); m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),3000);
 }
 
-function selectChip(type, el, value) {
-  el.parentElement.querySelectorAll('.ob-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  selections[type] = value;
-  if (type === 'goal') goal = value;
+function selectChip(type,el,value){
+  el.parentElement.querySelectorAll('.ob-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); selections[type]=value; if(type==='goal') goal=value;
 }
 
-function skipOnboarding() {
-  userProfile = { age:'unknown',sex:'unknown',height:'not provided',weight:'not provided',experience:'unknown',goal:'build muscle',daysPerWeek:'not specified',equipment:'full gym',injuries:'none' };
-  goal = 'build muscle / hypertrophy';
-  document.getElementById('onboarding').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('user-label').textContent = 'Guest';
-  addMsg('assistant', "💪 Welcome to **Iron Coach**!\n\nYou skipped setup — no worries! I can still help with programs, form, nutrition, and more.\n\nTip: tap **My Profile** in the top right anytime to add your stats for personalized advice. Otherwise, just ask away!");
+function skipOnboarding(){
+  userProfile={age:'unknown',sex:'unknown',height:'not provided',weight:'not provided',experience:'unknown',goal:'build muscle',daysPerWeek:'not specified',equipment:'full gym',injuries:'none'};
+  goal='build muscle / hypertrophy';
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('user-label').textContent='Guest';
+  addMsg('assistant',"💪 Welcome to **Iron Coach** — your elite AI training partner.\n\nYou skipped the profile setup — no problem. I can still build you programs, coach your form, and dial in your nutrition.\n\n**Pro tip:** Hit **My Stats** above anytime to add your measurements for fully personalized, injury-safe programming. Now — what are we working on today?");
 }
 
-function startApp() {
-  const age = document.getElementById('ob-age').value.trim();
-  const height = document.getElementById('ob-height').value.trim();
-  const weight = document.getElementById('ob-weight').value.trim();
-  const sex = document.getElementById('ob-sex').value;
-  const injuries = document.getElementById('ob-injuries').value.trim();
-  const err = document.getElementById('error-msg');
-  if (!age || !selections.exp || !selections.goal || !selections.days || !selections.equip) { err.classList.add('show'); return; }
+function startApp(){
+  const age=document.getElementById('ob-age').value.trim();
+  const height=document.getElementById('ob-height').value.trim();
+  const weight=document.getElementById('ob-weight').value.trim();
+  const sex=document.getElementById('ob-sex').value;
+  const injuries=document.getElementById('ob-injuries').value.trim();
+  const err=document.getElementById('error-msg');
+  if(!age||!selections.exp||!selections.goal||!selections.days||!selections.equip){err.classList.add('show');return;}
   err.classList.remove('show');
-  userProfile = { age, sex, height: height||'not provided', weight: weight||'not provided', experience: selections.exp, goal: selections.goal, daysPerWeek: selections.days, equipment: selections.equip, injuries: injuries||'none' };
-  document.getElementById('onboarding').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('user-label').textContent = `${age}y • ${selections.exp.split(' ')[0]}`;
-  addMsg('assistant', `💪 Profile locked in! Here's what I know:\n\n- **Age:** ${age} | **${sex||'not specified'}**\n- **Height:** ${height||'not provided'} | **Weight:** ${weight||'not provided'}\n- **Level:** ${selections.exp}\n- **Goal:** ${selections.goal}\n- **Training:** ${selections.days}\n- **Equipment:** ${selections.equip}\n- **Injuries:** ${injuries||'none'}\n\nI'll use all of this for safe, optimized recommendations. Tap **"My program"** to get your personalized plan, or ask me anything!`);
+  userProfile={age,sex,height:height||'not provided',weight:weight||'not provided',experience:selections.exp,goal:selections.goal,daysPerWeek:selections.days,equipment:selections.equip,injuries:injuries||'none'};
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('user-label').textContent=`${age}y • ${selections.exp.split(' ')[0]}`;
+  addMsg('assistant',`🔥 Profile locked and loaded. Here's your blueprint:\n\n- **Age:** ${age} | **${sex||'not specified'}**\n- **Height:** ${height||'not provided'} | **Weight:** ${weight||'not provided'}\n- **Level:** ${selections.exp}\n- **Mission:** ${selections.goal}\n- **Schedule:** ${selections.days}\n- **Arsenal:** ${selections.equip}\n- **Limitations:** ${injuries||'none — full send!'}\n\nEvery recommendation I give you will be built around these stats — safe, smart, and optimized for YOUR body. Ready to get to work? Hit **My Program** below.`);
 }
 
-function setGoal(el, g) {
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  goal = g;
+function setGoal(el,g){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); goal=g;
 }
 
-function buildSystemPrompt() {
-  return `You are Iron Coach, an elite AI personal weight training coach. User profile:\n- Age: ${userProfile.age}\n- Sex: ${userProfile.sex||'not specified'}\n- Height: ${userProfile.height}\n- Weight: ${userProfile.weight}\n- Experience: ${userProfile.experience}\n- Goal: ${userProfile.goal}\n- Training Days: ${userProfile.daysPerWeek}\n- Equipment: ${userProfile.equipment}\n- Injuries: ${userProfile.injuries}\n- Current goal: ${goal}\n\nIMPORTANT: Always account for injuries. Adjust to experience level. Be motivating, direct, specific. Use **bold** for key terms, bullet points and tables for programs. Under 300 words unless writing a full program.`;
+function buildSystemPrompt(){
+  return `You are Iron Coach, an elite AI personal weight training coach — think of yourself as a world-class strength coach who combines science-based programming with motivating, no-BS delivery. User profile:\n- Age: ${userProfile.age}\n- Sex: ${userProfile.sex||'not specified'}\n- Height: ${userProfile.height}\n- Weight: ${userProfile.weight}\n- Experience: ${userProfile.experience}\n- Goal: ${userProfile.goal}\n- Training Days: ${userProfile.daysPerWeek}\n- Equipment: ${userProfile.equipment}\n- Injuries/Limitations: ${userProfile.injuries}\n- Current session goal: ${goal}\n\nRULES: Always account for injuries — never suggest anything that could cause harm. Match programming to experience level. Be direct, energetic, and specific — no filler. Use **bold** for key terms. Use bullet points and structured tables for programs. Keep responses under 300 words unless building a full program. End responses with an action-oriented nudge when appropriate.`;
 }
 
-function fmt(text) {
+function fmt(text){
   return text
     .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/^### (.+)$/gm,'<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:#e24b4a;margin-top:6px">$1</div>')
-    .replace(/^## (.+)$/gm,'<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:17px;font-weight:800;color:#e24b4a;margin-top:8px">$1</div>')
+    .replace(/^### (.+)$/gm,'<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:800;color:#e24b4a;letter-spacing:.05em;margin-top:8px;text-transform:uppercase">$1</div>')
+    .replace(/^## (.+)$/gm,'<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:18px;font-weight:900;color:#e24b4a;letter-spacing:.05em;margin-top:10px;text-transform:uppercase">$1</div>')
     .replace(/\n\n/g,'<br><br>').replace(/\n- /g,'<br>• ').replace(/\n(\d+)\. /g,'<br>$1. ').replace(/\n/g,'<br>');
 }
 
-function addMsg(role, content) {
-  const msgs = document.getElementById('messages');
-  const wrap = document.createElement('div'); wrap.className = `msg ${role==='user'?'user':'ai'}`;
-  const av = document.createElement('div'); av.className = `avatar ${role==='user'?'user':'ai'}`; av.textContent = role==='user'?'YOU':'IC';
-  const bub = document.createElement('div'); bub.className = `bubble ${role==='user'?'user':'ai'}`; bub.innerHTML = fmt(content);
-  wrap.appendChild(av); wrap.appendChild(bub); msgs.appendChild(wrap); msgs.scrollTop = msgs.scrollHeight;
+function addMsg(role,content){
+  const msgs=document.getElementById('messages');
+  const wrap=document.createElement('div'); wrap.className=`msg ${role==='user'?'user':'ai'}`;
+  const av=document.createElement('div'); av.className=`avatar ${role==='user'?'user':'ai'}`; av.textContent=role==='user'?'YOU':'IC';
+  const bub=document.createElement('div'); bub.className=`bubble ${role==='user'?'user':'ai'}`; bub.innerHTML=fmt(content);
+  wrap.appendChild(av); wrap.appendChild(bub); msgs.appendChild(wrap); msgs.scrollTop=msgs.scrollHeight;
 }
 
-function showTyping() {
-  const msgs = document.getElementById('messages');
-  const wrap = document.createElement('div'); wrap.className='msg ai'; wrap.id='typing';
-  const av = document.createElement('div'); av.className='avatar ai'; av.textContent='IC';
-  const bub = document.createElement('div'); bub.className='bubble ai';
+function showTyping(){
+  const msgs=document.getElementById('messages');
+  const wrap=document.createElement('div'); wrap.className='msg ai'; wrap.id='typing';
+  const av=document.createElement('div'); av.className='avatar ai'; av.textContent='IC';
+  const bub=document.createElement('div'); bub.className='bubble ai';
   bub.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
   wrap.appendChild(av); wrap.appendChild(bub); msgs.appendChild(wrap); msgs.scrollTop=msgs.scrollHeight;
 }
 
-function hideTyping() { const t=document.getElementById('typing'); if(t) t.remove(); }
+function hideTyping(){const t=document.getElementById('typing');if(t)t.remove();}
 
-async function send(override) {
-  const input=document.getElementById('user-input'), btn=document.getElementById('send-btn');
+async function send(override){
+  const input=document.getElementById('user-input'),btn=document.getElementById('send-btn');
   const text=override||input.value.trim(); if(!text) return;
-  input.value=''; input.style.height='40px'; btn.disabled=true;
+  input.value=''; input.style.height='42px'; btn.disabled=true;
   history.push({role:'user',content:text}); addMsg('user',text); showTyping();
-  try {
+  try{
     const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history,goal,systemPrompt:buildSystemPrompt()})});
     const data=await res.json(); const reply=data.reply||'Something went wrong — try again.';
     hideTyping(); history.push({role:'assistant',content:reply}); addMsg('assistant',reply);
-  } catch(e) { hideTyping(); addMsg('assistant','⚠️ Server error. Please try again.'); }
+  }catch(e){hideTyping();addMsg('assistant','⚠️ Server error. Try again in a moment.');}
   btn.disabled=false;
 }
 
 function sendQuick(t){send(t);}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
-function grow(el){el.style.height='40px';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+function grow(el){el.style.height='42px';el.style.height=Math.min(el.scrollHeight,120)+'px';}
 </script>
 </body>
 </html>
