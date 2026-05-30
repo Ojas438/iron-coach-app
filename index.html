@@ -165,62 +165,64 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 <body>
 
 <!-- ONBOARDING -->
-<div id="onboarding">
-  <div class="ob-eyebrow">Elite Training</div>
-  <div class="ob-logo">IRON<span>COACH</span></div>
-  <div class="ob-tagline">Train Smarter. Lift Heavier. Look Better.</div>
-  <div class="ob-card">
-    <div class="ob-card-header"><div class="ob-card-icon">⚡</div><h2>Build Your Profile</h2></div>
-    <p>Give us your stats and we'll generate a 100% personalized program — safe and optimized from day one.</p>
-    <div class="section-divider">Basic Info</div>
-    <div class="field-row">
-      <div class="field"><label>Age</label><input type="number" id="ob-age" placeholder="e.g. 22" min="13" max="90"/></div>
-      <div class="field"><label>Sex</label><select id="ob-sex"><option value="">Select...</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
+<div id="onboarding" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;background:radial-gradient(ellipse at 50% 0%,rgba(226,75,74,0.08) 0%,transparent 70%);">
+  <div style="font-family:var(--font-display);font-size:56px;font-weight:900;letter-spacing:.02em;line-height:1;margin-bottom:8px;">IRON<span style="color:var(--red);font-style:italic;">COACH</span></div>
+  <div style="color:var(--muted2);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:36px;">Train Smarter. Lift Heavier. Look Better.</div>
+  <div style="background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:16px;padding:32px;width:100%;max-width:500px;box-shadow:0 24px 60px rgba(0,0,0,.6);">
+    <div style="font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;">⚡ Build Your Profile</div>
+    <div style="font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.6;">Fill in your stats for a personalized program, or just skip straight to the app.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+      <div><div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">Age</div>
+        <input type="number" id="ob-age" placeholder="e.g. 22" min="13" max="90" style="background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;width:100%;"/></div>
+      <div><div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">Sex</div>
+        <select id="ob-sex" style="background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;width:100%;"><option value="">Select...</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
     </div>
-    <div class="field-row">
-      <div class="field"><label>Height</label><input type="text" id="ob-height" placeholder="5'10 or 178cm"/></div>
-      <div class="field"><label>Weight</label><input type="text" id="ob-weight" placeholder="175lbs or 80kg"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+      <div><div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">Height</div>
+        <input type="text" id="ob-height" placeholder="5'10 or 178cm" style="background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;width:100%;"/></div>
+      <div><div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;">Weight</div>
+        <input type="text" id="ob-weight" placeholder="175lbs or 80kg" style="background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;width:100%;"/></div>
     </div>
-    <div class="section-divider">Training</div>
-    <div class="field"><label>Experience</label>
-      <div class="chips-row">
-        <div class="ob-chip" onclick="selChip('exp',this,'Beginner')">🌱 Beginner</div>
-        <div class="ob-chip" onclick="selChip('exp',this,'Intermediate')">💪 Intermediate</div>
-        <div class="ob-chip" onclick="selChip('exp',this,'Advanced')">🔥 Advanced</div>
-      </div>
+
+    <div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Experience Level</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <div class="ob-chip" onclick="selChip('exp',this,'Beginner')">🌱 Beginner</div>
+      <div class="ob-chip" onclick="selChip('exp',this,'Intermediate')">💪 Intermediate</div>
+      <div class="ob-chip" onclick="selChip('exp',this,'Advanced')">🔥 Advanced</div>
     </div>
-    <div class="field"><label>Goal</label>
-      <div class="chips-row">
-        <div class="ob-chip" onclick="selChip('goal',this,'muscle')">🔥 Build Muscle</div>
-        <div class="ob-chip" onclick="selChip('goal',this,'strength')">⚡ Get Stronger</div>
-        <div class="ob-chip" onclick="selChip('goal',this,'fat')">🏃 Lose Fat</div>
-        <div class="ob-chip" onclick="selChip('goal',this,'athletic')">🏆 Athletic</div>
-      </div>
+
+    <div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Primary Goal</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <div class="ob-chip" onclick="selChip('goal',this,'muscle')">🔥 Build Muscle</div>
+      <div class="ob-chip" onclick="selChip('goal',this,'strength')">⚡ Get Stronger</div>
+      <div class="ob-chip" onclick="selChip('goal',this,'fat')">🏃 Lose Fat</div>
+      <div class="ob-chip" onclick="selChip('goal',this,'athletic')">🏆 Athletic</div>
     </div>
-    <div class="field"><label>Days Per Week</label>
-      <div class="chips-row">
-        <div class="ob-chip" onclick="selChip('days',this,'2')">2</div>
-        <div class="ob-chip" onclick="selChip('days',this,'3')">3</div>
-        <div class="ob-chip" onclick="selChip('days',this,'4')">4</div>
-        <div class="ob-chip" onclick="selChip('days',this,'5')">5</div>
-        <div class="ob-chip" onclick="selChip('days',this,'6')">6</div>
-      </div>
+
+    <div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Days Per Week</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <div class="ob-chip" onclick="selChip('days',this,'2')">2</div>
+      <div class="ob-chip" onclick="selChip('days',this,'3')">3</div>
+      <div class="ob-chip" onclick="selChip('days',this,'4')">4</div>
+      <div class="ob-chip" onclick="selChip('days',this,'5')">5</div>
+      <div class="ob-chip" onclick="selChip('days',this,'6')">6</div>
     </div>
-    <div class="field"><label>Equipment</label>
-      <div class="chips-row">
-        <div class="ob-chip" onclick="selChip('equip',this,'full')">🏋️ Full Gym</div>
-        <div class="ob-chip" onclick="selChip('equip',this,'home')">🏠 Home Gym</div>
-        <div class="ob-chip" onclick="selChip('equip',this,'dumbbells')">💪 Dumbbells</div>
-        <div class="ob-chip" onclick="selChip('equip',this,'bodyweight')">🤸 Bodyweight</div>
-      </div>
+
+    <div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Equipment</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <div class="ob-chip" onclick="selChip('equip',this,'full')">🏋️ Full Gym</div>
+      <div class="ob-chip" onclick="selChip('equip',this,'home')">🏠 Home Gym</div>
+      <div class="ob-chip" onclick="selChip('equip',this,'dumbbells')">💪 Dumbbells</div>
+      <div class="ob-chip" onclick="selChip('equip',this,'bodyweight')">🤸 Bodyweight</div>
     </div>
-    <div class="section-divider">Safety</div>
-    <div class="field"><label>Injuries / Limitations <span style="color:#333;font-weight:400">(optional)</span></label>
-      <input type="text" id="ob-injuries" placeholder="e.g. bad knees, shoulder issues..."/>
-    </div>
-    <div class="error-msg" id="err-msg">⚠️ Please fill in age, experience, goal, days, and equipment</div>
-    <button class="start-btn" onclick="startApp()">⚡ GENERATE MY PROGRAM</button>
-    <button class="skip-btn" onclick="skipSetup()">Skip — just show me the app →</button>
+
+    <div style="font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">Injuries / Limitations <span style="color:#555;font-weight:400">(optional)</span></div>
+    <input type="text" id="ob-injuries" placeholder="e.g. bad knees, shoulder issues..." style="background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;width:100%;margin-bottom:6px;"/>
+
+    <div id="err-msg" style="color:var(--red);font-size:12px;margin-top:6px;display:none;">⚠️ Please fill in age, experience, goal, days, and equipment</div>
+    <button onclick="startApp()" style="width:100%;padding:15px;background:var(--red);border:none;border-radius:10px;color:#fff;font-size:17px;font-family:var(--font-display);font-weight:800;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:18px;box-shadow:0 6px 24px rgba(226,75,74,.4);">⚡ GENERATE MY PROGRAM</button>
+    <button onclick="skipSetup()" style="width:100%;padding:11px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--muted);font-size:13px;font-family:var(--font-body);cursor:pointer;margin-top:10px;">Skip — just show me the app →</button>
   </div>
 </div>
 
