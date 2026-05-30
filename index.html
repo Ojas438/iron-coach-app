@@ -131,6 +131,83 @@
   .save-btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(226,75,74,.5);}
   .saved-msg{text-align:center;color:var(--green);font-size:13px;font-weight:500;margin-top:12px;display:none;letter-spacing:.02em;}
   .saved-msg.show{display:block;}
+
+  /* LIBRARY VIEW */
+  #library-view{flex:1;overflow-y:auto;padding:20px;display:none;background:radial-gradient(ellipse at 50% 0%,rgba(226,75,74,.04) 0%,transparent 60%);}
+  .lib-search-wrap{position:relative;margin-bottom:16px;max-width:500px;margin-left:auto;margin-right:auto;}
+  .lib-search{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 16px 11px 42px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .lib-search:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow);}
+  .lib-search::placeholder{color:#444;}
+  .lib-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;pointer-events:none;}
+  .lib-filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;justify-content:center;}
+  .lib-filter{font-size:11px;font-weight:600;padding:5px 13px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase;transition:all .15s;}
+  .lib-filter:hover{border-color:var(--red);color:var(--text);}
+  .lib-filter.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 2px 10px rgba(226,75,74,.3);}
+  .lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;max-width:900px;margin:0 auto;}
+  .ex-card{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:12px;padding:16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+  .ex-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),transparent);opacity:0;transition:opacity .2s;}
+  .ex-card:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
+  .ex-card:hover::before{opacity:1;}
+  .ex-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+  .ex-name{font-family:var(--font-display);font-size:16px;font-weight:800;letter-spacing:.03em;color:var(--text);text-transform:uppercase;line-height:1.2;}
+  .ex-type{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;font-family:var(--font-display);}
+  .ex-type.compound{background:rgba(226,75,74,.15);color:var(--red);border:1px solid rgba(226,75,74,.3);}
+  .ex-type.isolation{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+  .ex-primary{font-size:12px;color:var(--muted2);margin-bottom:6px;}
+  .ex-primary strong{color:var(--text);font-weight:600;}
+  .ex-muscles{display:flex;flex-wrap:wrap;gap:5px;}
+  .ex-muscle-tag{font-size:11px;padding:3px 9px;border-radius:4px;border:1px solid var(--border2);color:var(--muted2);background:var(--bg);}
+  .ex-muscle-tag.primary{border-color:rgba(226,75,74,.4);color:var(--red);background:rgba(226,75,74,.06);}
+  .no-results{text-align:center;color:var(--muted);font-size:14px;padding:40px 20px;grid-column:1/-1;}
+
+  /* ── LIBRARY ── */
+  #library-view{flex:1;overflow-y:auto;display:none;flex-direction:column;}
+  .lib-top{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;gap:10px;flex-wrap:wrap;align-items:center;flex-shrink:0;}
+  .lib-search-wrap{position:relative;flex:1;min-width:160px;}
+  .lib-si{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+  .lib-search{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:8px 10px 8px 32px;font-size:13px;font-family:var(--font-body);color:var(--text);outline:none;transition:border-color .2s;}
+  .lib-search:focus{border-color:var(--red);}
+  .lib-search::placeholder{color:#333;}
+  .lib-type-toggle{display:flex;gap:5px;}
+  .ltt{font-size:10px;font-weight:700;padding:5px 10px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;transition:all .15s;}
+  .ltt.active{background:var(--red);border-color:var(--red);color:#fff;}
+  .lib-cats{padding:8px 16px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;}
+  .lcat{font-size:10px;font-weight:700;padding:4px 11px;border-radius:4px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;transition:all .15s;}
+  .lcat:hover{border-color:var(--red);color:var(--text);}
+  .lcat.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 2px 8px rgba(226,75,74,.3);}
+  .lib-body{display:flex;flex:1;overflow:hidden;}
+  .lib-body-panel{width:200px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border2);display:flex;flex-direction:column;align-items:center;padding:12px 10px;overflow-y:auto;}
+  .lib-body-title{font-family:var(--font-display);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .lib-viewer{position:relative;width:150px;height:255px;}
+  .lib-svg{width:100%;height:100%;}
+  .lrotate-btns{display:flex;gap:6px;margin-top:8px;}
+  .lrotate-btn{padding:4px 14px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:11px;font-weight:700;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+  .lrotate-btn.active,.lrotate-btn:hover{border-color:var(--red);color:var(--red);}
+  .lib-sel-info{margin-top:10px;padding:8px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;width:100%;}
+  .lib-sel-name{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px;}
+  .lib-sel-muscles{font-size:10px;color:var(--muted2);line-height:1.5;}
+  .lib-legend{margin-top:10px;width:100%;}
+  .lib-legend-title{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .lib-legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted2);margin-bottom:4px;}
+  .lib-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .lib-ex-panel{flex:1;overflow-y:auto;padding:12px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:9px;align-content:start;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+  .lex-card{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:9px;padding:12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+  .lex-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),transparent);opacity:0;transition:opacity .2s;}
+  .lex-card:hover,.lex-card.sel{border-color:var(--red);}
+  .lex-card:hover::before,.lex-card.sel::before{opacity:1;}
+  .lex-card.sel{background:linear-gradient(145deg,rgba(226,75,74,.07),var(--surface2));}
+  .lex-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:4px;}
+  .lex-name{font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:.03em;color:var(--text);text-transform:uppercase;line-height:1.2;}
+  .lex-badge{font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.06em;text-transform:uppercase;font-family:var(--font-display);white-space:nowrap;flex-shrink:0;}
+  .lex-badge.compound{background:rgba(226,75,74,.15);color:var(--red);border:1px solid rgba(226,75,74,.3);}
+  .lex-badge.isolation{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+  .lex-primary{font-size:10px;color:var(--muted2);margin-bottom:5px;}
+  .lex-primary strong{color:var(--text);font-weight:600;}
+  .lex-tags{display:flex;flex-wrap:wrap;gap:3px;}
+  .lex-tag{font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid var(--border2);color:var(--muted2);background:var(--bg);}
+  .lex-tag.p{border-color:rgba(226,75,74,.35);color:var(--red);background:rgba(226,75,74,.06);}
+  .lib-no-results{text-align:center;color:var(--muted);font-size:13px;padding:40px 20px;grid-column:1/-1;}
+  .lib-ex-count{padding:6px 14px;font-size:10px;color:var(--muted);letter-spacing:.05em;border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -221,6 +298,8 @@
   <div class="tab-bar">
     <div class="tab active" id="tab-chat" onclick="showTab('chat')">⚡ Coach</div>
     <div class="tab" id="tab-profile" onclick="showTab('profile')">👤 My Stats</div>
+    <div class="tab" id="tab-library" onclick="showTab('library')">📚 Library</div>
+    <div class="tab" id="tab-library" onclick="showTab('library')">📚 Exercises</div>
   </div>
 
   <!-- CHAT -->
@@ -311,6 +390,141 @@
       <div class="saved-msg" id="saved-msg">✅ Profile updated — your coach is dialled in.</div>
     </div>
   </div>
+
+  <!-- LIBRARY -->
+  <div id="library-view">
+    <div class="lib-search-wrap">
+      <span class="lib-search-icon">🔍</span>
+      <input class="lib-search" id="lib-search" placeholder="Search exercises..." oninput="filterLibrary()"/>
+    </div>
+    <div class="lib-filters" id="lib-filters">
+      <div class="lib-filter active" onclick="setFilter(this,'all')">All</div>
+      <div class="lib-filter" onclick="setFilter(this,'chest')">Chest</div>
+      <div class="lib-filter" onclick="setFilter(this,'back')">Back</div>
+      <div class="lib-filter" onclick="setFilter(this,'shoulders')">Shoulders</div>
+      <div class="lib-filter" onclick="setFilter(this,'arms')">Arms</div>
+      <div class="lib-filter" onclick="setFilter(this,'legs')">Legs</div>
+      <div class="lib-filter" onclick="setFilter(this,'glutes')">Glutes</div>
+      <div class="lib-filter" onclick="setFilter(this,'core')">Core</div>
+      <div class="lib-filter" onclick="setFilter(this,'full body')">Full Body</div>
+    </div>
+    <div class="lib-grid" id="lib-grid"></div>
+  </div>
+
+  <!-- LIBRARY -->
+  <div id="library-view">
+    <div class="lib-top">
+      <div class="lib-search-wrap">
+        <span class="lib-si">🔍</span>
+        <input class="lib-search" id="lib-search" placeholder="Search exercise or muscle..." oninput="libFilter()"/>
+      </div>
+      <div class="lib-type-toggle">
+        <button class="ltt active" onclick="libSetType(this,'all')">All</button>
+        <button class="ltt" onclick="libSetType(this,'compound')">Compound</button>
+        <button class="ltt" onclick="libSetType(this,'isolation')">Isolation</button>
+      </div>
+    </div>
+    <div class="lib-cats">
+      <button class="lcat active" onclick="libSetCat(this,'all')">All</button>
+      <button class="lcat" onclick="libSetCat(this,'chest')">Chest</button>
+      <button class="lcat" onclick="libSetCat(this,'back')">Back</button>
+      <button class="lcat" onclick="libSetCat(this,'shoulders')">Shoulders</button>
+      <button class="lcat" onclick="libSetCat(this,'arms')">Arms</button>
+      <button class="lcat" onclick="libSetCat(this,'legs')">Legs</button>
+      <button class="lcat" onclick="libSetCat(this,'glutes')">Glutes</button>
+      <button class="lcat" onclick="libSetCat(this,'core')">Core</button>
+      <button class="lcat" onclick="libSetCat(this,'full body')">Full Body</button>
+    </div>
+    <div class="lib-ex-count" id="lib-count">226 exercises</div>
+    <div class="lib-body">
+      <!-- BODY DIAGRAM -->
+      <div class="lib-body-panel">
+        <div class="lib-body-title">Muscle Map</div>
+        <div class="lib-viewer">
+          <svg id="lbody-front" class="lib-svg" viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="28" rx="22" ry="26" fill="#222" stroke="#333" stroke-width="1"/>
+            <rect x="91" y="52" width="18" height="14" rx="4" fill="#1e1e1e"/>
+            <ellipse id="lf-front-delts-l" cx="68" cy="82" rx="18" ry="14" fill="#2a2a2a"/>
+            <ellipse id="lf-front-delts-r" cx="132" cy="82" rx="18" ry="14" fill="#2a2a2a"/>
+            <path id="lf-chest-l" d="M82 75 Q72 85 72 100 Q80 108 98 108 L98 75 Z" fill="#2a2a2a"/>
+            <path id="lf-chest-r" d="M118 75 Q128 85 128 100 Q120 108 102 108 L102 75 Z" fill="#2a2a2a"/>
+            <rect id="lf-abs-l" x="86" y="110" width="12" height="43" rx="3" fill="#2a2a2a"/>
+            <rect id="lf-abs-r" x="102" y="110" width="12" height="43" rx="3" fill="#2a2a2a"/>
+            <path id="lf-obliques-l" d="M76 108 Q70 120 72 155 L86 155 L86 108 Z" fill="#2a2a2a"/>
+            <path id="lf-obliques-r" d="M124 108 Q130 120 128 155 L114 155 L114 108 Z" fill="#2a2a2a"/>
+            <ellipse id="lf-biceps-l" cx="60" cy="112" rx="10" ry="20" fill="#2a2a2a"/>
+            <ellipse id="lf-biceps-r" cx="140" cy="112" rx="10" ry="20" fill="#2a2a2a"/>
+            <path id="lf-triceps-l" d="M50 90 Q44 105 48 130 L56 130 Q52 108 56 90 Z" fill="#2a2a2a"/>
+            <path id="lf-triceps-r" d="M150 90 Q156 105 152 130 L144 130 Q148 108 144 90 Z" fill="#2a2a2a"/>
+            <ellipse id="lf-forearms-l" cx="57" cy="148" rx="8" ry="18" fill="#2a2a2a"/>
+            <ellipse id="lf-forearms-r" cx="143" cy="148" rx="8" ry="18" fill="#2a2a2a"/>
+            <ellipse id="lf-side-delts-l" cx="52" cy="84" rx="12" ry="10" fill="#2a2a2a"/>
+            <ellipse id="lf-side-delts-r" cx="148" cy="84" rx="12" ry="10" fill="#2a2a2a"/>
+            <path id="lf-hip-flexors-l" d="M86 156 Q82 165 84 175 L98 175 L98 156 Z" fill="#2a2a2a"/>
+            <path id="lf-hip-flexors-r" d="M114 156 Q118 165 116 175 L102 175 L102 156 Z" fill="#2a2a2a"/>
+            <path id="lf-adductors-l" d="M88 175 Q84 195 86 225 L96 225 L98 175 Z" fill="#2a2a2a"/>
+            <path id="lf-adductors-r" d="M112 175 Q116 195 114 225 L104 225 L102 175 Z" fill="#2a2a2a"/>
+            <path id="lf-quads-l" d="M84 175 Q74 195 76 240 Q82 248 94 248 L96 225 Q88 215 88 175 Z" fill="#2a2a2a"/>
+            <path id="lf-quads-r" d="M116 175 Q126 195 124 240 Q118 248 106 248 L104 225 Q112 215 112 175 Z" fill="#2a2a2a"/>
+            <ellipse cx="85" cy="256" rx="12" ry="9" fill="#222" stroke="#333" stroke-width="1"/>
+            <ellipse cx="115" cy="256" rx="12" ry="9" fill="#222" stroke="#333" stroke-width="1"/>
+            <path id="lf-tibialis-l" d="M80 266 Q76 290 78 320 L86 320 L88 266 Z" fill="#2a2a2a"/>
+            <path id="lf-tibialis-r" d="M120 266 Q124 290 122 320 L114 320 L112 266 Z" fill="#2a2a2a"/>
+            <path id="lf-calves-l" d="M88 266 Q92 290 90 320 L82 320 Q80 290 80 266 Z" fill="#2a2a2a"/>
+            <path id="lf-calves-r" d="M112 266 Q108 290 110 320 L118 320 Q120 290 120 266 Z" fill="#2a2a2a"/>
+            <ellipse cx="84" cy="328" rx="13" ry="7" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+            <ellipse cx="116" cy="328" rx="13" ry="7" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+            <path d="M82 74 Q68 68 50 80 Q44 90 50 170 L72 170 L76 108 L82 108 Z" fill="none" stroke="#2a2a2a" stroke-width="1"/>
+            <path d="M118 74 Q132 68 150 80 Q156 90 150 170 L128 170 L124 108 L118 108 Z" fill="none" stroke="#2a2a2a" stroke-width="1"/>
+          </svg>
+          <svg id="lbody-back" class="lib-svg" viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+            <ellipse cx="100" cy="28" rx="22" ry="26" fill="#222" stroke="#333" stroke-width="1"/>
+            <rect x="91" y="52" width="18" height="14" rx="4" fill="#1e1e1e"/>
+            <path id="lb-traps-l" d="M91 54 Q80 58 68 72 Q74 78 88 78 L91 68 Z" fill="#2a2a2a"/>
+            <path id="lb-traps-r" d="M109 54 Q120 58 132 72 Q126 78 112 78 L109 68 Z" fill="#2a2a2a"/>
+            <ellipse id="lb-rear-delts-l" cx="62" cy="84" rx="16" ry="12" fill="#2a2a2a"/>
+            <ellipse id="lb-rear-delts-r" cx="138" cy="84" rx="16" ry="12" fill="#2a2a2a"/>
+            <path id="lb-lats-l" d="M76 90 Q62 105 64 145 L80 148 Q78 120 82 90 Z" fill="#2a2a2a"/>
+            <path id="lb-lats-r" d="M124 90 Q138 105 136 145 L120 148 Q122 120 118 90 Z" fill="#2a2a2a"/>
+            <path id="lb-rhomboids" d="M86 80 L114 80 L116 110 L84 110 Z" fill="#2a2a2a"/>
+            <rect id="lb-erectors-l" x="88" y="112" width="10" height="50" rx="3" fill="#2a2a2a"/>
+            <rect id="lb-erectors-r" x="102" y="112" width="10" height="50" rx="3" fill="#2a2a2a"/>
+            <ellipse id="lb-triceps-l" cx="56" cy="115" rx="10" ry="22" fill="#2a2a2a"/>
+            <ellipse id="lb-triceps-r" cx="144" cy="115" rx="10" ry="22" fill="#2a2a2a"/>
+            <ellipse id="lb-forearms-l" cx="53" cy="152" rx="8" ry="18" fill="#2a2a2a"/>
+            <ellipse id="lb-forearms-r" cx="147" cy="152" rx="8" ry="18" fill="#2a2a2a"/>
+            <path id="lb-glutes-l" d="M84 162 Q74 172 76 200 Q84 210 100 210 L100 162 Z" fill="#2a2a2a"/>
+            <path id="lb-glutes-r" d="M116 162 Q126 172 124 200 Q116 210 100 210 L100 162 Z" fill="#2a2a2a"/>
+            <path id="lb-hamstrings-l" d="M80 208 Q74 228 76 254 Q82 260 94 260 L96 230 Q88 218 84 208 Z" fill="#2a2a2a"/>
+            <path id="lb-hamstrings-r" d="M120 208 Q126 228 124 254 Q118 260 106 260 L104 230 Q112 218 116 208 Z" fill="#2a2a2a"/>
+            <ellipse cx="85" cy="262" rx="11" ry="8" fill="#222" stroke="#333" stroke-width="1"/>
+            <ellipse cx="115" cy="262" rx="11" ry="8" fill="#222" stroke="#333" stroke-width="1"/>
+            <path id="lb-calves-l" d="M78 272 Q74 295 78 322 Q83 328 90 326 Q94 300 92 272 Z" fill="#2a2a2a"/>
+            <path id="lb-calves-r" d="M122 272 Q126 295 122 322 Q117 328 110 326 Q106 300 108 272 Z" fill="#2a2a2a"/>
+            <ellipse cx="84" cy="332" rx="13" ry="7" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+            <ellipse cx="116" cy="332" rx="13" ry="7" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="lrotate-btns">
+          <button class="lrotate-btn active" id="lbtn-front" onclick="libShowView('front')">Front</button>
+          <button class="lrotate-btn" id="lbtn-back" onclick="libShowView('back')">Back</button>
+        </div>
+        <div class="lib-sel-info" id="lib-sel-info">
+          <div style="color:var(--muted);font-size:11px;">Click exercise to highlight muscles</div>
+        </div>
+        <div class="lib-legend">
+          <div class="lib-legend-title">Legend</div>
+          <div class="lib-legend-item"><div class="lib-legend-dot" style="background:#e24b4a;box-shadow:0 0 5px #e24b4a66"></div>Primary</div>
+          <div class="lib-legend-item"><div class="lib-legend-dot" style="background:#c9a84c;box-shadow:0 0 5px #c9a84c66"></div>Secondary</div>
+        </div>
+      </div>
+      <!-- EXERCISE LIST -->
+      <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+        <div class="lib-ex-panel" id="lib-grid"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -321,9 +535,12 @@ const pSelections={'p-exp':'','p-goal':'','p-days':'','p-equip':''};
 function showTab(tab){
   document.getElementById('chat-view').style.display=tab==='chat'?'flex':'none';
   document.getElementById('profile-view').style.display=tab==='profile'?'block':'none';
+  document.getElementById('library-view').style.display=tab==='library'?'flex':'none';
   document.getElementById('tab-chat').classList.toggle('active',tab==='chat');
   document.getElementById('tab-profile').classList.toggle('active',tab==='profile');
+  document.getElementById('tab-library').classList.toggle('active',tab==='library');
   if(tab==='profile') populateProfileForm();
+  if(tab==='library' && !libInitialized){libRender();libInitialized=true;}
 }
 
 function populateProfileForm(){
@@ -435,6 +652,603 @@ async function send(override){
 function sendQuick(t){send(t);}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
 function grow(el){el.style.height='42px';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+
+
+const EXERCISES = [
+  // ── CHEST ──
+  {name:'Barbell Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Incline Barbell Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Decline Barbell Press',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps','Front Delts']},
+  {name:'Dumbbell Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Incline Dumbbell Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Decline Dumbbell Press',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps']},
+  {name:'Dumbbell Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
+  {name:'Incline Dumbbell Fly',type:'isolation',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'Cable Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
+  {name:'Low-to-High Cable Fly',type:'isolation',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'High-to-Low Cable Fly',type:'isolation',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs']},
+  {name:'Pec Deck Machine',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs']},
+  {name:'Chest Dip',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps','Front Delts']},
+  {name:'Push-Up',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts','Core']},
+  {name:'Wide Push-Up',type:'compound',category:'chest',primary:'Outer Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Diamond Push-Up',type:'compound',category:'chest',primary:'Triceps',muscles:['Triceps','Inner Pecs']},
+  {name:'Incline Push-Up',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps']},
+  {name:'Decline Push-Up',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'Landmine Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Smith Machine Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Machine Chest Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Svend Press',type:'isolation',category:'chest',primary:'Inner Chest',muscles:['Inner Pecs','Front Delts']},
+  {name:'Plate Press',type:'isolation',category:'chest',primary:'Inner Chest',muscles:['Inner Pecs']},
+
+  // ── BACK ──
+  {name:'Conventional Deadlift',type:'compound',category:'back',primary:'Full Back',muscles:['Lats','Traps','Erectors','Glutes','Hamstrings']},
+  {name:'Sumo Deadlift',type:'compound',category:'back',primary:'Back & Glutes',muscles:['Glutes','Adductors','Lats','Traps','Erectors']},
+  {name:'Romanian Deadlift',type:'compound',category:'back',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors','Lats']},
+  {name:'Barbell Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps']},
+  {name:'Pendlay Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps','Erectors']},
+  {name:'Yates Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Lower Traps','Biceps']},
+  {name:'Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts','Core']},
+  {name:'Chin-Up',type:'compound',category:'back',primary:'Lats & Biceps',muscles:['Lats','Biceps','Lower Traps']},
+  {name:'Neutral Grip Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Brachialis','Biceps']},
+  {name:'Lat Pulldown',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts']},
+  {name:'Wide Grip Lat Pulldown',type:'compound',category:'back',primary:'Outer Lats',muscles:['Lats','Teres Major','Biceps']},
+  {name:'Reverse Grip Lat Pulldown',type:'compound',category:'back',primary:'Lower Lats',muscles:['Lower Lats','Biceps']},
+  {name:'Seated Cable Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Biceps','Traps']},
+  {name:'Single-Arm Dumbbell Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps','Rear Delts']},
+  {name:'Chest-Supported Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Rear Delts','Biceps','Traps']},
+  {name:'T-Bar Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Traps','Biceps']},
+  {name:'Face Pull',type:'isolation',category:'back',primary:'Rear Delts',muscles:['Rear Delts','Traps','Rotator Cuff']},
+  {name:'Rack Pull',type:'compound',category:'back',primary:'Upper Back',muscles:['Traps','Erectors','Glutes','Lats']},
+  {name:'Straight-Arm Pulldown',type:'isolation',category:'back',primary:'Lats',muscles:['Lats','Teres Major','Triceps Long Head']},
+  {name:'Inverted Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Rear Delts','Biceps']},
+  {name:'Meadows Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rear Delts','Biceps']},
+  {name:'Cable Pull-Through',type:'compound',category:'back',primary:'Erectors',muscles:['Erectors','Glutes','Hamstrings']},
+  {name:'Good Morning',type:'compound',category:'back',primary:'Erectors',muscles:['Erectors','Hamstrings','Glutes']},
+  {name:'Back Extension',type:'isolation',category:'back',primary:'Erectors',muscles:['Erectors','Glutes','Hamstrings']},
+  {name:'Shrug',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps']},
+  {name:'Dumbbell Shrug',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps','Levator Scapulae']},
+  {name:'Behind-the-Neck Pulldown',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rear Delts','Traps']},
+  {name:'Single-Arm Cable Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps']},
+
+  // ── SHOULDERS ──
+  {name:'Barbell Overhead Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Traps']},
+  {name:'Seated Dumbbell Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
+  {name:'Standing Dumbbell Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Core']},
+  {name:'Arnold Press',type:'compound',category:'shoulders',primary:'All Delts',muscles:['Front Delts','Side Delts','Rear Delts','Triceps']},
+  {name:'Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Supraspinatus']},
+  {name:'Cable Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Machine Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts','Upper Pecs']},
+  {name:'Dumbbell Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
+  {name:'Cable Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
+  {name:'Rear Delt Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Traps']},
+  {name:'Rear Delt Cable Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids']},
+  {name:'Upright Row',type:'compound',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps','Biceps']},
+  {name:'Push Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Triceps','Quads','Core']},
+  {name:'Smith Machine Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
+  {name:'Machine Shoulder Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
+  {name:'Plate Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts','Upper Pecs']},
+  {name:'W-Raise',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Lower Traps']},
+  {name:'Y-T-W Raise',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Lower Traps','Rhomboids']},
+
+  // ── ARMS ──
+  {name:'Barbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis','Brachioradialis']},
+  {name:'Dumbbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Hammer Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Biceps','Brachioradialis']},
+  {name:'Preacher Curl',type:'isolation',category:'arms',primary:'Short Head Bicep',muscles:['Biceps Short Head','Brachialis']},
+  {name:'Incline Dumbbell Curl',type:'isolation',category:'arms',primary:'Long Head Bicep',muscles:['Biceps Long Head','Brachialis']},
+  {name:'Cable Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Concentration Curl',type:'isolation',category:'arms',primary:'Biceps Peak',muscles:['Biceps Short Head']},
+  {name:'Reverse Curl',type:'isolation',category:'arms',primary:'Brachioradialis',muscles:['Brachioradialis','Brachialis','Biceps']},
+  {name:'Cross-Body Hammer Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Brachioradialis']},
+  {name:'Zottman Curl',type:'isolation',category:'arms',primary:'Full Arm',muscles:['Biceps','Brachialis','Brachioradialis']},
+  {name:'21s',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Spider Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps Short Head']},
+  {name:'Machine Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps']},
+  {name:'Tricep Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps Lateral Head','Triceps Medial Head']},
+  {name:'Rope Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps Lateral Head','Triceps Medial Head']},
+  {name:'Skull Crusher',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps Long Head','Triceps Lateral Head']},
+  {name:'Overhead Tricep Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps Long Head']},
+  {name:'Dumbbell Overhead Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps Long Head']},
+  {name:'Close-Grip Bench Press',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Chest','Front Delts']},
+  {name:'Tricep Dip',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Front Delts','Lower Pecs']},
+  {name:'Kickback',type:'isolation',category:'arms',primary:'Triceps Lateral Head',muscles:['Triceps Lateral Head']},
+  {name:'Cable Overhead Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps Long Head']},
+  {name:'JM Press',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Front Delts']},
+  {name:'Wrist Curl',type:'isolation',category:'arms',primary:'Forearms',muscles:['Wrist Flexors','Forearms']},
+  {name:'Reverse Wrist Curl',type:'isolation',category:'arms',primary:'Forearms',muscles:['Wrist Extensors','Forearms']},
+  {name:'Farmer Carry',type:'compound',category:'arms',primary:'Forearms & Grip',muscles:['Forearms','Traps','Core','Quads']},
+
+  // ── LEGS ──
+  {name:'Barbell Back Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core','Adductors']},
+  {name:'Front Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Core','Glutes','Upper Back']},
+  {name:'Goblet Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Adductors']},
+  {name:'Hack Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Leg Press',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Adductors']},
+  {name:'Leg Extension',type:'isolation',category:'legs',primary:'Quads',muscles:['Rectus Femoris','Vastus Lateralis','Vastus Medialis']},
+  {name:'Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Biceps Femoris','Semitendinosus','Semimembranosus']},
+  {name:'Seated Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
+  {name:'Romanian Deadlift',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors']},
+  {name:'Stiff-Leg Deadlift',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors']},
+  {name:'Nordic Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Biceps Femoris','Gastrocnemius']},
+  {name:'Walking Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Reverse Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Lateral Lunge',type:'compound',category:'legs',primary:'Adductors',muscles:['Adductors','Quads','Glutes']},
+  {name:'Bulgarian Split Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Step-Up',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Box Jump',type:'compound',category:'legs',primary:'Explosive Power',muscles:['Quads','Glutes','Hamstrings','Calves']},
+  {name:'Standing Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Gastrocnemius','Soleus']},
+  {name:'Seated Calf Raise',type:'isolation',category:'legs',primary:'Soleus',muscles:['Soleus','Gastrocnemius']},
+  {name:'Donkey Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Gastrocnemius']},
+  {name:'Sissy Squat',type:'isolation',category:'legs',primary:'Quads',muscles:['Rectus Femoris','Vastus Lateralis']},
+  {name:'Wall Sit',type:'isolation',category:'legs',primary:'Quads',muscles:['Quads','Glutes']},
+  {name:'Pistol Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
+  {name:'Sumo Squat',type:'compound',category:'legs',primary:'Adductors',muscles:['Adductors','Quads','Glutes']},
+  {name:'Adductor Machine',type:'isolation',category:'legs',primary:'Adductors',muscles:['Adductors','Groin']},
+  {name:'Abductor Machine',type:'isolation',category:'legs',primary:'Abductors',muscles:['Gluteus Medius','TFL']},
+  {name:'Tibialis Raise',type:'isolation',category:'legs',primary:'Tibialis',muscles:['Tibialis Anterior']},
+
+  // ── GLUTES ──
+  {name:'Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Barbell Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes Max','Hamstrings','Core']},
+  {name:'Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Single-Leg Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Cable Kickback',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes Max','Hamstrings']},
+  {name:'Donkey Kick',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes Max']},
+  {name:'Fire Hydrant',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Clamshell',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','External Rotators']},
+  {name:'Frog Pump',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes','Hip Flexors']},
+  {name:'Abduction Machine',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Reverse Hyperextension',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Erectors']},
+  {name:'45-Degree Hyperextension',type:'compound',category:'glutes',primary:'Glutes & Hamstrings',muscles:['Glutes','Hamstrings','Erectors']},
+  {name:'Cable Pull-Through',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Erectors']},
+  {name:'Step-Back Lunge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Quads','Hamstrings']},
+  {name:'Sumo Deadlift',type:'compound',category:'glutes',primary:'Glutes & Adductors',muscles:['Glutes','Adductors','Hamstrings','Lats']},
+
+  // ── CORE ──
+  {name:'Plank',type:'isolation',category:'core',primary:'Core Stability',muscles:['Transverse Abs','Obliques','Erectors','Glutes']},
+  {name:'Side Plank',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs','Glute Med']},
+  {name:'Ab Wheel Rollout',type:'compound',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques','Lats','Hip Flexors']},
+  {name:'Cable Crunch',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques']},
+  {name:'Hanging Leg Raise',type:'compound',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis','Obliques']},
+  {name:'Hanging Knee Raise',type:'compound',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis']},
+  {name:'Dragon Flag',type:'compound',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Obliques','Erectors','Hip Flexors']},
+  {name:'Russian Twist',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs']},
+  {name:'Dead Bug',type:'compound',category:'core',primary:'Core Stability',muscles:['Transverse Abs','Erectors','Hip Flexors']},
+  {name:'Pallof Press',type:'isolation',category:'core',primary:'Anti-Rotation',muscles:['Obliques','Transverse Abs']},
+  {name:'Sit-Up',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Hip Flexors']},
+  {name:'Decline Sit-Up',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Hip Flexors']},
+  {name:'Crunch',type:'isolation',category:'core',primary:'Upper Abs',muscles:['Rectus Abdominis']},
+  {name:'Bicycle Crunch',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Rectus Abdominis','Hip Flexors']},
+  {name:'Reverse Crunch',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Lower Rectus Abdominis','Hip Flexors']},
+  {name:'Leg Raise',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Lower Abs','Hip Flexors']},
+  {name:'Flutter Kick',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Lower Abs']},
+  {name:'Hollow Body Hold',type:'isolation',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Transverse Abs','Hip Flexors']},
+  {name:'V-Up',type:'compound',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Hip Flexors','Obliques']},
+  {name:'Landmine Twist',type:'compound',category:'core',primary:'Obliques',muscles:['Obliques','Core','Shoulders']},
+  {name:'Wood Chop',type:'compound',category:'core',primary:'Obliques',muscles:['Obliques','Core','Shoulders']},
+  {name:'Suitcase Carry',type:'compound',category:'core',primary:'Anti-Lateral Flexion',muscles:['Obliques','Quadratus Lumborum','Traps']},
+  {name:'Toes-to-Bar',type:'compound',category:'core',primary:'Abs & Hip Flexors',muscles:['Rectus Abdominis','Hip Flexors','Obliques','Lats']},
+
+  // ── FULL BODY ──
+  {name:'Barbell Clean',type:'compound',category:'full body',primary:'Full Body',muscles:['Traps','Quads','Glutes','Hamstrings','Core','Shoulders']},
+  {name:'Power Clean',type:'compound',category:'full body',primary:'Explosive Power',muscles:['Traps','Quads','Glutes','Hamstrings','Core','Shoulders']},
+  {name:'Clean and Jerk',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Traps','Shoulders','Triceps','Core']},
+  {name:'Snatch',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Hamstrings','Traps','Shoulders','Core']},
+  {name:'Thruster',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Shoulders','Triceps','Core']},
+  {name:'Kettlebell Swing',type:'compound',category:'full body',primary:'Posterior Chain',muscles:['Glutes','Hamstrings','Back','Core','Shoulders']},
+  {name:'Turkish Get-Up',type:'compound',category:'full body',primary:'Full Body',muscles:['Shoulders','Core','Glutes','Hips','Triceps']},
+  {name:'Burpee',type:'compound',category:'full body',primary:'Full Body',muscles:['Chest','Triceps','Quads','Core','Shoulders']},
+  {name:'Man Maker',type:'compound',category:'full body',primary:'Full Body',muscles:['Chest','Lats','Shoulders','Triceps','Quads','Core']},
+  {name:'Devil Press',type:'compound',category:'full body',primary:'Full Body',muscles:['Chest','Triceps','Shoulders','Quads','Core']},
+  {name:'Bear Complex',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Back','Shoulders','Triceps']},
+  {name:'Farmers Walk',type:'compound',category:'full body',primary:'Full Body',muscles:['Forearms','Traps','Core','Quads','Glutes']},
+  {name:'Sled Push',type:'compound',category:'full body',primary:'Legs & Conditioning',muscles:['Quads','Glutes','Hamstrings','Calves','Core']},
+  {name:'Sled Pull',type:'compound',category:'full body',primary:'Back & Legs',muscles:['Hamstrings','Glutes','Lats','Biceps']},
+  {name:'Battle Ropes',type:'compound',category:'full body',primary:'Conditioning',muscles:['Shoulders','Core','Arms','Back']},
+  {name:'Box Jump',type:'compound',category:'full body',primary:'Explosive Power',muscles:['Quads','Glutes','Hamstrings','Calves']},
+  {name:'Broad Jump',type:'compound',category:'full body',primary:'Explosive Power',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Medicine Ball Slam',type:'compound',category:'full body',primary:'Power & Core',muscles:['Core','Shoulders','Lats','Triceps']},
+  {name:'Tire Flip',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Back','Shoulders','Core']},
+  {name:'Atlas Stone',type:'compound',category:'full body',primary:'Full Body',muscles:['Glutes','Back','Core','Biceps','Forearms']},
+  // ── CARDIO / CONDITIONING ──
+  {name:'Rowing Machine',type:'compound',category:'full body',primary:'Full Body',muscles:['Lats','Rhomboids','Biceps','Quads','Hamstrings','Core']},
+  {name:'Ski Erg',type:'compound',category:'full body',primary:'Upper Body Pull',muscles:['Lats','Core','Triceps','Shoulders']},
+  {name:'Assault Bike',type:'compound',category:'full body',primary:'Conditioning',muscles:['Quads','Glutes','Shoulders','Core']},
+  {name:'Jump Rope',type:'compound',category:'full body',primary:'Calves & Conditioning',muscles:['Calves','Shoulders','Core']},
+  {name:'Stair Climber',type:'compound',category:'legs',primary:'Quads & Glutes',muscles:['Quads','Glutes','Hamstrings','Calves']},
+  {name:'Dumbbell Pullover',type:'compound',category:'chest',primary:'Chest & Lats',muscles:['Pecs','Lats','Triceps Long Head','Serratus']},
+  {name:'Hex Press',type:'isolation',category:'chest',primary:'Inner Chest',muscles:['Inner Pecs','Triceps']},
+  {name:'Floor Press',type:'compound',category:'chest',primary:'Chest & Triceps',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Seal Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Rear Delts','Biceps']},
+  {name:'Band Pull Apart',type:'isolation',category:'back',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Lower Traps']},
+  {name:'Banded Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Biceps']},
+  {name:'Bradford Press',type:'compound',category:'shoulders',primary:'All Delts',muscles:['Front Delts','Side Delts','Traps']},
+  {name:'Lu Raises',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps']},
+  {name:'Cuban Press',type:'compound',category:'shoulders',primary:'Rotator Cuff',muscles:['Rotator Cuff','Side Delts','Traps']},
+  {name:'External Rotation',type:'isolation',category:'shoulders',primary:'Rotator Cuff',muscles:['Infraspinatus','Teres Minor']},
+  {name:'Bayesian Curl',type:'isolation',category:'arms',primary:'Biceps Long Head',muscles:['Biceps Long Head','Brachialis']},
+  {name:'Drag Curl',type:'isolation',category:'arms',primary:'Biceps Long Head',muscles:['Biceps Long Head']},
+  {name:'Waiter Curl',type:'isolation',category:'arms',primary:'Biceps Short Head',muscles:['Biceps Short Head']},
+  {name:'Tate Press',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps Medial Head','Triceps Lateral Head']},
+  {name:'Rolling Tricep Extension',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps Long Head']},
+  {name:'Reverse Grip Pushdown',type:'isolation',category:'arms',primary:'Triceps Medial Head',muscles:['Triceps Medial Head','Brachioradialis']},
+  {name:'Dead Hang',type:'isolation',category:'arms',primary:'Grip & Lats',muscles:['Forearms','Lats','Biceps']},
+  {name:'Pause Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
+  {name:'Safety Bar Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
+  {name:'Heel Elevated Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes']},
+  {name:'Single-Leg RDL',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Core']},
+  {name:'Glute-Ham Raise',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Calves']},
+  {name:'Nordic Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Biceps Femoris','Gastrocnemius']},
+  {name:'Leg Press Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Gastrocnemius','Soleus']},
+  {name:'Pistol Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
+  {name:'Banded Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Single-Leg Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Lateral Band Walk',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL','Hip Abductors']},
+  {name:'Monster Walk',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Hip Abduction Cable',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Windshield Wiper',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Hip Flexors','Core']},
+  {name:'L-Sit',type:'compound',category:'core',primary:'Core & Hip Flexors',muscles:['Hip Flexors','Rectus Abdominis','Triceps','Lats']},
+  {name:'Weighted Plank',type:'isolation',category:'core',primary:'Core',muscles:['Transverse Abs','Obliques','Erectors']},
+  {name:'Cable Woodchop',type:'compound',category:'core',primary:'Obliques',muscles:['Obliques','Core','Shoulders']},
+  {name:'Stability Ball Rollout',type:'compound',category:'core',primary:'Core',muscles:['Rectus Abdominis','Obliques','Lats']},
+  {name:'Toes-to-Bar',type:'compound',category:'core',primary:'Abs & Hip Flexors',muscles:['Rectus Abdominis','Hip Flexors','Obliques','Lats']},
+  {name:'Hanging Windshield Wiper',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Hip Flexors','Core']},
+  {name:'Long Lever Plank',type:'isolation',category:'core',primary:'Core',muscles:['Rectus Abdominis','Transverse Abs']},
+  {name:'Power Clean',type:'compound',category:'full body',primary:'Explosive Power',muscles:['Traps','Quads','Glutes','Hamstrings','Core','Shoulders']},
+  {name:'Clean and Jerk',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Traps','Shoulders','Triceps','Core']},
+  {name:'Snatch',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Hamstrings','Traps','Shoulders','Core']},
+  {name:'Turkish Get-Up',type:'compound',category:'full body',primary:'Full Body',muscles:['Shoulders','Core','Glutes','Hips','Triceps']},
+  {name:'Man Maker',type:'compound',category:'full body',primary:'Full Body',muscles:['Chest','Lats','Shoulders','Triceps','Quads','Core']},
+  {name:'Devil Press',type:'compound',category:'full body',primary:'Full Body',muscles:['Chest','Triceps','Shoulders','Quads','Core']},
+  {name:'Sled Push',type:'compound',category:'full body',primary:'Legs & Conditioning',muscles:['Quads','Glutes','Hamstrings','Calves','Core']},
+  {name:'Sled Pull',type:'compound',category:'full body',primary:'Back & Legs',muscles:['Hamstrings','Glutes','Lats','Biceps']},
+  {name:'Battle Ropes',type:'compound',category:'full body',primary:'Conditioning',muscles:['Shoulders','Core','Arms','Back']},
+  {name:'Medicine Ball Slam',type:'compound',category:'full body',primary:'Power & Core',muscles:['Core','Shoulders','Lats','Triceps']},
+  {name:'Tire Flip',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Back','Shoulders','Core']},
+];
+
+
+let activeFilter = 'all';
+
+function renderLibrary(list) {
+  const grid = document.getElementById('lib-grid');
+  if (!list.length) { grid.innerHTML = '<div class="no-results">No exercises found. Try a different search or filter.</div>'; return; }
+  grid.innerHTML = list.map(ex => `
+    <div class="ex-card">
+      <div class="ex-card-top">
+        <div class="ex-name">${ex.name}</div>
+        <div class="ex-type ${ex.type}">${ex.type}</div>
+      </div>
+      <div class="ex-primary">Primary: <strong>${ex.primary}</strong></div>
+      <div class="ex-muscles">
+        ${ex.muscles.map((m,i) => `<span class="ex-muscle-tag ${i===0?'primary':''}">${m}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterLibrary() {
+  const q = document.getElementById('lib-search').value.toLowerCase();
+  const filtered = EXERCISES.filter(ex => {
+    const matchFilter = activeFilter === 'all' || ex.category === activeFilter;
+    const matchSearch = !q || ex.name.toLowerCase().includes(q) || ex.muscles.some(m => m.toLowerCase().includes(q)) || ex.primary.toLowerCase().includes(q) || ex.category.includes(q);
+    return matchFilter && matchSearch;
+  });
+  renderLibrary(filtered);
+}
+
+function setFilter(el, filter) {
+  document.querySelectorAll('.lib-filter').forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = filter;
+  filterLibrary();
+}
+
+
+// ── LIBRARY ──
+const LIB_MUSCLE_MAP = {
+  'pecs':['lf-chest-l','lf-chest-r'],'chest':['lf-chest-l','lf-chest-r'],'upper pecs':['lf-chest-l','lf-chest-r'],'lower pecs':['lf-chest-l','lf-chest-r'],'inner pecs':['lf-chest-l','lf-chest-r'],
+  'front delts':['lf-front-delts-l','lf-front-delts-r'],'side delts':['lf-side-delts-l','lf-side-delts-r'],
+  'rear delts':['lb-rear-delts-l','lb-rear-delts-r'],'rotator cuff':['lb-rear-delts-l','lb-rear-delts-r'],
+  'triceps':['lf-triceps-l','lf-triceps-r','lb-triceps-l','lb-triceps-r'],
+  'biceps':['lf-biceps-l','lf-biceps-r'],'brachialis':['lf-biceps-l','lf-biceps-r'],'brachioradialis':['lf-forearms-l','lf-forearms-r'],
+  'forearms':['lf-forearms-l','lf-forearms-r','lb-forearms-l','lb-forearms-r'],'wrist flexors':['lf-forearms-l','lf-forearms-r'],'wrist extensors':['lb-forearms-l','lb-forearms-r'],
+  'lats':['lb-lats-l','lb-lats-r'],'rhomboids':['lb-rhomboids'],'traps':['lb-traps-l','lb-traps-r'],'upper traps':['lb-traps-l','lb-traps-r'],'lower traps':['lb-rhomboids'],
+  'erectors':['lb-erectors-l','lb-erectors-r'],'teres major':['lb-lats-l','lb-lats-r'],'serratus':['lb-lats-l','lb-lats-r'],
+  'abs':['lf-abs-l','lf-abs-r'],'rectus abdominis':['lf-abs-l','lf-abs-r'],'upper abs':['lf-abs-l','lf-abs-r'],'lower abs':['lf-abs-l','lf-abs-r'],
+  'obliques':['lf-obliques-l','lf-obliques-r'],'transverse abs':['lf-obliques-l','lf-obliques-r'],'core':['lf-abs-l','lf-abs-r','lf-obliques-l','lf-obliques-r'],
+  'hip flexors':['lf-hip-flexors-l','lf-hip-flexors-r'],
+  'glutes':['lb-glutes-l','lb-glutes-r'],'glutes max':['lb-glutes-l','lb-glutes-r'],'gluteus medius':['lb-glutes-l','lb-glutes-r'],'glute med':['lb-glutes-l','lb-glutes-r'],'tfl':['lb-glutes-l','lb-glutes-r'],
+  'quads':['lf-quads-l','lf-quads-r'],'rectus femoris':['lf-quads-l','lf-quads-r'],'vastus lateralis':['lf-quads-l','lf-quads-r'],'vastus medialis':['lf-quads-l','lf-quads-r'],
+  'hamstrings':['lb-hamstrings-l','lb-hamstrings-r'],'biceps femoris':['lb-hamstrings-l','lb-hamstrings-r'],
+  'adductors':['lf-adductors-l','lf-adductors-r'],
+  'calves':['lf-calves-l','lf-calves-r','lb-calves-l','lb-calves-r'],'gastrocnemius':['lb-calves-l','lb-calves-r'],'soleus':['lb-calves-l','lb-calves-r'],
+  'tibialis':['lf-tibialis-l','lf-tibialis-r'],'tibialis anterior':['lf-tibialis-l','lf-tibialis-r'],
+};
+
+const LIB_EXERCISES = [
+  {name:'Barbell Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Incline Barbell Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Decline Barbell Press',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps','Front Delts']},
+  {name:'Dumbbell Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Incline Dumbbell Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Decline Dumbbell Press',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps']},
+  {name:'Dumbbell Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
+  {name:'Incline Dumbbell Fly',type:'isolation',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'Cable Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
+  {name:'Low-to-High Cable Fly',type:'isolation',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'High-to-Low Cable Fly',type:'isolation',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs']},
+  {name:'Pec Deck Machine',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs']},
+  {name:'Chest Dip',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps','Front Delts']},
+  {name:'Push-Up',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts','Core']},
+  {name:'Wide Push-Up',type:'compound',category:'chest',primary:'Outer Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Diamond Push-Up',type:'compound',category:'chest',primary:'Triceps',muscles:['Triceps','Inner Pecs']},
+  {name:'Decline Push-Up',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'Incline Push-Up',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps']},
+  {name:'Landmine Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Smith Machine Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Machine Chest Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Svend Press',type:'isolation',category:'chest',primary:'Inner Chest',muscles:['Inner Pecs','Front Delts']},
+  {name:'Floor Press',type:'compound',category:'chest',primary:'Chest & Triceps',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Hex Press',type:'isolation',category:'chest',primary:'Inner Chest',muscles:['Inner Pecs','Triceps']},
+  {name:'Dumbbell Pullover',type:'compound',category:'chest',primary:'Chest & Lats',muscles:['Pecs','Lats','Triceps']},
+  {name:'Cable Pullover',type:'compound',category:'chest',primary:'Chest & Lats',muscles:['Pecs','Lats']},
+  {name:'Spoto Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Guillotine Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'Conventional Deadlift',type:'compound',category:'back',primary:'Full Back',muscles:['Lats','Traps','Erectors','Glutes','Hamstrings']},
+  {name:'Sumo Deadlift',type:'compound',category:'back',primary:'Back & Glutes',muscles:['Glutes','Adductors','Lats','Traps','Erectors']},
+  {name:'Romanian Deadlift',type:'compound',category:'back',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors','Lats']},
+  {name:'Stiff-Leg Deadlift',type:'compound',category:'back',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors']},
+  {name:'Rack Pull',type:'compound',category:'back',primary:'Upper Back',muscles:['Traps','Erectors','Glutes','Lats']},
+  {name:'Barbell Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps']},
+  {name:'Pendlay Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps','Erectors']},
+  {name:'Yates Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Lower Traps','Biceps']},
+  {name:'T-Bar Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Traps','Biceps']},
+  {name:'Meadows Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rear Delts','Biceps']},
+  {name:'Seal Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Rear Delts','Biceps']},
+  {name:'Kroc Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps','Forearms']},
+  {name:'Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts','Core']},
+  {name:'Chin-Up',type:'compound',category:'back',primary:'Lats & Biceps',muscles:['Lats','Biceps','Lower Traps']},
+  {name:'Neutral Grip Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Brachialis','Biceps']},
+  {name:'Lat Pulldown',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts']},
+  {name:'Wide Grip Lat Pulldown',type:'compound',category:'back',primary:'Outer Lats',muscles:['Lats','Teres Major','Biceps']},
+  {name:'Reverse Grip Lat Pulldown',type:'compound',category:'back',primary:'Lower Lats',muscles:['Lats','Biceps']},
+  {name:'Straight-Arm Pulldown',type:'isolation',category:'back',primary:'Lats',muscles:['Lats','Teres Major']},
+  {name:'Seated Cable Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Biceps','Traps']},
+  {name:'Single-Arm Dumbbell Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps','Rear Delts']},
+  {name:'Chest-Supported Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Rear Delts','Biceps','Traps']},
+  {name:'Inverted Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Rear Delts','Biceps']},
+  {name:'Single-Arm Cable Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps']},
+  {name:'Face Pull',type:'isolation',category:'back',primary:'Rear Delts',muscles:['Rear Delts','Traps','Rotator Cuff']},
+  {name:'Band Pull Apart',type:'isolation',category:'back',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Lower Traps']},
+  {name:'Good Morning',type:'compound',category:'back',primary:'Erectors',muscles:['Erectors','Hamstrings','Glutes']},
+  {name:'Back Extension',type:'isolation',category:'back',primary:'Erectors',muscles:['Erectors','Glutes','Hamstrings']},
+  {name:'Shrug',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps']},
+  {name:'Dumbbell Shrug',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps']},
+  {name:'Cable Row to Neck',type:'compound',category:'back',primary:'Upper Back',muscles:['Traps','Rear Delts','Rhomboids']},
+  {name:'Scapular Pull-Up',type:'isolation',category:'back',primary:'Lower Traps',muscles:['Lower Traps','Lats']},
+  {name:'Barbell Overhead Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Traps']},
+  {name:'Seated Dumbbell Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
+  {name:'Standing Dumbbell Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Core']},
+  {name:'Arnold Press',type:'compound',category:'shoulders',primary:'All Delts',muscles:['Front Delts','Side Delts','Rear Delts','Triceps']},
+  {name:'Push Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Triceps','Quads','Core']},
+  {name:'Bradford Press',type:'compound',category:'shoulders',primary:'All Delts',muscles:['Front Delts','Side Delts','Traps']},
+  {name:'Machine Shoulder Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
+  {name:'Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Cable Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Machine Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Lu Raises',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps']},
+  {name:'Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
+  {name:'Cable Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
+  {name:'Plate Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
+  {name:'Rear Delt Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Traps']},
+  {name:'Rear Delt Cable Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids']},
+  {name:'Upright Row',type:'compound',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps','Biceps']},
+  {name:'Cuban Press',type:'compound',category:'shoulders',primary:'Rotator Cuff',muscles:['Rotator Cuff','Side Delts','Traps']},
+  {name:'External Rotation',type:'isolation',category:'shoulders',primary:'Rotator Cuff',muscles:['Rotator Cuff']},
+  {name:'W-Raise',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Lower Traps']},
+  {name:'Y-T-W Raise',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Lower Traps','Rhomboids']},
+  {name:'Barbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis','Brachioradialis']},
+  {name:'Dumbbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Hammer Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Biceps','Brachioradialis']},
+  {name:'Preacher Curl',type:'isolation',category:'arms',primary:'Short Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'Incline Dumbbell Curl',type:'isolation',category:'arms',primary:'Long Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'Cable Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Concentration Curl',type:'isolation',category:'arms',primary:'Biceps Peak',muscles:['Biceps']},
+  {name:'Reverse Curl',type:'isolation',category:'arms',primary:'Brachioradialis',muscles:['Brachioradialis','Brachialis','Biceps']},
+  {name:'Hammer Cross-Body Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Brachioradialis']},
+  {name:'Zottman Curl',type:'isolation',category:'arms',primary:'Full Arm',muscles:['Biceps','Brachialis','Brachioradialis']},
+  {name:'Bayesian Curl',type:'isolation',category:'arms',primary:'Biceps Long Head',muscles:['Biceps','Brachialis']},
+  {name:'Drag Curl',type:'isolation',category:'arms',primary:'Biceps Long Head',muscles:['Biceps']},
+  {name:'Waiter Curl',type:'isolation',category:'arms',primary:'Biceps Short Head',muscles:['Biceps']},
+  {name:'Spider Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps']},
+  {name:'21s',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Machine Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps']},
+  {name:'Tricep Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Rope Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Skull Crusher',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Overhead Tricep Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
+  {name:'Dumbbell Overhead Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
+  {name:'Cable Overhead Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
+  {name:'Close-Grip Bench Press',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Pecs','Front Delts']},
+  {name:'Tricep Dip',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Front Delts','Lower Pecs']},
+  {name:'Kickback',type:'isolation',category:'arms',primary:'Triceps Lateral Head',muscles:['Triceps']},
+  {name:'Tate Press',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Rolling Tricep Extension',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'JM Press',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Front Delts']},
+  {name:'Reverse Grip Pushdown',type:'isolation',category:'arms',primary:'Triceps Medial Head',muscles:['Triceps','Brachioradialis']},
+  {name:'Wrist Curl',type:'isolation',category:'arms',primary:'Forearms',muscles:['Forearms']},
+  {name:'Reverse Wrist Curl',type:'isolation',category:'arms',primary:'Forearms',muscles:['Forearms']},
+  {name:'Farmer Carry',type:'compound',category:'arms',primary:'Forearms & Grip',muscles:['Forearms','Traps','Core','Quads']},
+  {name:'Dead Hang',type:'isolation',category:'arms',primary:'Grip & Lats',muscles:['Forearms','Lats','Biceps']},
+  {name:'Barbell Back Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core','Adductors']},
+  {name:'Front Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Core','Glutes']},
+  {name:'Goblet Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Adductors']},
+  {name:'Hack Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Leg Press',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Adductors']},
+  {name:'Safety Bar Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
+  {name:'Pause Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
+  {name:'Heel Elevated Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes']},
+  {name:'Pistol Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
+  {name:'Sissy Squat',type:'isolation',category:'legs',primary:'Quads',muscles:['Quads']},
+  {name:'Leg Extension',type:'isolation',category:'legs',primary:'Quads',muscles:['Quads']},
+  {name:'Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
+  {name:'Seated Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
+  {name:'Nordic Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Calves']},
+  {name:'Glute-Ham Raise',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Calves']},
+  {name:'Romanian Deadlift',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors']},
+  {name:'Single-Leg RDL',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Core']},
+  {name:'Walking Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Reverse Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Lateral Lunge',type:'compound',category:'legs',primary:'Adductors',muscles:['Adductors','Quads','Glutes']},
+  {name:'Bulgarian Split Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Step-Up',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Box Jump',type:'compound',category:'legs',primary:'Explosive Power',muscles:['Quads','Glutes','Hamstrings','Calves']},
+  {name:'Standing Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
+  {name:'Seated Calf Raise',type:'isolation',category:'legs',primary:'Soleus',muscles:['Soleus','Calves']},
+  {name:'Donkey Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
+  {name:'Leg Press Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
+  {name:'Tibialis Raise',type:'isolation',category:'legs',primary:'Tibialis',muscles:['Tibialis Anterior']},
+  {name:'Adductor Machine',type:'isolation',category:'legs',primary:'Adductors',muscles:['Adductors']},
+  {name:'Abductor Machine',type:'isolation',category:'legs',primary:'Abductors',muscles:['Gluteus Medius','TFL']},
+  {name:'Wall Sit',type:'isolation',category:'legs',primary:'Quads',muscles:['Quads','Glutes']},
+  {name:'Sumo Squat',type:'compound',category:'legs',primary:'Adductors',muscles:['Adductors','Quads','Glutes']},
+  {name:'Copenhagen Plank',type:'compound',category:'legs',primary:'Adductors',muscles:['Adductors','Core','Obliques']},
+  {name:'Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Barbell Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Banded Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Single-Leg Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Single-Leg Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Cable Kickback',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Donkey Kick',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes']},
+  {name:'Fire Hydrant',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Clamshell',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius']},
+  {name:'Lateral Band Walk',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Monster Walk',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Hip Abduction Cable',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Abduction Machine',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
+  {name:'Frog Pump',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes']},
+  {name:'Reverse Hyperextension',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Erectors']},
+  {name:'45-Degree Hyperextension',type:'compound',category:'glutes',primary:'Glutes & Hamstrings',muscles:['Glutes','Hamstrings','Erectors']},
+  {name:'Cable Pull-Through',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Erectors']},
+  {name:'Quadruped Hip Extension',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes']},
+  {name:'Plank',type:'isolation',category:'core',primary:'Core Stability',muscles:['Transverse Abs','Obliques','Erectors','Glutes']},
+  {name:'Side Plank',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs','Gluteus Medius']},
+  {name:'Weighted Plank',type:'isolation',category:'core',primary:'Core',muscles:['Transverse Abs','Obliques','Erectors']},
+  {name:'Ab Wheel Rollout',type:'compound',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques','Lats','Hip Flexors']},
+  {name:'Stability Ball Rollout',type:'compound',category:'core',primary:'Core',muscles:['Rectus Abdominis','Obliques','Lats']},
+  {name:'Cable Crunch',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques']},
+  {name:'Crunch',type:'isolation',category:'core',primary:'Upper Abs',muscles:['Rectus Abdominis']},
+  {name:'Decline Sit-Up',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Hip Flexors']},
+  {name:'Sit-Up',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Hip Flexors']},
+  {name:'Bicycle Crunch',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Rectus Abdominis','Hip Flexors']},
+  {name:'Reverse Crunch',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Rectus Abdominis','Hip Flexors']},
+  {name:'Leg Raise',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis']},
+  {name:'Hanging Leg Raise',type:'compound',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis','Obliques']},
+  {name:'Hanging Knee Raise',type:'compound',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis']},
+  {name:'Toes-to-Bar',type:'compound',category:'core',primary:'Abs & Hip Flexors',muscles:['Rectus Abdominis','Hip Flexors','Obliques','Lats']},
+  {name:'Dragon Flag',type:'compound',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Obliques','Erectors','Hip Flexors']},
+  {name:'L-Sit',type:'compound',category:'core',primary:'Core & Hip Flexors',muscles:['Hip Flexors','Rectus Abdominis','Triceps','Lats']},
+  {name:'Hollow Body Hold',type:'isolation',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Transverse Abs','Hip Flexors']},
+  {name:'V-Up',type:'compound',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Hip Flexors','Obliques']},
+  {name:'Flutter Kick',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis']},
+  {name:'Russian Twist',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs']},
+  {name:'Windshield Wiper',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Hip Flexors']},
+  {name:'Pallof Press',type:'isolation',category:'core',primary:'Anti-Rotation',muscles:['Obliques','Transverse Abs']},
+  {name:'Dead Bug',type:'compound',category:'core',primary:'Core Stability',muscles:['Transverse Abs','Erectors','Hip Flexors']},
+  {name:'Cable Woodchop',type:'compound',category:'core',primary:'Obliques',muscles:['Obliques','Core']},
+  {name:'Suitcase Carry',type:'compound',category:'core',primary:'Anti-Lateral Flexion',muscles:['Obliques','Traps','Core']},
+  {name:'Oblique Crunch',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques']},
+  {name:'Long Lever Plank',type:'isolation',category:'core',primary:'Core',muscles:['Rectus Abdominis','Transverse Abs']},
+  {name:'Power Clean',type:'compound',category:'full body',primary:'Explosive Power',muscles:['Traps','Quads','Glutes','Hamstrings','Core','Front Delts']},
+  {name:'Clean and Jerk',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Traps','Front Delts','Triceps','Core']},
+  {name:'Snatch',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Hamstrings','Traps','Front Delts','Core']},
+  {name:'Thruster',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Front Delts','Triceps','Core']},
+  {name:'Kettlebell Swing',type:'compound',category:'full body',primary:'Posterior Chain',muscles:['Glutes','Hamstrings','Erectors','Core','Front Delts']},
+  {name:'Turkish Get-Up',type:'compound',category:'full body',primary:'Full Body',muscles:['Front Delts','Core','Glutes','Triceps']},
+  {name:'Burpee',type:'compound',category:'full body',primary:'Full Body',muscles:['Pecs','Triceps','Quads','Core','Front Delts']},
+  {name:'Man Maker',type:'compound',category:'full body',primary:'Full Body',muscles:['Pecs','Lats','Front Delts','Triceps','Quads','Core']},
+  {name:'Devil Press',type:'compound',category:'full body',primary:'Full Body',muscles:['Pecs','Triceps','Front Delts','Quads','Core']},
+  {name:'Farmers Walk',type:'compound',category:'full body',primary:'Full Body',muscles:['Forearms','Traps','Core','Quads','Glutes']},
+  {name:'Sled Push',type:'compound',category:'full body',primary:'Legs & Conditioning',muscles:['Quads','Glutes','Hamstrings','Calves','Core']},
+  {name:'Sled Pull',type:'compound',category:'full body',primary:'Back & Legs',muscles:['Hamstrings','Glutes','Lats','Biceps']},
+  {name:'Battle Ropes',type:'compound',category:'full body',primary:'Conditioning',muscles:['Front Delts','Core','Biceps','Lats']},
+  {name:'Broad Jump',type:'compound',category:'full body',primary:'Explosive Power',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Medicine Ball Slam',type:'compound',category:'full body',primary:'Power & Core',muscles:['Core','Front Delts','Lats','Triceps']},
+  {name:'Tire Flip',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Erectors','Front Delts','Core']},
+  {name:'Rowing Machine',type:'compound',category:'full body',primary:'Full Body',muscles:['Lats','Rhomboids','Biceps','Quads','Hamstrings','Core']},
+  {name:'Ski Erg',type:'compound',category:'full body',primary:'Upper Body Pull',muscles:['Lats','Core','Triceps','Front Delts']},
+  {name:'Assault Bike',type:'compound',category:'full body',primary:'Conditioning',muscles:['Quads','Glutes','Front Delts','Core']},
+  {name:'Jump Rope',type:'compound',category:'full body',primary:'Calves & Conditioning',muscles:['Calves','Front Delts','Core']},
+  {name:'Atlas Stone',type:'compound',category:'full body',primary:'Full Body',muscles:['Glutes','Erectors','Core','Biceps','Forearms']},
+];
+
+let libType='all', libCat='all', libSel=null, libView='front', libInitialized=false;
+
+function libShowView(v){
+  libView=v;
+  document.getElementById('lbody-front').style.display=v==='front'?'block':'none';
+  document.getElementById('lbody-back').style.display=v==='back'?'block':'none';
+  document.getElementById('lbtn-front').classList.toggle('active',v==='front');
+  document.getElementById('lbtn-back').classList.toggle('active',v==='back');
+  if(libSel) libHighlight(libSel);
+}
+
+function libClearHL(){
+  document.querySelectorAll('[id^="lf-"],[id^="lb-"]').forEach(el=>{
+    el.style.fill=''; el.style.opacity='';
+  });
+}
+
+function libHighlight(ex){
+  libClearHL();
+  const pm=ex.muscles[0].toLowerCase();
+  const sm=ex.muscles.slice(1).map(m=>m.toLowerCase());
+  (LIB_MUSCLE_MAP[pm]||[]).forEach(id=>{const el=document.getElementById(id);if(el){el.style.fill='#e24b4a';el.style.filter='drop-shadow(0 0 4px #e24b4a88)';}});
+  sm.forEach(m=>(LIB_MUSCLE_MAP[m]||[]).forEach(id=>{const el=document.getElementById(id);if(el&&el.style.fill!=='#e24b4a'){el.style.fill='#c9a84c';el.style.filter='drop-shadow(0 0 3px #c9a84c66)';}}));
+  document.getElementById('lib-sel-info').innerHTML=`<div class="lib-sel-name">${ex.name}</div><div class="lib-sel-muscles"><span style="color:var(--red)">●</span> ${ex.muscles[0]}<br>${ex.muscles.slice(1).length?`<span style="color:var(--gold)">●</span> ${ex.muscles.slice(1).join(', ')}`:''}`;
+  // auto rotate
+  const hasBack=ex.muscles.some(m=>{ const k=m.toLowerCase(); return (LIB_MUSCLE_MAP[k]||[]).some(id=>id.startsWith('lb-')); });
+  const hasFront=ex.muscles.some(m=>{ const k=m.toLowerCase(); return (LIB_MUSCLE_MAP[k]||[]).some(id=>id.startsWith('lf-')); });
+  if(hasBack&&!hasFront) libShowView('back'); else libShowView('front');
+}
+
+function libSelect(idx){
+  libSel=LIB_EXERCISES[idx];
+  document.querySelectorAll('.lex-card').forEach(c=>c.classList.toggle('sel',parseInt(c.dataset.idx)===idx));
+  libHighlight(libSel);
+}
+
+function libSetType(el,t){document.querySelectorAll('.ltt').forEach(b=>b.classList.remove('active'));el.classList.add('active');libType=t;libRender();}
+function libSetCat(el,c){document.querySelectorAll('.lcat').forEach(b=>b.classList.remove('active'));el.classList.add('active');libCat=c;libRender();}
+function libFilter(){libRender();}
+
+function libRender(){
+  const q=(document.getElementById('lib-search')||{value:''}).value.toLowerCase();
+  const filtered=LIB_EXERCISES.map((ex,i)=>({...ex,idx:i})).filter(ex=>{
+    return (libType==='all'||ex.type===libType)&&
+           (libCat==='all'||ex.category===libCat)&&
+           (!q||ex.name.toLowerCase().includes(q)||ex.muscles.some(m=>m.toLowerCase().includes(q))||ex.primary.toLowerCase().includes(q)||ex.category.includes(q));
+  });
+  const countEl=document.getElementById('lib-count');
+  if(countEl) countEl.textContent=`${filtered.length} exercise${filtered.length!==1?'s':''}`;
+  const grid=document.getElementById('lib-grid');
+  if(!grid) return;
+  if(!filtered.length){grid.innerHTML='<div class="lib-no-results">No exercises found.</div>';return;}
+  grid.innerHTML=filtered.map(ex=>`
+    <div class="lex-card" data-idx="${ex.idx}" onclick="libSelect(${ex.idx})">
+      <div class="lex-top"><div class="lex-name">${ex.name}</div><div class="lex-badge ${ex.type}">${ex.type}</div></div>
+      <div class="lex-primary">Target: <strong>${ex.primary}</strong></div>
+      <div class="lex-tags">${ex.muscles.map((m,i)=>`<span class="lex-tag ${i===0?'p':''}">${m}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
 </script>
 </body>
 </html>
+<script>
+// This script tag intentionally left empty - library is inline below
+</script>
