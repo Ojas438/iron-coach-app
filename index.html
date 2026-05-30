@@ -482,28 +482,32 @@ function selPChip(type,el,val){
 }
 
 function skipSetup(){
-  document.getElementById('onboarding').style.display='none';
-  document.getElementById('app').style.display='flex';
+  var ob=document.getElementById('onboarding');
+  var app=document.getElementById('app');
+  ob.style.display='none';
+  app.style.display='flex';
   document.getElementById('user-label').textContent='Guest';
   showTab('program');
   buildProgram();
 }
 
 function startApp(){
-  const age=document.getElementById('ob-age').value.trim();
-  const err=document.getElementById('err-msg');
+  var age=document.getElementById('ob-age').value.trim();
+  var err=document.getElementById('err-msg');
   if(!age||!sel.exp||!sel.goal||!sel.days||!sel.equip){err.classList.add('show');return;}
   err.classList.remove('show');
-  profile={
-    age,sex:document.getElementById('ob-sex').value,
-    height:document.getElementById('ob-height').value,
-    weight:document.getElementById('ob-weight').value,
-    exp:sel.exp,goal:sel.goal,days:sel.days,equip:sel.equip,
-    injuries:document.getElementById('ob-injuries').value
-  };
+  profile.age=age;
+  profile.sex=document.getElementById('ob-sex').value;
+  profile.height=document.getElementById('ob-height').value;
+  profile.weight=document.getElementById('ob-weight').value;
+  profile.exp=sel.exp;
+  profile.goal=sel.goal;
+  profile.days=sel.days;
+  profile.equip=sel.equip;
+  profile.injuries=document.getElementById('ob-injuries').value;
   document.getElementById('onboarding').style.display='none';
   document.getElementById('app').style.display='flex';
-  document.getElementById('user-label').textContent=`${age}y · ${sel.exp}`;
+  document.getElementById('user-label').textContent=age+'y · '+sel.exp;
   showTab('program');
   buildProgram();
 }
@@ -525,13 +529,14 @@ function saveProfile(){
 
 // ── TABS ──
 function showTab(tab){
-  ['program','library','profile'].forEach(t=>{
-    document.getElementById(`${t}-view`).style.display='none';
-    document.getElementById(`tab-${t}`).classList.remove('active');
+  ['program','library','profile'].forEach(function(t){
+    document.getElementById(t+'-view').style.display='none';
+    document.getElementById('tab-'+t).classList.remove('active');
   });
-  document.getElementById(`${tab}-view`).style.display=tab==='library'?'flex':'block';
-  document.getElementById(`tab-${tab}`).classList.add('active');
+  document.getElementById(tab+'-view').style.display=tab==='library'?'flex':'block';
+  document.getElementById('tab-'+tab).classList.add('active');
   if(tab==='library'&&!libInit){libRender();libInit=true;}
+  if(tab==='profile'){populateProfileForm();}
 }
 
 // ── PROGRAMS ──
