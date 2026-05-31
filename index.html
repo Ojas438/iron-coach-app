@@ -78,7 +78,7 @@
   .tab:hover:not(.active){color:var(--muted2);}
 
   /* DIET */
-  #diet-view{flex:1;display:none;flex-direction:column;overflow:hidden;}
+  #diet-view{flex:1;display:none;flex-direction:column;overflow:hidden;position:relative;}
   .diet-search-bar{padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;position:relative;}
   .diet-search-bar input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 14px 10px 38px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;}
   .diet-search-bar input:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow);}
@@ -107,6 +107,16 @@
   .mpill.protein{border-color:rgba(226,75,74,.35);color:var(--red);background:rgba(226,75,74,.06);}
   .diet-note{background:rgba(74,122,226,.08);border:1px solid rgba(74,122,226,.25);border-radius:8px;padding:10px 14px;font-size:11.5px;color:#8fb4f0;line-height:1.5;margin:12px 18px 16px;}
   .diet-empty{text-align:center;color:var(--muted);font-size:14px;padding:50px 20px;}
+
+  /* NUTRITION CHAT */
+  .nutri-fab{position:absolute;bottom:18px;right:18px;background:linear-gradient(135deg,var(--red),var(--red-dark));border:none;border-radius:30px;color:#fff;font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:12px 20px;cursor:pointer;box-shadow:0 6px 24px rgba(226,75,74,.5);z-index:10;transition:all .2s;}
+  .nutri-fab:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(226,75,74,.6);}
+  #nutri-chat-panel{display:none;position:absolute;inset:0;background:var(--bg);flex-direction:column;z-index:20;}
+  #nutri-chat-panel.open{display:flex;}
+  .nutri-chat-header{background:linear-gradient(90deg,#0d0d0d,#111);border-bottom:1px solid var(--border2);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .nutri-chat-title{display:flex;align-items:center;gap:10px;}
+  .nutri-close{background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted2);font-size:14px;width:30px;height:30px;cursor:pointer;transition:all .15s;}
+  .nutri-close:hover{border-color:var(--red);color:var(--red);}
 
   /* CHAT */
   #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
@@ -361,6 +371,27 @@
       <button class="chip" onclick="setDietFilter(this,'diabetic')">🩺 Diabetic</button>
     </div>
     <div class="diet-scroll" id="diet-scroll"></div>
+    <!-- Nutrition chat FAB -->
+    <button class="nutri-fab" id="nutri-fab" onclick="toggleNutriChat()">💬 Ask Nutritionist</button>
+  </div>
+
+  <!-- NUTRITION CHAT PANEL -->
+  <div id="nutri-chat-panel">
+    <div class="nutri-chat-header">
+      <div class="nutri-chat-title"><div class="avatar ai" style="width:30px;height:30px;font-size:11px;">NC</div> <div><div style="font-family:var(--font-display);font-size:16px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;">Nutrition Coach</div><div style="font-size:10px;color:var(--muted2);">Ask anything about diet & food</div></div></div>
+      <button class="nutri-close" onclick="toggleNutriChat()">✕</button>
+    </div>
+    <div class="messages" id="nutri-messages"></div>
+    <div class="quick-bar">
+      <button class="qr" onclick="nutriQuick('How much protein should I eat per day?')">Protein needs</button>
+      <button class="qr" onclick="nutriQuick('What are good high-protein snacks?')">Snack ideas</button>
+      <button class="qr" onclick="nutriQuick('How do I calculate my daily calories?')">Calorie math</button>
+      <button class="qr" onclick="nutriQuick('What should I eat before and after a workout?')">Workout nutrition</button>
+    </div>
+    <div class="input-area">
+      <textarea id="nutri-input" placeholder="Ask about nutrition, meals, macros..." onkeydown="nutriKey(event)" oninput="nutriGrow(this)"></textarea>
+      <button class="send" id="nutri-send" onclick="nutriSend()">&#9658;</button>
+    </div>
   </div>
 </div>
 
@@ -609,6 +640,61 @@ function renderDietPlans(){
       '</div>'
     )).join('');
 }
+
+// ── NUTRITION CHAT ──
+const nutriHistory=[];
+let nutriStarted=false;
+
+function toggleNutriChat(){
+  const panel=document.getElementById('nutri-chat-panel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open') && !nutriStarted){
+    nutriAddMsg('assistant',"👋 Hey! I'm your **Nutrition Coach**. Ask me anything about food, macros, meal timing, supplements, or how to eat for your goals.\n\nWhat can I help you with?");
+    nutriStarted=true;
+  }
+}
+
+function nutriSystemPrompt(){
+  return `You are Nutrition Coach, an expert sports nutritionist and registered dietitian. You give clear, science-based, practical nutrition advice for fitness goals — muscle building, fat loss, performance, and general health.
+
+User profile (if available):\n- Age: ${userProfile.age||'unknown'}\n- Sex: ${userProfile.sex||'unknown'}\n- Weight: ${userProfile.weight||'unknown'}\n- Goal: ${userProfile.goal||'general fitness'}\n\nRULES: Be specific and practical — give real numbers, foods, and portions. Use **bold** for key terms and bullet points for lists. Keep answers under 250 words. For any medical conditions (diabetes, allergies, etc.), remind the user to consult their doctor or a registered dietitian. Never give extreme or unsafe diet advice.`;
+}
+
+function nutriAddMsg(role,content){
+  const msgs=document.getElementById('nutri-messages');
+  const wrap=document.createElement('div'); wrap.className=`msg ${role==='user'?'user':'ai'}`;
+  const av=document.createElement('div'); av.className=`avatar ${role==='user'?'user':'ai'}`; av.textContent=role==='user'?'YOU':'NC';
+  const bub=document.createElement('div'); bub.className=`bubble ${role==='user'?'user':'ai'}`; bub.innerHTML=fmt(content);
+  wrap.appendChild(av); wrap.appendChild(bub); msgs.appendChild(wrap); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function nutriShowTyping(){
+  const msgs=document.getElementById('nutri-messages');
+  const wrap=document.createElement('div'); wrap.className='msg ai'; wrap.id='nutri-typing';
+  const av=document.createElement('div'); av.className='avatar ai'; av.textContent='NC';
+  const bub=document.createElement('div'); bub.className='bubble ai';
+  bub.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
+  wrap.appendChild(av); wrap.appendChild(bub); msgs.appendChild(wrap); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function nutriHideTyping(){const t=document.getElementById('nutri-typing');if(t)t.remove();}
+
+async function nutriSend(override){
+  const input=document.getElementById('nutri-input'),btn=document.getElementById('nutri-send');
+  const text=override||input.value.trim(); if(!text) return;
+  input.value=''; input.style.height='42px'; btn.disabled=true;
+  nutriHistory.push({role:'user',content:text}); nutriAddMsg('user',text); nutriShowTyping();
+  try{
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:nutriHistory,goal:userProfile.goal||'nutrition',systemPrompt:nutriSystemPrompt()})});
+    const data=await res.json(); const reply=data.reply||'Something went wrong — try again.';
+    nutriHideTyping(); nutriHistory.push({role:'assistant',content:reply}); nutriAddMsg('assistant',reply);
+  }catch(e){nutriHideTyping();nutriAddMsg('assistant','⚠️ Server error. Try again in a moment.');}
+  btn.disabled=false;
+}
+
+function nutriQuick(t){nutriSend(t);}
+function nutriKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();nutriSend();}}
+function nutriGrow(el){el.style.height='42px';el.style.height=Math.min(el.scrollHeight,120)+'px';}
 </script>
 </body>
 </html>
