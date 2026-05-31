@@ -283,25 +283,23 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
     <span class="search-icon">🔍</span>
     <input id="diet-search" placeholder="Search diets, meals, or restrictions..." oninput="dietSearch()"/>
   </div>
-  <div class="restriction-bar" id="restriction-bar">
+  <div class="restriction-bar">
     <button class="rchip active" onclick="setRestriction(this,'all')">All</button>
-    <button class="rchip" onclick="setRestriction(this,'high-protein')">💪 High Protein</button>
+    <button class="rchip" onclick="setRestriction(this,'muscle')">💪 Muscle</button>
+    <button class="rchip" onclick="setRestriction(this,'fat-loss')">🔥 Fat Loss</button>
+    <button class="rchip" onclick="setRestriction(this,'keto')">🥑 Keto</button>
     <button class="rchip" onclick="setRestriction(this,'vegan')">🌱 Vegan</button>
-    <button class="rchip" onclick="setRestriction(this,'vegetarian')">🥦 Vegetarian</button>
     <button class="rchip" onclick="setRestriction(this,'gluten-free')">🌾 Gluten-Free</button>
     <button class="rchip" onclick="setRestriction(this,'dairy-free')">🥛 Dairy-Free</button>
-    <button class="rchip" onclick="setRestriction(this,'keto')">🥑 Keto</button>
     <button class="rchip" onclick="setRestriction(this,'diabetic')">🩺 Diabetic</button>
-    <button class="rchip" onclick="setRestriction(this,'low-calorie')">🔥 Fat Loss</button>
   </div>
-  <div class="scroll-area" id="diet-scroll">
+  <div class="scroll-area">
     <div class="section-title">⭐ Recommended Plans</div>
-    <div class="diet-rec-grid" id="diet-recs"></div>
+    <div class="rec-grid" id="diet-recs"></div>
     <div class="section-title" id="diet-plans-title">📋 Full Day Meal Plans</div>
-    <div class="diet-plan-grid" id="diet-plans"></div>
+    <div class="prog-grid" id="diet-plans"></div>
   </div>
 </div>
-
 <script>
 // ── TABS ──
 function showTab(tab) {
@@ -434,74 +432,77 @@ function progSearch() {
 
 // ── DIET ──
 var DIET_PLANS = [
-  {id:'high-protein',icon:'💪',color:'#e24b4a',name:'High Protein',sub:'Muscle Building · 2800-3200 cal/day',restrictions:['high-protein'],
-   desc:'Maximizes muscle growth. 1g+ protein per lb bodyweight. High carbs around workouts.',
-   tags:['Muscle','Recovery','Lean'],
+  {id:'muscle',icon:'💪',color:'#e24b4a',name:'High Protein',sub:'Muscle Building · 2800-3200 cal/day',restrictions:['all','muscle'],
+   desc:'Maximizes muscle growth. 1g+ protein per lb bodyweight. High carbs around workouts.',tags:['Muscle','High Protein','Surplus'],
    meals:[
     {time:'7:00 AM',name:'Power Breakfast',desc:'6 scrambled eggs, 1 cup oats with berries, 1 glass milk',cals:620,protein:'52g',carbs:'58g',fat:'16g'},
     {time:'10:00 AM',name:'Morning Snack',desc:'Greek yogurt (200g), handful almonds, 1 banana',cals:380,protein:'28g',carbs:'34g',fat:'14g'},
-    {time:'1:00 PM',name:'Chicken & Rice Bowl',desc:'200g grilled chicken breast, 1.5 cups white rice, steamed broccoli, olive oil',cals:680,protein:'52g',carbs:'72g',fat:'12g'},
+    {time:'1:00 PM',name:'Chicken & Rice Bowl',desc:'200g grilled chicken breast, 1.5 cups white rice, steamed broccoli',cals:680,protein:'52g',carbs:'72g',fat:'12g'},
     {time:'4:00 PM',name:'Pre-Workout Shake',desc:'2 scoops whey protein, 1 banana, 1 cup oats, peanut butter, milk',cals:520,protein:'48g',carbs:'52g',fat:'10g'},
-    {time:'7:00 PM',name:'Beef & Potato Dinner',desc:'200g lean ground beef, 1 large baked potato, mixed vegetables, olive oil',cals:680,protein:'54g',carbs:'62g',fat:'18g'},
-    {time:'9:30 PM',name:'Bedtime Snack',desc:'1.5 cups cottage cheese, walnuts, drizzle honey — slow-digesting casein',cals:320,protein:'34g',carbs:'18g',fat:'12g'},
+    {time:'7:00 PM',name:'Beef & Potato Dinner',desc:'200g lean ground beef, 1 large baked potato, mixed vegetables',cals:680,protein:'54g',carbs:'62g',fat:'18g'},
+    {time:'9:30 PM',name:'Bedtime Snack',desc:'1.5 cups cottage cheese, walnuts, drizzle honey',cals:320,protein:'34g',carbs:'18g',fat:'12g'},
    ]},
-  {id:'fat-loss',icon:'🔥',color:'#5a9e2f',name:'Fat Loss',sub:'Calorie Deficit · 1600-2000 cal/day',restrictions:['low-calorie'],
-   desc:'300-500 cal below maintenance. High protein to preserve muscle. Low carb timing.',
-   tags:['Fat Loss','Lean','Sustainable'],
+  {id:'fat-loss',icon:'🔥',color:'#5a9e2f',name:'Fat Loss',sub:'Calorie Deficit · 1600-2000 cal/day',restrictions:['all','fat-loss'],
+   desc:'300-500 cal below maintenance. High protein to preserve muscle. Low GI foods.',tags:['Fat Loss','Lean','Deficit'],
    meals:[
-    {time:'8:00 AM',name:'Protein Breakfast',desc:'8 egg whites, 2 whole eggs, spinach omelette, 1 slice wholegrain toast',cals:320,protein:'40g',carbs:'18g',fat:'10g'},
+    {time:'8:00 AM',name:'Protein Omelette',desc:'8 egg whites, 2 whole eggs, spinach, mushrooms, 1 slice wholegrain toast',cals:320,protein:'40g',carbs:'18g',fat:'10g'},
     {time:'11:00 AM',name:'Mid-Morning',desc:'1 cup Greek yogurt, mixed berries — no added sugar',cals:180,protein:'18g',carbs:'20g',fat:'3g'},
     {time:'1:00 PM',name:'Grilled Chicken Salad',desc:'200g grilled chicken, large mixed salad, avocado, olive oil & lemon dressing',cals:420,protein:'46g',carbs:'12g',fat:'18g'},
     {time:'4:00 PM',name:'Afternoon Snack',desc:'2 rice cakes, 2 tbsp peanut butter, apple',cals:280,protein:'8g',carbs:'34g',fat:'12g'},
     {time:'7:00 PM',name:'Salmon & Veggies',desc:'180g baked salmon, roasted asparagus, cauliflower rice, lemon',cals:420,protein:'42g',carbs:'14g',fat:'20g'},
-    {time:'9:00 PM',name:'Optional Snack',desc:'1 cup cottage cheese — only if hungry, skip if not',cals:160,protein:'20g',carbs:'8g',fat:'4g'},
+    {time:'9:00 PM',name:'Optional Snack',desc:'1 cup cottage cheese — only if hungry',cals:160,protein:'20g',carbs:'8g',fat:'4g'},
    ]},
-  {id:'keto',icon:'🥑',color:'#c9a84c',name:'Keto',sub:'Low Carb · Under 30g net carbs/day',restrictions:['keto'],
-   desc:'Fat as primary fuel. Under 30g net carbs. High fat, moderate protein. Great for fat loss and focus.',
-   tags:['Keto','Fat Loss','Low Carb'],
+  {id:'keto',icon:'🥑',color:'#c9a84c',name:'Keto',sub:'Low Carb · Under 30g net carbs/day',restrictions:['all','keto'],
+   desc:'Fat as primary fuel. Under 30g net carbs. Great for fat loss and mental focus.',tags:['Keto','Low Carb','Fat Fuel'],
    meals:[
     {time:'9:00 AM',name:'Bulletproof Start',desc:'3 eggs fried in butter, 4 strips bacon, half avocado, black coffee with MCT oil',cals:640,protein:'32g',carbs:'4g',fat:'54g'},
     {time:'12:30 PM',name:'Keto Lunch',desc:'Lettuce wrap with ground beef, cheese, sour cream, jalapeños, guacamole',cals:580,protein:'38g',carbs:'8g',fat:'44g'},
     {time:'3:30 PM',name:'Keto Snack',desc:'Handful macadamia nuts, 2 slices cheese, celery with cream cheese',cals:320,protein:'10g',carbs:'4g',fat:'28g'},
-    {time:'7:00 PM',name:'Keto Dinner',desc:'200g ribeye steak, butter-roasted broccoli, full-fat Greek yogurt side',cals:720,protein:'52g',carbs:'8g',fat:'52g'},
+    {time:'7:00 PM',name:'Ribeye & Broccoli',desc:'200g ribeye steak, butter-roasted broccoli, side salad with olive oil',cals:720,protein:'52g',carbs:'8g',fat:'52g'},
     {time:'9:00 PM',name:'Evening Snack',desc:'2 tbsp almond butter, dark chocolate (85%+), pork rinds',cals:280,protein:'8g',carbs:'6g',fat:'24g'},
    ]},
-  {id:'diabetic',icon:'🩺',color:'#4a7ae2',name:'Diabetic Friendly',sub:'Blood Sugar Control · Low GI Foods',restrictions:['diabetic'],
-   desc:'Stabilizes blood sugar. Low glycemic index foods, controlled portions, regular meal timing. Always consult your doctor.',
-   tags:['Diabetic','Low GI','Blood Sugar'],
+  {id:'diabetic',icon:'🩺',color:'#4a7ae2',name:'Diabetic Friendly',sub:'Blood Sugar Control · Low GI Foods',restrictions:['all','diabetic'],
+   desc:'Stabilizes blood sugar. Low glycemic index foods, controlled portions, regular meal timing. Always consult your doctor.',tags:['Diabetic','Low GI','Blood Sugar'],
    meals:[
-    {time:'7:30 AM',name:'Low GI Breakfast',desc:'Steel-cut oats (not instant), cinnamon, walnuts, berries, 2 boiled eggs on side',cals:420,protein:'22g',carbs:'44g',fat:'16g'},
+    {time:'7:30 AM',name:'Low GI Breakfast',desc:'Steel-cut oats, cinnamon, walnuts, berries, 2 boiled eggs on side',cals:420,protein:'22g',carbs:'44g',fat:'16g'},
     {time:'10:30 AM',name:'Mid-Morning',desc:'Apple with almond butter — fiber slows sugar absorption',cals:220,protein:'6g',carbs:'24g',fat:'12g'},
-    {time:'1:00 PM',name:'Balanced Lunch',desc:'Grilled chicken, quinoa, large salad with olive oil dressing, no croutons',cals:520,protein:'42g',carbs:'42g',fat:'14g'},
-    {time:'3:30 PM',name:'Afternoon Snack',desc:'Handful mixed nuts, string cheese — protein + fat to stabilize sugar',cals:240,protein:'12g',carbs:'8g',fat:'18g'},
-    {time:'6:30 PM',name:'Controlled Dinner',desc:'Baked salmon, large portion non-starchy vegetables, small amount brown rice',cals:480,protein:'40g',carbs:'32g',fat:'18g'},
+    {time:'1:00 PM',name:'Balanced Lunch',desc:'Grilled chicken, quinoa, large salad with olive oil dressing',cals:520,protein:'42g',carbs:'42g',fat:'14g'},
+    {time:'3:30 PM',name:'Afternoon Snack',desc:'Handful mixed nuts, string cheese — protein + fat stabilizes blood sugar',cals:240,protein:'12g',carbs:'8g',fat:'18g'},
+    {time:'6:30 PM',name:'Controlled Dinner',desc:'Baked salmon, large portion non-starchy vegetables, small portion brown rice',cals:480,protein:'40g',carbs:'32g',fat:'18g'},
     {time:'8:30 PM',name:'Bedtime Snack',desc:'1 cup plain Greek yogurt — protein prevents overnight blood sugar drops',cals:140,protein:'16g',carbs:'10g',fat:'4g'},
    ]},
-  {id:'vegan',icon:'🌱',color:'#5a9e2f',name:'Vegan',sub:'Plant-Based · High Protein',restrictions:['vegan','vegetarian'],
-   desc:'100% plant-based. Emphasis on complete proteins from whole foods. Iron, B12, and omega-3 considerations included.',
-   tags:['Vegan','Plant-Based','Clean'],
+  {id:'vegan',icon:'🌱',color:'#5a9e2f',name:'Vegan',sub:'Plant-Based · High Protein',restrictions:['all','vegan'],
+   desc:'100% plant-based. Complete proteins, iron, B12, and omega-3 needs all covered.',tags:['Vegan','Plant-Based','Clean'],
    meals:[
-    {time:'7:30 AM',name:'Power Smoothie Bowl',desc:'Pea protein shake, frozen berries, banana, flaxseed, topped with granola and hemp seeds',cals:520,protein:'36g',carbs:'62g',fat:'12g'},
-    {time:'10:30 AM',name:'Morning Snack',desc:'Handful mixed nuts, 1 tbsp chia seeds in oat milk, apple',cals:300,protein:'10g',carbs:'28g',fat:'18g'},
+    {time:'7:30 AM',name:'Power Smoothie Bowl',desc:'Pea protein, frozen berries, banana, flaxseed, topped with granola and hemp seeds',cals:520,protein:'36g',carbs:'62g',fat:'12g'},
+    {time:'10:30 AM',name:'Morning Snack',desc:'Mixed nuts, chia seeds in oat milk, apple',cals:300,protein:'10g',carbs:'28g',fat:'18g'},
     {time:'1:00 PM',name:'Tofu Rice Bowl',desc:'200g firm tofu (pan-fried), 1.5 cups brown rice, edamame, avocado, soy-ginger sauce',cals:640,protein:'38g',carbs:'72g',fat:'18g'},
-    {time:'4:00 PM',name:'Pre-Workout',desc:'2 scoops plant protein, banana, oat milk, peanut butter',cals:440,protein:'40g',carbs:'44g',fat:'12g'},
-    {time:'7:00 PM',name:'Lentil & Sweet Potato',desc:'1.5 cups red lentil curry, 1 large sweet potato, chickpeas, spinach, brown rice',cals:620,protein:'32g',carbs:'88g',fat:'8g'},
+    {time:'4:00 PM',name:'Pre-Workout Shake',desc:'2 scoops plant protein, banana, oat milk, peanut butter',cals:440,protein:'40g',carbs:'44g',fat:'12g'},
+    {time:'7:00 PM',name:'Lentil & Sweet Potato Curry',desc:'1.5 cups red lentil curry, 1 large sweet potato, chickpeas, spinach, brown rice',cals:620,protein:'32g',carbs:'88g',fat:'8g'},
     {time:'9:00 PM',name:'Bedtime Snack',desc:'Tempeh slices, 2 tbsp almond butter, rice cake',cals:320,protein:'22g',carbs:'24g',fat:'14g'},
    ]},
-  {id:'gluten-free',icon:'🌾',color:'#c9a84c',name:'Gluten-Free',sub:'No Gluten · Celiac Safe',restrictions:['gluten-free'],
-   desc:'Completely gluten-free. All grains replaced with safe alternatives like rice, quinoa, and oats (certified GF).',
-   tags:['Gluten-Free','Celiac','Clean'],
+  {id:'gluten-free',icon:'🌾',color:'#c9a84c',name:'Gluten-Free',sub:'Celiac Safe · No Gluten',restrictions:['all','gluten-free'],
+   desc:'Completely gluten-free. All grains replaced with safe alternatives like rice, quinoa, certified GF oats.',tags:['Gluten-Free','Celiac','Safe'],
    meals:[
     {time:'7:30 AM',name:'GF Breakfast',desc:'3 eggs, certified GF oats with almond milk and berries, orange juice',cals:480,protein:'28g',carbs:'52g',fat:'14g'},
     {time:'10:30 AM',name:'Morning Snack',desc:'Rice cakes with almond butter, banana — all certified GF',cals:280,protein:'8g',carbs:'36g',fat:'12g'},
     {time:'1:00 PM',name:'Quinoa Power Bowl',desc:'1.5 cups quinoa, grilled chicken, roasted veggies, olive oil, lemon',cals:580,protein:'44g',carbs:'58g',fat:'14g'},
     {time:'4:00 PM',name:'GF Snack',desc:'Greek yogurt, mixed berries, honey, GF granola',cals:320,protein:'20g',carbs:'38g',fat:'8g'},
-    {time:'7:00 PM',name:'Salmon & Rice',desc:'200g salmon, 1.5 cups white rice, steamed broccoli, tamari sauce (GF soy sauce)',cals:580,protein:'44g',carbs:'52g',fat:'18g'},
-    {time:'9:00 PM',name:'Bedtime',desc:'Cottage cheese, pineapple chunks — verify brand is GF certified',cals:200,protein:'20g',carbs:'16g',fat:'4g'},
+    {time:'7:00 PM',name:'Salmon & Rice',desc:'200g salmon, 1.5 cups white rice, steamed broccoli, tamari (GF soy sauce)',cals:580,protein:'44g',carbs:'52g',fat:'18g'},
+    {time:'9:00 PM',name:'Bedtime',desc:'Cottage cheese, pineapple — verify brand is GF certified',cals:200,protein:'20g',carbs:'16g',fat:'4g'},
    ]},
-  {id:'lean-bulk',icon:'📈',color:'#e24b4a',name:'Lean Bulk',sub:'Slight Surplus · +300 cal/day',restrictions:['high-protein'],
-   desc:'Small calorie surplus (200-300 above maintenance) for clean muscle gain with minimal fat. Consistent weekly increases.',
-   tags:['Bulking','Muscle','Clean'],
+  {id:'dairy-free',icon:'🥛',color:'#4a7ae2',name:'Dairy-Free',sub:'No Dairy · Lactose Free',restrictions:['all','dairy-free'],
+   desc:'Completely dairy-free. All calcium and protein needs met through plant alternatives.',tags:['Dairy-Free','Lactose Free','Clean'],
+   meals:[
+    {time:'7:30 AM',name:'DF Breakfast',desc:'3 scrambled eggs, oat milk overnight oats, blueberries, hemp seeds',cals:480,protein:'28g',carbs:'48g',fat:'16g'},
+    {time:'10:30 AM',name:'Morning Snack',desc:'Coconut yogurt, mixed berries, granola (dairy-free brand)',cals:280,protein:'8g',carbs:'38g',fat:'10g'},
+    {time:'1:00 PM',name:'Chicken & Quinoa',desc:'200g chicken, 1.5 cups quinoa, roasted vegetables, tahini dressing',cals:600,protein:'48g',carbs:'58g',fat:'16g'},
+    {time:'4:00 PM',name:'DF Protein Shake',desc:'Plant protein powder, oat milk, banana, almond butter',cals:380,protein:'32g',carbs:'40g',fat:'12g'},
+    {time:'7:00 PM',name:'Salmon Dinner',desc:'200g baked salmon, sweet potato, steamed broccoli, olive oil',cals:560,protein:'42g',carbs:'44g',fat:'20g'},
+    {time:'9:00 PM',name:'DF Snack',desc:'Almond butter on rice cakes, handful of mixed nuts',cals:280,protein:'8g',carbs:'22g',fat:'18g'},
+   ]},
+  {id:'lean-bulk',icon:'📈',color:'#e24b4a',name:'Lean Bulk',sub:'Slight Surplus · +300 cal/day',restrictions:['all','muscle'],
+   desc:'Small calorie surplus for clean muscle gain with minimal fat. Consistent and sustainable.',tags:['Clean Bulk','Muscle','Surplus'],
    meals:[
     {time:'7:00 AM',name:'Anabolic Breakfast',desc:'4 whole eggs, 2 egg whites, wholegrain toast, oats, fruit',cals:680,protein:'46g',carbs:'68g',fat:'18g'},
     {time:'10:00 AM',name:'Morning Shake',desc:'Whey protein, banana, oats, milk, peanut butter blended',cals:520,protein:'44g',carbs:'58g',fat:'12g'},
@@ -510,26 +511,15 @@ var DIET_PLANS = [
     {time:'7:30 PM',name:'Post-Workout Dinner',desc:'200g lean beef mince, 150g pasta, tomato sauce, parmesan',cals:720,protein:'56g',carbs:'76g',fat:'18g'},
     {time:'10:00 PM',name:'Casein Night',desc:'1.5 cups cottage cheese, walnuts, banana — slow protein overnight',cals:420,protein:'38g',carbs:'28g',fat:'16g'},
    ]},
-  {id:'dairy-free',icon:'🥛',color:'#4a7ae2',name:'Dairy-Free',sub:'No Dairy · Lactose Free',restrictions:['dairy-free','vegan'],
-   desc:'Completely dairy-free. All calcium and protein needs met through plant alternatives and whole foods.',
-   tags:['Dairy-Free','Lactose Free','Clean'],
-   meals:[
-    {time:'7:30 AM',name:'DF Breakfast',desc:'3 scrambled eggs, oat milk overnight oats, blueberries, hemp seeds',cals:480,protein:'28g',carbs:'48g',fat:'16g'},
-    {time:'10:30 AM',name:'Morning Snack',desc:'Coconut yogurt, mixed berries, granola (dairy-free brand)',cals:280,protein:'8g',carbs:'38g',fat:'10g'},
-    {time:'1:00 PM',name:'Chicken & Quinoa',desc:'200g chicken, 1.5 cups quinoa, roasted vegetables, tahini dressing (no dairy)',cals:600,protein:'48g',carbs:'58g',fat:'16g'},
-    {time:'4:00 PM',name:'DF Protein Shake',desc:'Plant protein powder, oat milk, banana, almond butter',cals:380,protein:'32g',carbs:'40g',fat:'12g'},
-    {time:'7:00 PM',name:'Salmon Dinner',desc:'200g baked salmon, sweet potato, steamed broccoli, olive oil',cals:560,protein:'42g',carbs:'44g',fat:'20g'},
-    {time:'9:00 PM',name:'DF Snack',desc:'Almond butter on rice cakes, handful of mixed nuts',cals:280,protein:'8g',carbs:'22g',fat:'18g'},
-   ]},
 ];
 
 var DIET_RECS = [
-  {icon:'💪',color:'#e24b4a',name:'Build Muscle',desc:'High protein, calorie surplus, timed carbs around workouts.',tags:['High Protein','Surplus','Carbs'],target:'high-protein'},
-  {icon:'🔥',color:'#5a9e2f',name:'Lose Fat',desc:'Calorie deficit, high protein to preserve muscle, low GI foods.',tags:['Deficit','High Protein','Low GI'],target:'fat-loss'},
-  {icon:'🥑',color:'#c9a84c',name:'Keto',desc:'Fat as fuel, under 30g carbs per day, mental clarity and fat burn.',tags:['Keto','Low Carb','Fat Fuel'],target:'keto'},
-  {icon:'🩺',color:'#4a7ae2',name:'Diabetic',desc:'Low glycemic, controlled portions, stable blood sugar all day.',tags:['Low GI','Blood Sugar','Safe'],target:'diabetic'},
-  {icon:'🌱',color:'#5a9e2f',name:'Vegan',desc:'Plant-based, complete proteins, all nutrients covered.',tags:['Vegan','Plant','Iron'],target:'vegan'},
-  {icon:'📈',color:'#e24b4a',name:'Lean Bulk',desc:'Slight surplus, clean foods, maximize muscle with minimal fat.',tags:['Clean Bulk','Surplus','Muscle'],target:'lean-bulk'},
+  {icon:'💪',color:'#e24b4a',name:'Build Muscle',desc:'High protein, calorie surplus, carbs timed around workouts.',tags:['High Protein','Surplus'],id:'muscle'},
+  {icon:'🔥',color:'#5a9e2f',name:'Lose Fat',desc:'Calorie deficit, high protein to preserve muscle.',tags:['Deficit','Low Cal'],id:'fat-loss'},
+  {icon:'🥑',color:'#c9a84c',name:'Keto',desc:'Fat as fuel. Under 30g carbs/day. Great for fat loss.',tags:['Keto','Low Carb'],id:'keto'},
+  {icon:'🩺',color:'#4a7ae2',name:'Diabetic',desc:'Low GI foods, controlled portions, stable blood sugar.',tags:['Low GI','Safe'],id:'diabetic'},
+  {icon:'🌱',color:'#5a9e2f',name:'Vegan',desc:'Plant-based, complete proteins, all nutrients covered.',tags:['Vegan','Plant'],id:'vegan'},
+  {icon:'📈',color:'#e24b4a',name:'Lean Bulk',desc:'Small surplus for clean muscle gain with minimal fat.',tags:['Clean Bulk','Muscle'],id:'lean-bulk'},
 ];
 
 var dietRestriction = 'all';
@@ -538,21 +528,20 @@ function setRestriction(el, r) {
   document.querySelectorAll('.rchip').forEach(function(c){ c.classList.remove('active'); });
   el.classList.add('active');
   dietRestriction = r;
-  renderDietRecs();
   renderDietPlans();
 }
 
 function renderDietRecs() {
   document.getElementById('diet-recs').innerHTML = DIET_RECS.map(function(d){
-    return '<div class="diet-rec-card" onclick="jumpToDietPlan(''+d.target+'')" style="border-top-color:'+d.color+';">'+
-      '<div class="drc-top"><div class="drc-icon">'+d.icon+'</div><div class="drc-name">'+d.name+'</div></div>'+
-      '<div class="drc-desc">'+d.desc+'</div>'+
-      '<div class="drc-tags">'+d.tags.map(function(t){ return '<span class="drc-tag">'+t+'</span>'; }).join('')+'</div>'+
+    return '<div class="rec-card" onclick="scrollToDietPlan(''+d.id+'')" style="border-top:3px solid '+d.color+';">'+
+      '<div class="rec-card-top"><div class="rec-card-icon">'+d.icon+'</div><div class="rec-card-name">'+d.name+'</div></div>'+
+      '<div class="rec-card-desc">'+d.desc+'</div>'+
+      '<div class="rec-tags">'+d.tags.map(function(t){ return '<span class="rec-tag">'+t+'</span>'; }).join('')+'</div>'+
     '</div>';
   }).join('');
 }
 
-function jumpToDietPlan(id) {
+function scrollToDietPlan(id) {
   var el = document.getElementById('diet-plan-'+id);
   if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
 }
@@ -562,24 +551,24 @@ function renderDietPlans(list) {
   if (dietRestriction !== 'all') {
     plans = plans.filter(function(p){ return p.restrictions.indexOf(dietRestriction) > -1; });
   }
-  var titleEl = document.getElementById('diet-plans-title');
-  if (titleEl) titleEl.textContent = plans.length + ' Meal Plan' + (plans.length !== 1 ? 's' : '');
+  var t = document.getElementById('diet-plans-title');
+  if (t) t.textContent = plans.length + ' Meal Plan'+(plans.length!==1?'s':'');
   document.getElementById('diet-plans').innerHTML = plans.map(function(p){
-    return '<div class="diet-plan-card" id="diet-plan-'+p.id+'">'+
-      '<div class="diet-plan-header" style="border-left:3px solid '+p.color+';">'+
-        '<div class="diet-plan-icon" style="background:'+p.color+'22;">'+p.icon+'</div>'+
-        '<div><div class="diet-plan-title">'+p.name+'</div><div class="diet-plan-sub">'+p.sub+'</div></div>'+
+    return '<div class="prog-card" id="diet-plan-'+p.id+'">'+
+      '<div class="prog-card-header" style="border-left:3px solid '+p.color+';">'+
+        '<div class="prog-card-icon" style="background:'+p.color+'22;">'+p.icon+'</div>'+
+        '<div><div class="prog-card-title">'+p.name+'</div><div class="prog-card-sub">'+p.sub+'</div></div>'+
       '</div>'+
       p.meals.map(function(m){
-        return '<div class="meal-row">'+
-          '<div class="meal-time">'+m.time+'</div>'+
-          '<div class="meal-info">'+
-            '<div class="meal-name-sm">'+m.name+' <span style="color:var(--muted);font-size:11px;">· '+m.cals+' cal</span></div>'+
-            '<div class="meal-desc-sm">'+m.desc+'</div>'+
-            '<div class="macro-pills">'+
-              '<span class="mpill p">'+m.protein+' protein</span>'+
-              '<span class="mpill">'+m.carbs+' carbs</span>'+
-              '<span class="mpill">'+m.fat+' fat</span>'+
+        return '<div class="prog-ex">'+
+          '<div class="prog-ex-num" style="width:72px;font-size:10px;">'+m.time+'</div>'+
+          '<div class="prog-ex-info">'+
+            '<div class="prog-ex-name">'+m.name+' <span style="color:var(--muted);font-size:11px;">· '+m.cals+' cal</span></div>'+
+            '<div class="prog-ex-detail">'+m.desc+'</div>'+
+            '<div style="display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;">'+
+              '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(226,75,74,.1);border:1px solid rgba(226,75,74,.3);color:var(--red);">'+m.protein+' protein</span>'+
+              '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg);border:1px solid var(--border2);color:var(--muted2);">'+m.carbs+' carbs</span>'+
+              '<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg);border:1px solid var(--border2);color:var(--muted2);">'+m.fat+' fat</span>'+
             '</div>'+
           '</div>'+
         '</div>';
@@ -590,310 +579,13 @@ function renderDietPlans(list) {
 
 function dietSearch() {
   var q = document.getElementById('diet-search').value.toLowerCase();
-  if (!q) { renderDietRecs(); renderDietPlans(); return; }
-  var filteredPlans = DIET_PLANS.filter(function(p){
-    return p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.tags.some(function(t){ return t.toLowerCase().includes(q); }) ||
+  if (!q) { renderDietPlans(); return; }
+  var filtered = DIET_PLANS.filter(function(p){
+    return p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) ||
+      p.tags.some(function(t){ return t.toLowerCase().includes(q); }) ||
       p.meals.some(function(m){ return m.name.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q); });
   });
-  renderDietPlans(filteredPlans);
-}
-
-// ── LIBRARY ──
-var MUSCLE_MAP = {
-  'chest':['f-chest'],'upper pecs':['f-chest'],'lower pecs':['f-chest'],'inner pecs':['f-chest'],'pecs':['f-chest'],
-  'front delts':['f-front-delts'],'side delts':['f-side-delts'],
-  'rear delts':['b-rear-delts'],'rotator cuff':['b-rear-delts'],
-  'triceps':['f-triceps','b-triceps'],
-  'biceps':['f-biceps'],'brachialis':['f-biceps'],'brachioradialis':['f-forearms'],
-  'forearms':['f-forearms','b-forearms'],
-  'lats':['b-lats'],'rhomboids':['b-rhomboids'],'traps':['b-traps'],'upper traps':['b-traps'],'lower traps':['b-rhomboids'],
-  'erectors':['b-erectors'],'teres major':['b-lats'],
-  'abs':['f-abs'],'rectus abdominis':['f-abs'],'upper abs':['f-abs'],'lower abs':['f-abs'],
-  'obliques':['f-obliques'],'transverse abs':['f-obliques'],'core':['f-abs','f-obliques'],
-  'hip flexors':['f-hip-flexors'],
-  'glutes':['b-glutes'],'gluteus medius':['b-glutes'],'glute med':['b-glutes'],'tfl':['b-glutes'],
-  'quads':['f-quads'],'rectus femoris':['f-quads'],
-  'hamstrings':['b-hamstrings'],'biceps femoris':['b-hamstrings'],
-  'adductors':['f-adductors'],
-  'calves':['f-calves','b-calves'],'gastrocnemius':['b-calves'],'soleus':['b-calves'],
-};
-
-var EXERCISES = [
-  {name:'Barbell Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
-  {name:'Incline Barbell Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
-  {name:'Decline Barbell Press',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps']},
-  {name:'Dumbbell Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
-  {name:'Incline Dumbbell Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
-  {name:'Dumbbell Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
-  {name:'Incline Dumbbell Fly',type:'isolation',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
-  {name:'Cable Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
-  {name:'Low-to-High Cable Fly',type:'isolation',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
-  {name:'High-to-Low Cable Fly',type:'isolation',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs']},
-  {name:'Pec Deck Machine',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs']},
-  {name:'Chest Dip',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps','Front Delts']},
-  {name:'Push-Up',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts','Core']},
-  {name:'Wide Push-Up',type:'compound',category:'chest',primary:'Outer Chest',muscles:['Pecs','Front Delts']},
-  {name:'Diamond Push-Up',type:'compound',category:'chest',primary:'Triceps',muscles:['Triceps','Inner Pecs']},
-  {name:'Landmine Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
-  {name:'Machine Chest Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
-  {name:'Svend Press',type:'isolation',category:'chest',primary:'Inner Chest',muscles:['Inner Pecs','Front Delts']},
-  {name:'Floor Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
-  {name:'Dumbbell Pullover',type:'compound',category:'chest',primary:'Chest & Lats',muscles:['Pecs','Lats','Triceps']},
-  {name:'Conventional Deadlift',type:'compound',category:'back',primary:'Full Back',muscles:['Lats','Traps','Erectors','Glutes','Hamstrings']},
-  {name:'Sumo Deadlift',type:'compound',category:'back',primary:'Back & Glutes',muscles:['Glutes','Adductors','Lats','Traps','Erectors']},
-  {name:'Romanian Deadlift',type:'compound',category:'back',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors','Lats']},
-  {name:'Rack Pull',type:'compound',category:'back',primary:'Upper Back',muscles:['Traps','Erectors','Glutes','Lats']},
-  {name:'Barbell Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps']},
-  {name:'Pendlay Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps','Erectors']},
-  {name:'T-Bar Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Traps','Biceps']},
-  {name:'Meadows Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rear Delts','Biceps']},
-  {name:'Seal Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Rear Delts','Biceps']},
-  {name:'Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts','Core']},
-  {name:'Chin-Up',type:'compound',category:'back',primary:'Lats & Biceps',muscles:['Lats','Biceps','Lower Traps']},
-  {name:'Neutral Grip Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Brachialis','Biceps']},
-  {name:'Lat Pulldown',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts']},
-  {name:'Wide Grip Lat Pulldown',type:'compound',category:'back',primary:'Outer Lats',muscles:['Lats','Teres Major','Biceps']},
-  {name:'Reverse Grip Lat Pulldown',type:'compound',category:'back',primary:'Lower Lats',muscles:['Lats','Biceps']},
-  {name:'Straight-Arm Pulldown',type:'isolation',category:'back',primary:'Lats',muscles:['Lats','Teres Major']},
-  {name:'Seated Cable Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Biceps','Traps']},
-  {name:'Single-Arm Dumbbell Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps','Rear Delts']},
-  {name:'Chest-Supported Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Rear Delts','Biceps','Traps']},
-  {name:'Inverted Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Rear Delts','Biceps']},
-  {name:'Face Pull',type:'isolation',category:'back',primary:'Rear Delts',muscles:['Rear Delts','Traps','Rotator Cuff']},
-  {name:'Band Pull Apart',type:'isolation',category:'back',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Lower Traps']},
-  {name:'Good Morning',type:'compound',category:'back',primary:'Erectors',muscles:['Erectors','Hamstrings','Glutes']},
-  {name:'Back Extension',type:'isolation',category:'back',primary:'Erectors',muscles:['Erectors','Glutes','Hamstrings']},
-  {name:'Shrug',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps']},
-  {name:'Dumbbell Shrug',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps']},
-  {name:'Barbell Overhead Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Traps']},
-  {name:'Seated Dumbbell Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
-  {name:'Standing Dumbbell Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Core']},
-  {name:'Arnold Press',type:'compound',category:'shoulders',primary:'All Delts',muscles:['Front Delts','Side Delts','Rear Delts','Triceps']},
-  {name:'Push Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Triceps','Quads','Core']},
-  {name:'Bradford Press',type:'compound',category:'shoulders',primary:'All Delts',muscles:['Front Delts','Side Delts','Traps']},
-  {name:'Machine Shoulder Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
-  {name:'Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
-  {name:'Cable Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
-  {name:'Machine Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
-  {name:'Lu Raises',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps']},
-  {name:'Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
-  {name:'Cable Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
-  {name:'Rear Delt Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Traps']},
-  {name:'Rear Delt Cable Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids']},
-  {name:'Upright Row',type:'compound',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps','Biceps']},
-  {name:'Cuban Press',type:'compound',category:'shoulders',primary:'Rotator Cuff',muscles:['Rotator Cuff','Side Delts','Traps']},
-  {name:'External Rotation',type:'isolation',category:'shoulders',primary:'Rotator Cuff',muscles:['Rotator Cuff']},
-  {name:'W-Raise',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Lower Traps']},
-  {name:'Barbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis','Brachioradialis']},
-  {name:'Dumbbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
-  {name:'Hammer Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Biceps','Brachioradialis']},
-  {name:'Preacher Curl',type:'isolation',category:'arms',primary:'Short Head Bicep',muscles:['Biceps','Brachialis']},
-  {name:'Incline Dumbbell Curl',type:'isolation',category:'arms',primary:'Long Head Bicep',muscles:['Biceps','Brachialis']},
-  {name:'Cable Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
-  {name:'Concentration Curl',type:'isolation',category:'arms',primary:'Biceps Peak',muscles:['Biceps']},
-  {name:'Reverse Curl',type:'isolation',category:'arms',primary:'Brachioradialis',muscles:['Brachioradialis','Brachialis','Biceps']},
-  {name:'Cross-Body Hammer Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Brachioradialis']},
-  {name:'Zottman Curl',type:'isolation',category:'arms',primary:'Full Arm',muscles:['Biceps','Brachialis','Brachioradialis']},
-  {name:'Spider Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps']},
-  {name:'Tricep Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
-  {name:'Rope Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
-  {name:'Skull Crusher',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
-  {name:'Overhead Tricep Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
-  {name:'Dumbbell Overhead Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
-  {name:'Cable Overhead Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
-  {name:'Close-Grip Bench Press',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Pecs','Front Delts']},
-  {name:'Tricep Dip',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Front Delts','Lower Pecs']},
-  {name:'Kickback',type:'isolation',category:'arms',primary:'Triceps Lateral Head',muscles:['Triceps']},
-  {name:'Tate Press',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
-  {name:'JM Press',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Front Delts']},
-  {name:'Wrist Curl',type:'isolation',category:'arms',primary:'Forearms',muscles:['Forearms']},
-  {name:'Reverse Wrist Curl',type:'isolation',category:'arms',primary:'Forearms',muscles:['Forearms']},
-  {name:'Farmer Carry',type:'compound',category:'arms',primary:'Forearms & Grip',muscles:['Forearms','Traps','Core','Quads']},
-  {name:'Dead Hang',type:'isolation',category:'arms',primary:'Grip & Lats',muscles:['Forearms','Lats','Biceps']},
-  {name:'Barbell Back Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core','Adductors']},
-  {name:'Front Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Core','Glutes']},
-  {name:'Goblet Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Adductors']},
-  {name:'Hack Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
-  {name:'Leg Press',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Adductors']},
-  {name:'Safety Bar Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
-  {name:'Pause Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
-  {name:'Pistol Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Hamstrings']},
-  {name:'Leg Extension',type:'isolation',category:'legs',primary:'Quads',muscles:['Quads']},
-  {name:'Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
-  {name:'Seated Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
-  {name:'Nordic Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Calves']},
-  {name:'Glute-Ham Raise',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Calves']},
-  {name:'Walking Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
-  {name:'Reverse Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
-  {name:'Lateral Lunge',type:'compound',category:'legs',primary:'Adductors',muscles:['Adductors','Quads','Glutes']},
-  {name:'Bulgarian Split Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
-  {name:'Step-Up',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
-  {name:'Box Jump',type:'compound',category:'legs',primary:'Explosive Power',muscles:['Quads','Glutes','Hamstrings','Calves']},
-  {name:'Standing Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
-  {name:'Seated Calf Raise',type:'isolation',category:'legs',primary:'Soleus',muscles:['Soleus','Calves']},
-  {name:'Leg Press Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
-  {name:'Adductor Machine',type:'isolation',category:'legs',primary:'Adductors',muscles:['Adductors']},
-  {name:'Abductor Machine',type:'isolation',category:'legs',primary:'Abductors',muscles:['Gluteus Medius','TFL']},
-  {name:'Wall Sit',type:'isolation',category:'legs',primary:'Quads',muscles:['Quads','Glutes']},
-  {name:'Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
-  {name:'Barbell Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
-  {name:'Single-Leg Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
-  {name:'Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
-  {name:'Single-Leg Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
-  {name:'Cable Kickback',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
-  {name:'Donkey Kick',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes']},
-  {name:'Fire Hydrant',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
-  {name:'Clamshell',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius']},
-  {name:'Lateral Band Walk',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
-  {name:'Abduction Machine',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius','TFL']},
-  {name:'Frog Pump',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes']},
-  {name:'Reverse Hyperextension',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Erectors']},
-  {name:'Cable Pull-Through',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Erectors']},
-  {name:'Plank',type:'isolation',category:'core',primary:'Core Stability',muscles:['Transverse Abs','Obliques','Erectors','Glutes']},
-  {name:'Side Plank',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs','Gluteus Medius']},
-  {name:'Ab Wheel Rollout',type:'compound',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques','Lats','Hip Flexors']},
-  {name:'Cable Crunch',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques']},
-  {name:'Crunch',type:'isolation',category:'core',primary:'Upper Abs',muscles:['Rectus Abdominis']},
-  {name:'Sit-Up',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Hip Flexors']},
-  {name:'Bicycle Crunch',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Rectus Abdominis','Hip Flexors']},
-  {name:'Reverse Crunch',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Rectus Abdominis','Hip Flexors']},
-  {name:'Leg Raise',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis']},
-  {name:'Hanging Leg Raise',type:'compound',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis','Obliques']},
-  {name:'Toes-to-Bar',type:'compound',category:'core',primary:'Abs & Hip Flexors',muscles:['Rectus Abdominis','Hip Flexors','Obliques','Lats']},
-  {name:'Dragon Flag',type:'compound',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Obliques','Erectors','Hip Flexors']},
-  {name:'Hollow Body Hold',type:'isolation',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Transverse Abs','Hip Flexors']},
-  {name:'Russian Twist',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs']},
-  {name:'Pallof Press',type:'isolation',category:'core',primary:'Anti-Rotation',muscles:['Obliques','Transverse Abs']},
-  {name:'Dead Bug',type:'compound',category:'core',primary:'Core Stability',muscles:['Transverse Abs','Erectors','Hip Flexors']},
-  {name:'Cable Woodchop',type:'compound',category:'core',primary:'Obliques',muscles:['Obliques','Core']},
-  {name:'Power Clean',type:'compound',category:'full body',primary:'Explosive Power',muscles:['Traps','Quads','Glutes','Hamstrings','Core','Front Delts']},
-  {name:'Clean and Jerk',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Traps','Front Delts','Triceps','Core']},
-  {name:'Snatch',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Hamstrings','Traps','Front Delts','Core']},
-  {name:'Thruster',type:'compound',category:'full body',primary:'Full Body',muscles:['Quads','Glutes','Front Delts','Triceps','Core']},
-  {name:'Kettlebell Swing',type:'compound',category:'full body',primary:'Posterior Chain',muscles:['Glutes','Hamstrings','Erectors','Core','Front Delts']},
-  {name:'Turkish Get-Up',type:'compound',category:'full body',primary:'Full Body',muscles:['Front Delts','Core','Glutes','Triceps']},
-  {name:'Burpee',type:'compound',category:'full body',primary:'Full Body',muscles:['Pecs','Triceps','Quads','Core','Front Delts']},
-  {name:'Farmers Walk',type:'compound',category:'full body',primary:'Full Body',muscles:['Forearms','Traps','Core','Quads','Glutes']},
-  {name:'Sled Push',type:'compound',category:'full body',primary:'Legs & Conditioning',muscles:['Quads','Glutes','Hamstrings','Calves','Core']},
-  {name:'Battle Ropes',type:'compound',category:'full body',primary:'Conditioning',muscles:['Front Delts','Core','Biceps','Lats']},
-  {name:'Broad Jump',type:'compound',category:'full body',primary:'Explosive Power',muscles:['Quads','Glutes','Hamstrings','Core']},
-  {name:'Medicine Ball Slam',type:'compound',category:'full body',primary:'Power & Core',muscles:['Core','Front Delts','Lats','Triceps']},
-  {name:'Rowing Machine',type:'compound',category:'full body',primary:'Full Body',muscles:['Lats','Rhomboids','Biceps','Quads','Hamstrings','Core']},
-  {name:'Assault Bike',type:'compound',category:'full body',primary:'Conditioning',muscles:['Quads','Glutes','Front Delts','Core']},
-  {name:'Jump Rope',type:'compound',category:'full body',primary:'Calves & Conditioning',muscles:['Calves','Front Delts','Core']},
-];
-
-var libCat = 'all', libSel = null, libView = 'front', libInit = false, libMuscleFilter = null;
-
-function setView(v) {
-  libView = v;
-  document.getElementById('svg-front').style.display = v === 'front' ? 'block' : 'none';
-  document.getElementById('svg-back').style.display = v === 'back' ? 'block' : 'none';
-  document.getElementById('vbtn-front').classList.toggle('active', v === 'front');
-  document.getElementById('vbtn-back').classList.toggle('active', v === 'back');
-  if (libSel) highlightEx(libSel);
-}
-
-function clearHL() {
-  document.querySelectorAll('.muscle-part').forEach(function(el){ el.style.fill=''; el.style.filter=''; });
-}
-
-function highlightIds(ids, color, filter) {
-  ids.forEach(function(id){
-    var el = document.getElementById(id);
-    if (el) { el.style.fill = color; el.style.filter = filter; }
-  });
-}
-
-function highlightEx(ex) {
-  clearHL();
-  var pm = ex.muscles[0].toLowerCase();
-  var sm = ex.muscles.slice(1).map(function(m){ return m.toLowerCase(); });
-  highlightIds(MUSCLE_MAP[pm] || [], '#e24b4a', 'drop-shadow(0 0 6px #e24b4a99)');
-  sm.forEach(function(m){ highlightIds((MUSCLE_MAP[m]||[]).filter(function(id){ return !document.getElementById(id)||document.getElementById(id).style.fill!=='#e24b4a'; }), '#c9a84c', 'drop-shadow(0 0 4px #c9a84c77)'); });
-
-  // highlight all same-onclick siblings
-  document.querySelectorAll('.muscle-part').forEach(function(el){
-    var oc = el.getAttribute('onclick')||'';
-    var match = oc.match(/'([^']+)'/);
-    if (match) {
-      var mkey = match[1];
-      var ids = MUSCLE_MAP[mkey]||[];
-      var pids = MUSCLE_MAP[pm]||[];
-      if (ids.some(function(id){ return pids.indexOf(id) > -1; }) && !el.style.fill) {
-        el.style.fill = '#e24b4a'; el.style.filter = 'drop-shadow(0 0 6px #e24b4a99)';
-      }
-      sm.forEach(function(m){
-        var sids = MUSCLE_MAP[m]||[];
-        if (ids.some(function(id){ return sids.indexOf(id) > -1; }) && !el.style.fill) {
-          el.style.fill = '#c9a84c'; el.style.filter = 'drop-shadow(0 0 4px #c9a84c77)';
-        }
-      });
-    }
-  });
-
-  document.getElementById('sel-info').innerHTML = '<div class="sel-info-name">'+ex.name+'</div><div class="sel-info-muscles"><span style="color:var(--red)">●</span> '+ex.muscles[0]+(ex.muscles.length>1?'<br><span style="color:var(--gold)">●</span> '+ex.muscles.slice(1).join(', '):'')+'</div>';
-
-  var backMuscles = ['lats','rhomboids','traps','erectors','rear-delts','glutes','hamstrings','calves'];
-  var hasBack = ex.muscles.some(function(m){ return backMuscles.some(function(b){ return m.toLowerCase().includes(b); }); });
-  var hasFront = ex.muscles.some(function(m){ var k=m.toLowerCase(); return !backMuscles.every(function(b){ return !k.includes(b); }) ? false : true; });
-  if (hasBack && ex.muscles.length < 3) setView('back'); else setView('front');
-}
-
-function clickMuscle(mkey) {
-  libMuscleFilter = libMuscleFilter === mkey ? null : mkey;
-  if (libMuscleFilter) {
-    clearHL();
-    document.querySelectorAll('.muscle-part').forEach(function(el){
-      var oc = el.getAttribute('onclick')||'';
-      if (oc.includes("'"+mkey+"'")) { el.style.fill='#e24b4a'; el.style.filter='drop-shadow(0 0 6px #e24b4a99)'; }
-    });
-    document.getElementById('sel-info').innerHTML = '<div class="sel-info-name">'+mkey.replace(/-/g,' ').toUpperCase()+'</div><div class="sel-info-muscles">Filtering exercises for this muscle</div>';
-  } else {
-    clearHL();
-    document.getElementById('sel-info').innerHTML = '<div style="font-size:10px;color:var(--muted);">Click a muscle or exercise</div>';
-  }
-  libRender();
-}
-
-function setCat(el, c) {
-  document.querySelectorAll('.ccat').forEach(function(b){ b.classList.remove('active'); });
-  el.classList.add('active'); libCat = c; libMuscleFilter = null; clearHL();
-  document.getElementById('sel-info').innerHTML = '<div style="font-size:10px;color:var(--muted);">Click a muscle or exercise</div>';
-  libRender();
-}
-
-function libRender() {
-  var q = (document.getElementById('lib-search')||{value:''}).value.toLowerCase();
-  var filtered = EXERCISES.map(function(ex,i){ return Object.assign({},ex,{idx:i}); }).filter(function(ex){
-    var matchCat = libCat==='all' || ex.category===libCat;
-    var matchQ = !q || ex.name.toLowerCase().includes(q) || ex.muscles.some(function(m){ return m.toLowerCase().includes(q); }) || ex.primary.toLowerCase().includes(q) || ex.category.includes(q);
-    var matchMuscle = !libMuscleFilter || ex.muscles.some(function(m){
-      var mk = m.toLowerCase();
-      var mapped = MUSCLE_MAP[libMuscleFilter]||[];
-      return mk.includes(libMuscleFilter) || mapped.some(function(id){ return mk.includes(id.replace('f-','').replace('b-','')); });
-    });
-    return matchCat && matchQ && matchMuscle;
-  });
-  var countEl = document.getElementById('lib-count');
-  if (countEl) countEl.textContent = filtered.length + ' exercise' + (filtered.length!==1?'s':'') + (libMuscleFilter?' for '+libMuscleFilter.replace(/-/g,' '):'');
-  var grid = document.getElementById('lib-grid');
-  if (!grid) return;
-  if (!filtered.length) { grid.innerHTML = '<div class="no-results">No exercises found.</div>'; return; }
-  grid.innerHTML = filtered.map(function(ex){
-    return '<div class="ex-card'+(libSel&&libSel.name===ex.name?' sel':'')+'" data-idx="'+ex.idx+'" onclick="selectEx('+ex.idx+')">'+
-      '<div class="ex-top"><div class="ex-name">'+ex.name+'</div><div class="ex-badge '+ex.type+'">'+ex.type+'</div></div>'+
-      '<div class="ex-primary">Target: <strong>'+ex.primary+'</strong></div>'+
-      '<div class="ex-tags">'+ex.muscles.map(function(m,i){ return '<span class="ex-tag'+(i===0?' p':'')+'">'+ m+'</span>'; }).join('')+'</div>'+
-    '</div>';
-  }).join('');
-}
-
-function selectEx(idx) {
-  libSel = EXERCISES[idx];
-  document.querySelectorAll('.ex-card').forEach(function(c){ c.classList.toggle('sel', parseInt(c.dataset.idx)===idx); });
-  highlightEx(libSel);
-  libMuscleFilter = null;
+  renderDietPlans(filtered);
 }
 
 // INIT
