@@ -77,6 +77,37 @@
   .tab.active{color:var(--red);border-bottom-color:var(--red);}
   .tab:hover:not(.active){color:var(--muted2);}
 
+  /* DIET */
+  #diet-view{flex:1;display:none;flex-direction:column;overflow:hidden;}
+  .diet-search-bar{padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;position:relative;}
+  .diet-search-bar input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 14px 10px 38px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .diet-search-bar input:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow);}
+  .diet-search-bar input::placeholder{color:#333;}
+  .diet-search-icon{position:absolute;left:27px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted);pointer-events:none;}
+  .diet-restrictions{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;}
+  .diet-scroll{flex:1;overflow-y:auto;padding:18px 16px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+  .diet-section-title{font-family:var(--font-display);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin:6px 0 14px;display:flex;align-items:center;gap:8px;}
+  .diet-section-title::after{content:'';flex:1;height:1px;background:var(--border2);}
+  .diet-card{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:14px;overflow:hidden;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+  .diet-card-header{padding:16px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border2);}
+  .diet-card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+  .diet-card-title{font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;line-height:1;}
+  .diet-card-sub{font-size:11px;color:var(--muted2);margin-top:3px;letter-spacing:.03em;}
+  .diet-card-desc{padding:12px 18px;font-size:12px;color:var(--muted2);line-height:1.6;border-bottom:1px solid var(--border);}
+  .meal-row{display:flex;align-items:flex-start;padding:11px 18px;gap:12px;border-bottom:1px solid var(--border);transition:background .15s;}
+  .meal-row:last-child{border-bottom:none;}
+  .meal-row:hover{background:rgba(226,75,74,.04);}
+  .meal-time{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--red);width:70px;flex-shrink:0;letter-spacing:.05em;text-transform:uppercase;margin-top:3px;}
+  .meal-info{flex:1;}
+  .meal-name{font-size:13.5px;font-weight:500;color:var(--text);margin-bottom:2px;}
+  .meal-cals{color:var(--muted);font-size:11px;font-weight:400;}
+  .meal-desc{font-size:11.5px;color:var(--muted2);line-height:1.5;margin-bottom:6px;}
+  .macro-pills{display:flex;gap:6px;flex-wrap:wrap;}
+  .mpill{font-size:10px;padding:2px 9px;border-radius:12px;background:var(--bg);border:1px solid var(--border2);color:var(--muted2);}
+  .mpill.protein{border-color:rgba(226,75,74,.35);color:var(--red);background:rgba(226,75,74,.06);}
+  .diet-note{background:rgba(74,122,226,.08);border:1px solid rgba(74,122,226,.25);border-radius:8px;padding:10px 14px;font-size:11.5px;color:#8fb4f0;line-height:1.5;margin:12px 18px 16px;}
+  .diet-empty{text-align:center;color:var(--muted);font-size:14px;padding:50px 20px;}
+
   /* CHAT */
   #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
   .goal-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
@@ -220,6 +251,7 @@
 
   <div class="tab-bar">
     <div class="tab active" id="tab-chat" onclick="showTab('chat')">⚡ Coach</div>
+    <div class="tab" id="tab-diet" onclick="showTab('diet')">🥗 Diet</div>
     <div class="tab" id="tab-profile" onclick="showTab('profile')">👤 My Stats</div>
   </div>
 
@@ -311,6 +343,25 @@
       <div class="saved-msg" id="saved-msg">✅ Profile updated — your coach is dialled in.</div>
     </div>
   </div>
+
+  <!-- DIET -->
+  <div id="diet-view">
+    <div class="diet-search-bar">
+      <span class="diet-search-icon">🔍</span>
+      <input id="diet-search" placeholder="Search meal plans, foods, or restrictions..." oninput="renderDietPlans()"/>
+    </div>
+    <div class="diet-restrictions">
+      <button class="chip active" onclick="setDietFilter(this,'all')">All</button>
+      <button class="chip" onclick="setDietFilter(this,'muscle')">🔥 Muscle</button>
+      <button class="chip" onclick="setDietFilter(this,'fat-loss')">🏃 Fat Loss</button>
+      <button class="chip" onclick="setDietFilter(this,'keto')">🥑 Keto</button>
+      <button class="chip" onclick="setDietFilter(this,'vegan')">🌱 Vegan</button>
+      <button class="chip" onclick="setDietFilter(this,'gluten-free')">🌾 Gluten-Free</button>
+      <button class="chip" onclick="setDietFilter(this,'dairy-free')">🥛 Dairy-Free</button>
+      <button class="chip" onclick="setDietFilter(this,'diabetic')">🩺 Diabetic</button>
+    </div>
+    <div class="diet-scroll" id="diet-scroll"></div>
+  </div>
 </div>
 
 <script>
@@ -321,9 +372,12 @@ const pSelections={'p-exp':'','p-goal':'','p-days':'','p-equip':''};
 function showTab(tab){
   document.getElementById('chat-view').style.display=tab==='chat'?'flex':'none';
   document.getElementById('profile-view').style.display=tab==='profile'?'block':'none';
+  document.getElementById('diet-view').style.display=tab==='diet'?'flex':'none';
   document.getElementById('tab-chat').classList.toggle('active',tab==='chat');
   document.getElementById('tab-profile').classList.toggle('active',tab==='profile');
+  document.getElementById('tab-diet').classList.toggle('active',tab==='diet');
   if(tab==='profile') populateProfileForm();
+  if(tab==='diet' && !dietInit){renderDietPlans();dietInit=true;}
 }
 
 function populateProfileForm(){
@@ -435,6 +489,126 @@ async function send(override){
 function sendQuick(t){send(t);}
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
 function grow(el){el.style.height='42px';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+
+// ── DIET ──
+let dietFilter='all', dietInit=false;
+
+const DIET_PLANS=[
+  {id:'muscle',icon:'🔥',color:'#e24b4a',name:'Muscle Builder',sub:'High Protein · 2800–3200 cal/day',filters:['muscle'],
+   desc:'Maximizes muscle growth with 1g+ protein per lb bodyweight and carbs timed around your training.',
+   meals:[
+    {time:'7:00 AM',name:'Power Breakfast',cals:620,desc:'6 scrambled eggs, 1 cup oats with berries, glass of milk',p:'52g',c:'58g',f:'16g'},
+    {time:'10:00 AM',name:'Morning Snack',cals:380,desc:'Greek yogurt (200g), handful of almonds, 1 banana',p:'28g',c:'34g',f:'14g'},
+    {time:'1:00 PM',name:'Chicken & Rice',cals:680,desc:'200g grilled chicken, 1.5 cups white rice, steamed broccoli',p:'52g',c:'72g',f:'12g'},
+    {time:'4:00 PM',name:'Pre-Workout Shake',cals:520,desc:'2 scoops whey, banana, oats, peanut butter, milk',p:'48g',c:'52g',f:'10g'},
+    {time:'7:00 PM',name:'Beef & Potato',cals:680,desc:'200g lean ground beef, large baked potato, mixed veg',p:'54g',c:'62g',f:'18g'},
+    {time:'9:30 PM',name:'Bedtime Casein',cals:320,desc:'1.5 cups cottage cheese, walnuts, drizzle of honey',p:'34g',c:'18g',f:'12g'},
+   ]},
+  {id:'fat-loss',icon:'🏃',color:'#5a9e2f',name:'Fat Loss',sub:'Calorie Deficit · 1600–2000 cal/day',filters:['fat-loss'],
+   desc:'300–500 calories below maintenance with high protein to preserve muscle while you lean out.',
+   meals:[
+    {time:'8:00 AM',name:'Protein Omelette',cals:320,desc:'8 egg whites, 2 whole eggs, spinach, mushrooms, 1 slice toast',p:'40g',c:'18g',f:'10g'},
+    {time:'11:00 AM',name:'Mid-Morning',cals:180,desc:'1 cup Greek yogurt, mixed berries, no added sugar',p:'18g',c:'20g',f:'3g'},
+    {time:'1:00 PM',name:'Chicken Salad',cals:420,desc:'200g grilled chicken, big salad, avocado, olive oil & lemon',p:'46g',c:'12g',f:'18g'},
+    {time:'4:00 PM',name:'Afternoon Snack',cals:280,desc:'2 rice cakes, 2 tbsp peanut butter, apple',p:'8g',c:'34g',f:'12g'},
+    {time:'7:00 PM',name:'Salmon & Veg',cals:420,desc:'180g baked salmon, roasted asparagus, cauliflower rice',p:'42g',c:'14g',f:'20g'},
+    {time:'9:00 PM',name:'Optional Snack',cals:160,desc:'1 cup cottage cheese — only if hungry',p:'20g',c:'8g',f:'4g'},
+   ]},
+  {id:'keto',icon:'🥑',color:'#c9a84c',name:'Keto',sub:'Low Carb · Under 30g net carbs/day',filters:['keto'],
+   desc:'Fat as primary fuel. Under 30g net carbs to stay in ketosis. Great for fat loss and steady energy.',
+   meals:[
+    {time:'9:00 AM',name:'Bulletproof Start',cals:640,desc:'3 eggs fried in butter, 4 strips bacon, half avocado, coffee with MCT oil',p:'32g',c:'4g',f:'54g'},
+    {time:'12:30 PM',name:'Keto Lunch',cals:580,desc:'Lettuce-wrap burger with ground beef, cheese, sour cream, guacamole',p:'38g',c:'8g',f:'44g'},
+    {time:'3:30 PM',name:'Keto Snack',cals:320,desc:'Macadamia nuts, 2 slices cheese, celery with cream cheese',p:'10g',c:'4g',f:'28g'},
+    {time:'7:00 PM',name:'Ribeye & Broccoli',cals:720,desc:'200g ribeye steak, butter-roasted broccoli, side salad',p:'52g',c:'8g',f:'52g'},
+    {time:'9:00 PM',name:'Evening Snack',cals:280,desc:'Almond butter, 85% dark chocolate, pork rinds',p:'8g',c:'6g',f:'24g'},
+   ]},
+  {id:'diabetic',icon:'🩺',color:'#4a7ae2',name:'Diabetic Friendly',sub:'Low GI · Blood Sugar Control',filters:['diabetic'],
+   desc:'Built around low glycemic index foods, controlled portions, and regular meal timing to keep blood sugar stable.',
+   note:'⚕️ This is general guidance only. Always consult your doctor or a registered dietitian before changing your diet, especially if you take insulin or other medication.',
+   meals:[
+    {time:'7:30 AM',name:'Low GI Breakfast',cals:420,desc:'Steel-cut oats with cinnamon, walnuts, berries, 2 boiled eggs',p:'22g',c:'44g',f:'16g'},
+    {time:'10:30 AM',name:'Mid-Morning',cals:220,desc:'Apple with almond butter — fiber slows sugar absorption',p:'6g',c:'24g',f:'12g'},
+    {time:'1:00 PM',name:'Balanced Lunch',cals:520,desc:'Grilled chicken, quinoa, large salad, olive oil dressing',p:'42g',c:'42g',f:'14g'},
+    {time:'3:30 PM',name:'Smart Snack',cals:240,desc:'Mixed nuts + string cheese — protein & fat stabilize blood sugar',p:'12g',c:'8g',f:'18g'},
+    {time:'6:30 PM',name:'Controlled Dinner',cals:480,desc:'Baked salmon, lots of non-starchy veg, small portion brown rice',p:'40g',c:'32g',f:'18g'},
+    {time:'8:30 PM',name:'Bedtime Snack',cals:140,desc:'Plain Greek yogurt — protein prevents overnight sugar drops',p:'16g',c:'10g',f:'4g'},
+   ]},
+  {id:'vegan',icon:'🌱',color:'#5a9e2f',name:'Vegan',sub:'Plant-Based · High Protein',filters:['vegan','dairy-free'],
+   desc:'100% plant-based with complete proteins, plus iron, B12, and omega-3 sources built in.',
+   meals:[
+    {time:'7:30 AM',name:'Smoothie Bowl',cals:520,desc:'Pea protein, frozen berries, banana, flaxseed, granola, hemp seeds',p:'36g',c:'62g',f:'12g'},
+    {time:'10:30 AM',name:'Morning Snack',cals:300,desc:'Mixed nuts, chia seeds in oat milk, apple',p:'10g',c:'28g',f:'18g'},
+    {time:'1:00 PM',name:'Tofu Rice Bowl',cals:640,desc:'200g pan-fried tofu, brown rice, edamame, avocado, soy-ginger',p:'38g',c:'72g',f:'18g'},
+    {time:'4:00 PM',name:'Plant Shake',cals:440,desc:'2 scoops plant protein, banana, oat milk, peanut butter',p:'40g',c:'44g',f:'12g'},
+    {time:'7:00 PM',name:'Lentil Curry',cals:620,desc:'Red lentil curry, sweet potato, chickpeas, spinach, brown rice',p:'32g',c:'88g',f:'8g'},
+    {time:'9:00 PM',name:'Bedtime Snack',cals:320,desc:'Tempeh slices, almond butter, rice cake',p:'22g',c:'24g',f:'14g'},
+   ]},
+  {id:'gluten-free',icon:'🌾',color:'#c9a84c',name:'Gluten-Free',sub:'Celiac Safe · No Gluten',filters:['gluten-free'],
+   desc:'Completely gluten-free using safe grains like rice, quinoa, and certified GF oats.',
+   meals:[
+    {time:'7:30 AM',name:'GF Breakfast',cals:480,desc:'3 eggs, certified GF oats with almond milk and berries',p:'28g',c:'52g',f:'14g'},
+    {time:'10:30 AM',name:'Morning Snack',cals:280,desc:'Rice cakes with almond butter, banana — all certified GF',p:'8g',c:'36g',f:'12g'},
+    {time:'1:00 PM',name:'Quinoa Bowl',cals:580,desc:'Quinoa, grilled chicken, roasted veggies, olive oil, lemon',p:'44g',c:'58g',f:'14g'},
+    {time:'4:00 PM',name:'GF Snack',cals:320,desc:'Greek yogurt, berries, honey, GF granola',p:'20g',c:'38g',f:'8g'},
+    {time:'7:00 PM',name:'Salmon & Rice',cals:580,desc:'200g salmon, white rice, broccoli, tamari (GF soy sauce)',p:'44g',c:'52g',f:'18g'},
+    {time:'9:00 PM',name:'Bedtime',cals:200,desc:'Cottage cheese with pineapple — verify GF certified',p:'20g',c:'16g',f:'4g'},
+   ]},
+  {id:'dairy-free',icon:'🥛',color:'#4a7ae2',name:'Dairy-Free',sub:'No Dairy · Lactose Free',filters:['dairy-free'],
+   desc:'Completely dairy-free with calcium and protein needs met through plant alternatives and whole foods.',
+   meals:[
+    {time:'7:30 AM',name:'DF Breakfast',cals:480,desc:'3 scrambled eggs, oat milk overnight oats, blueberries, hemp seeds',p:'28g',c:'48g',f:'16g'},
+    {time:'10:30 AM',name:'Morning Snack',cals:280,desc:'Coconut yogurt, berries, dairy-free granola',p:'8g',c:'38g',f:'10g'},
+    {time:'1:00 PM',name:'Chicken & Quinoa',cals:600,desc:'200g chicken, quinoa, roasted veg, tahini dressing',p:'48g',c:'58g',f:'16g'},
+    {time:'4:00 PM',name:'DF Shake',cals:380,desc:'Plant protein, oat milk, banana, almond butter',p:'32g',c:'40g',f:'12g'},
+    {time:'7:00 PM',name:'Salmon Dinner',cals:560,desc:'200g salmon, sweet potato, steamed broccoli, olive oil',p:'42g',c:'44g',f:'20g'},
+    {time:'9:00 PM',name:'DF Snack',cals:280,desc:'Almond butter on rice cakes, handful of mixed nuts',p:'8g',c:'22g',f:'18g'},
+   ]},
+];
+
+function setDietFilter(el,f){
+  document.querySelectorAll('.diet-restrictions .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  dietFilter=f;
+  renderDietPlans();
+}
+
+function renderDietPlans(){
+  const scroll=document.getElementById('diet-scroll');
+  const q=(document.getElementById('diet-search')||{value:''}).value.toLowerCase();
+  let plans=DIET_PLANS.filter(p=>{
+    const matchFilter=dietFilter==='all'||p.filters.indexOf(dietFilter)>-1;
+    const matchSearch=!q||p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||
+      p.meals.some(m=>m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q));
+    return matchFilter&&matchSearch;
+  });
+  if(!plans.length){scroll.innerHTML='<div class="diet-empty">No meal plans match. Try a different filter or search.</div>';return;}
+  scroll.innerHTML='<div class="diet-section-title">'+plans.length+' Meal Plan'+(plans.length!==1?'s':'')+'</div>'+
+    plans.map(p=>(
+      '<div class="diet-card">'+
+        '<div class="diet-card-header" style="border-left:3px solid '+p.color+';">'+
+          '<div class="diet-card-icon" style="background:'+p.color+'22;">'+p.icon+'</div>'+
+          '<div><div class="diet-card-title">'+p.name+'</div><div class="diet-card-sub">'+p.sub+'</div></div>'+
+        '</div>'+
+        '<div class="diet-card-desc">'+p.desc+'</div>'+
+        (p.note?'<div class="diet-note">'+p.note+'</div>':'')+
+        p.meals.map(m=>(
+          '<div class="meal-row">'+
+            '<div class="meal-time">'+m.time+'</div>'+
+            '<div class="meal-info">'+
+              '<div class="meal-name">'+m.name+' <span class="meal-cals">· '+m.cals+' cal</span></div>'+
+              '<div class="meal-desc">'+m.desc+'</div>'+
+              '<div class="macro-pills">'+
+                '<span class="mpill protein">'+m.p+' protein</span>'+
+                '<span class="mpill">'+m.c+' carbs</span>'+
+                '<span class="mpill">'+m.f+' fat</span>'+
+              '</div>'+
+            '</div>'+
+          '</div>'
+        )).join('')+
+      '</div>'
+    )).join('');
+}
 </script>
 </body>
 </html>
