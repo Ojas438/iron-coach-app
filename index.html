@@ -145,6 +145,13 @@
   .timer-btn-reset{flex:1;font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:.08em;padding:14px;border-radius:10px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;transition:all .15s;}
   .timer-btn-reset:hover{border-color:var(--red);color:var(--text);}
 
+  /* MINI FLOATING TIMER */
+  #mini-timer{display:none;position:fixed;bottom:80px;right:18px;background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;border-radius:30px;padding:10px 18px;font-family:var(--font-display);font-size:20px;font-weight:900;letter-spacing:.04em;cursor:pointer;z-index:90;box-shadow:0 6px 24px rgba(226,75,74,.55);align-items:center;gap:8px;animation:miniPop .3s ease;}
+  #mini-timer.show{display:flex;}
+  #mini-timer.finished{animation:flashRed .5s ease-in-out infinite;}
+  .mini-timer-icon{font-size:16px;}
+  @keyframes miniPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+
   /* CHAT */
   #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
   .goal-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
@@ -455,6 +462,12 @@
       </div>
     </div>
   </div>
+
+  <!-- FLOATING MINI TIMER -->
+  <div id="mini-timer" onclick="openTimer()">
+    <span class="mini-timer-icon">⏱️</span>
+    <span id="mini-timer-time">1:30</span>
+  </div>
 </div>
 
 <script>
@@ -762,8 +775,18 @@ function nutriGrow(el){el.style.height='42px';el.style.height=Math.min(el.scroll
 var timerTotal=90, timerRemaining=90, timerInterval=null, timerRunning=false;
 var RING_CIRC=565.5;
 
-function openTimer(){document.getElementById('timer-overlay').classList.add('open');updateTimerDisplay();}
-function closeTimer(){document.getElementById('timer-overlay').classList.remove('open');}
+function openTimer(){
+  document.getElementById('timer-overlay').classList.add('open');
+  document.getElementById('mini-timer').classList.remove('show');
+  updateTimerDisplay();
+}
+function closeTimer(){
+  document.getElementById('timer-overlay').classList.remove('open');
+  // keep mini timer visible if running or paused mid-countdown
+  if(timerRunning || (timerRemaining>0 && timerRemaining<timerTotal)){
+    document.getElementById('mini-timer').classList.add('show');
+  }
+}
 
 function fmtTime(s){
   var m=Math.floor(s/60), sec=s%60;
@@ -773,6 +796,8 @@ function fmtTime(s){
 function updateTimerDisplay(){
   var disp=document.getElementById('timer-display');
   disp.textContent=fmtTime(timerRemaining);
+  var mini=document.getElementById('mini-timer-time');
+  if(mini) mini.textContent=fmtTime(timerRemaining);
   var ring=document.getElementById('ring-fg');
   var pct=timerTotal>0?timerRemaining/timerTotal:0;
   ring.style.strokeDashoffset=RING_CIRC*(1-pct);
@@ -804,6 +829,7 @@ function toggleTimer(){
   } else {
     if(timerRemaining<=0){timerRemaining=timerTotal;}
     document.getElementById('timer-display').classList.remove('finished');
+    document.getElementById('mini-timer').classList.remove('finished');
     timerRunning=true;
     document.getElementById('timer-start').textContent='PAUSE';
     timerInterval=setInterval(function(){
@@ -827,12 +853,14 @@ function resetTimer(){
   timerRemaining=timerTotal;
   document.getElementById('timer-start').textContent='START';
   document.getElementById('timer-display').classList.remove('finished');
+  document.getElementById('mini-timer').classList.remove('finished','show');
   updateTimerDisplay();
 }
 
 function timerFinished(){
   document.getElementById('timer-start').textContent='START';
   document.getElementById('timer-display').classList.add('finished');
+  document.getElementById('mini-timer').classList.add('finished');
   playBeep();
   if(navigator.vibrate) navigator.vibrate([200,100,200,100,200]);
 }
