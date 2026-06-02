@@ -152,6 +152,43 @@
   .mini-timer-icon{font-size:16px;}
   @keyframes miniPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 
+  /* STREAK */
+  .streak-btn{font-family:var(--font-display);font-size:14px;font-weight:800;padding:5px 12px;border-radius:6px;border:1px solid rgba(226,75,74,.4);background:rgba(226,75,74,.12);color:var(--red);cursor:pointer;transition:all .15s;letter-spacing:.03em;}
+  .streak-btn:hover{background:var(--red);color:#fff;border-color:var(--red);}
+  #streak-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+  #streak-overlay.open{display:flex;}
+  .streak-modal{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:20px;padding:30px 24px;width:100%;max-width:360px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .streak-flame{font-size:60px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 0 16px rgba(226,75,74,.6));transition:transform .3s;}
+  .streak-flame.pop{animation:flamePop .5s ease;}
+  @keyframes flamePop{0%{transform:scale(1)}40%{transform:scale(1.4)}100%{transform:scale(1)}}
+  .streak-big{font-family:var(--font-display);font-size:72px;font-weight:900;line-height:1;color:var(--red);}
+  .streak-caption{font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);margin-bottom:20px;}
+  .streak-week{display:flex;gap:8px;margin-bottom:22px;}
+  .streak-day{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .streak-day-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border2);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);transition:all .2s;}
+  .streak-day-dot.done{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 0 10px rgba(226,75,74,.5);}
+  .streak-day-dot.today{border-color:var(--gold);}
+  .streak-day-label{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .streak-stats{display:flex;gap:12px;width:100%;margin-bottom:20px;}
+  .streak-stat{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:10px;padding:12px;}
+  .streak-stat-val{font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--text);line-height:1;}
+  .streak-stat-label{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}
+  .streak-log-btn{width:100%;font-family:var(--font-display);font-size:17px;font-weight:800;letter-spacing:.08em;padding:15px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;cursor:pointer;transition:all .2s;box-shadow:0 6px 20px rgba(226,75,74,.4);}
+  .streak-log-btn:hover{transform:translateY(-1px);}
+  .streak-log-btn.done{background:var(--surface3);color:var(--green);box-shadow:none;cursor:default;border:1px solid var(--border2);}
+  .streak-msg{font-size:12px;color:var(--green);margin-top:12px;min-height:16px;}
+
+  /* STREAK BANNER */
+  .streak-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;background:linear-gradient(90deg,rgba(226,75,74,.16),rgba(226,75,74,.04));border-bottom:1px solid var(--border2);cursor:pointer;transition:background .15s;flex-shrink:0;}
+  .streak-banner:hover{background:linear-gradient(90deg,rgba(226,75,74,.22),rgba(226,75,74,.06));}
+  .streak-banner-left{display:flex;align-items:center;gap:11px;}
+  .streak-banner-flame{font-size:28px;filter:drop-shadow(0 0 8px rgba(226,75,74,.5));}
+  .streak-banner-num{font-family:var(--font-display);font-size:18px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--text);}
+  .streak-banner-sub{font-size:11px;color:var(--muted2);margin-top:1px;}
+  .streak-banner-btn{font-family:var(--font-display);font-size:14px;font-weight:800;letter-spacing:.06em;padding:9px 18px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(226,75,74,.4);white-space:nowrap;}
+  .streak-banner-btn:hover{transform:translateY(-1px);}
+  .streak-banner-btn.done{background:var(--surface3);color:var(--green);box-shadow:none;border:1px solid var(--border2);}
+
   /* CHAT */
   #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
   .goal-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
@@ -291,6 +328,7 @@
     <div class="badge">AI Elite</div>
     <div class="header-right">
       <div class="user-tag"><div class="user-dot"></div><span id="user-label">Guest</span></div>
+      <button class="streak-btn" id="streak-btn" onclick="openStreak()">🔥 <span id="streak-num">0</span></button>
       <button class="edit-profile-btn" onclick="openTimer()">⏱️ Timer</button>
       <button class="edit-profile-btn" onclick="showTab('profile')">✏️ Profile</button>
     </div>
@@ -304,6 +342,16 @@
 
   <!-- CHAT -->
   <div id="chat-view">
+    <div class="streak-banner" id="streak-banner" onclick="openStreak()">
+      <div class="streak-banner-left">
+        <span class="streak-banner-flame">🔥</span>
+        <div>
+          <div class="streak-banner-num"><span id="streak-banner-num">0</span> day streak</div>
+          <div class="streak-banner-sub" id="streak-banner-sub">Tap to log today's workout</div>
+        </div>
+      </div>
+      <button class="streak-banner-btn" id="streak-banner-btn" onclick="event.stopPropagation();logWorkout();renderStreak();">✓ Log</button>
+    </div>
     <div class="goal-bar">
       <span class="goal-label">Goal:</span>
       <button class="chip active" onclick="setGoal(this,'build muscle / hypertrophy')">🔥 Muscle</button>
@@ -467,6 +515,23 @@
   <div id="mini-timer" onclick="openTimer()">
     <span class="mini-timer-icon">⏱️</span>
     <span id="mini-timer-time">1:30</span>
+  </div>
+
+  <!-- STREAK OVERLAY -->
+  <div id="streak-overlay">
+    <div class="streak-modal">
+      <button class="timer-close" onclick="closeStreak()">✕</button>
+      <div class="streak-flame" id="streak-flame">🔥</div>
+      <div class="streak-big" id="streak-big">0</div>
+      <div class="streak-caption" id="streak-caption">day streak</div>
+      <div class="streak-week" id="streak-week"></div>
+      <div class="streak-stats">
+        <div class="streak-stat"><div class="streak-stat-val" id="streak-longest">0</div><div class="streak-stat-label">Best Streak</div></div>
+        <div class="streak-stat"><div class="streak-stat-val" id="streak-total">0</div><div class="streak-stat-label">Total Days</div></div>
+      </div>
+      <button class="streak-log-btn" id="streak-log-btn" onclick="logWorkout()">✓ I TRAINED TODAY</button>
+      <div class="streak-msg" id="streak-msg"></div>
+    </div>
   </div>
 </div>
 
@@ -882,6 +947,102 @@ function playBeep(){
     beepAt(0); beepAt(0.35); beepAt(0.7);
   }catch(e){}
 }
+
+// ── STREAK COUNTER ──
+function streakKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function getWorkouts(){try{return JSON.parse(localStorage.getItem('ic_workouts')||'[]');}catch(e){return [];}}
+function saveWorkouts(arr){try{localStorage.setItem('ic_workouts',JSON.stringify(arr));}catch(e){}}
+
+function computeStreak(){
+  var set={}; getWorkouts().forEach(function(d){set[d]=true;});
+  var streak=0; var d=new Date();
+  if(!set[streakKey(d)]) d.setDate(d.getDate()-1); // today not done yet, check from yesterday
+  while(set[streakKey(d)]){streak++; d.setDate(d.getDate()-1);}
+  return streak;
+}
+
+function computeLongest(){
+  var dates=getWorkouts().slice().sort();
+  if(!dates.length) return 0;
+  var longest=1, cur=1;
+  for(var i=1;i<dates.length;i++){
+    var diff=Math.round((new Date(dates[i])-new Date(dates[i-1]))/86400000);
+    if(diff===1){cur++; if(cur>longest)longest=cur;}
+    else if(diff!==0){cur=1;}
+  }
+  return longest;
+}
+
+function openStreak(){
+  document.getElementById('streak-overlay').classList.add('open');
+  renderStreak();
+}
+function closeStreak(){document.getElementById('streak-overlay').classList.remove('open');}
+
+function renderStreak(){
+  var streak=computeStreak();
+  var workouts=getWorkouts();
+  var set={}; workouts.forEach(function(d){set[d]=true;});
+  document.getElementById('streak-big').textContent=streak;
+  document.getElementById('streak-num').textContent=streak;
+  document.getElementById('streak-caption').textContent=streak===1?'day streak':'day streak';
+  document.getElementById('streak-longest').textContent=computeLongest();
+  document.getElementById('streak-total').textContent=workouts.length;
+  // week view: last 7 days
+  var labels=['S','M','T','W','T','F','S'];
+  var html=''; var today=new Date();
+  for(var i=6;i>=0;i--){
+    var d=new Date(); d.setDate(today.getDate()-i);
+    var done=set[streakKey(d)];
+    var isToday=i===0;
+    html+='<div class="streak-day">'+
+      '<div class="streak-day-dot'+(done?' done':'')+(isToday?' today':'')+'">'+(done?'✓':'')+'</div>'+
+      '<div class="streak-day-label">'+labels[d.getDay()]+'</div>'+
+    '</div>';
+  }
+  document.getElementById('streak-week').innerHTML=html;
+  // log button state
+  var btn=document.getElementById('streak-log-btn');
+  var doneToday=set[streakKey(new Date())];
+  if(doneToday){
+    btn.classList.add('done'); btn.textContent='✓ TRAINED TODAY';
+  } else {
+    btn.classList.remove('done'); btn.textContent='✓ I TRAINED TODAY';
+  }
+  document.getElementById('streak-msg').textContent='';
+  // banner
+  var bnum=document.getElementById('streak-banner-num');
+  if(bnum){
+    bnum.textContent=streak;
+    var bsub=document.getElementById('streak-banner-sub');
+    var bbtn=document.getElementById('streak-banner-btn');
+    if(doneToday){
+      bsub.textContent="Done today — nice work! 💪";
+      bbtn.classList.add('done'); bbtn.textContent='✓ Done';
+    } else {
+      bsub.textContent="Tap to log today's workout";
+      bbtn.classList.remove('done'); bbtn.textContent='✓ Log';
+    }
+  }
+}
+
+function logWorkout(){
+  var today=streakKey(new Date());
+  var workouts=getWorkouts();
+  if(workouts.indexOf(today)>-1){
+    document.getElementById('streak-msg').textContent="You've already logged today — see you tomorrow!";
+    return;
+  }
+  workouts.push(today); saveWorkouts(workouts);
+  var flame=document.getElementById('streak-flame');
+  flame.classList.remove('pop'); void flame.offsetWidth; flame.classList.add('pop');
+  renderStreak();
+  var s=computeStreak();
+  document.getElementById('streak-msg').textContent=s>1?('🔥 '+s+' days strong — keep it going!'):'Streak started! Come back tomorrow.';
+}
+
+// init streak number on load
+renderStreak();
 </script>
 </body>
 </html>
