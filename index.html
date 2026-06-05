@@ -199,7 +199,10 @@
   .lib-layout{flex:1;display:flex;overflow:hidden;}
   .body-panel{width:190px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border2);display:flex;flex-direction:column;align-items:center;padding:12px 10px;overflow-y:auto;}
   .body-panel-title{font-family:var(--font-display);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-  .body-wrap{width:145px;height:260px;flex-shrink:0;}
+  .body-wrap{width:160px;height:280px;flex-shrink:0;position:relative;border-radius:10px;background:radial-gradient(ellipse at 50% 35%,#161616,#0c0c0c);border:1px solid var(--border2);overflow:hidden;cursor:grab;}
+  .body-wrap:active{cursor:grabbing;}
+  #body-canvas{width:100%;height:100%;display:block;}
+  .body-hint{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);pointer-events:none;opacity:.7;}
   .body-svg{width:100%;height:100%;}
   .view-btns{display:flex;gap:5px;margin-top:8px;}
   .vbtn{padding:4px 14px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:11px;font-weight:700;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
@@ -289,6 +292,7 @@
   .saved-msg{text-align:center;color:var(--green);font-size:13px;font-weight:500;margin-top:12px;display:none;letter-spacing:.02em;}
   .saved-msg.show{display:block;}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
@@ -513,54 +517,10 @@
     </div>
     <div class="lib-layout">
       <div class="body-panel">
-        <div class="body-panel-title">Muscle Map</div>
-        <div class="body-wrap">
-          <svg id="svg-front" class="body-svg" viewBox="0 0 200 370" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="100" cy="26" rx="21" ry="24" fill="#222" stroke="#333" stroke-width="1"/>
-            <rect x="92" y="48" width="16" height="13" rx="4" fill="#1a1a1a"/>
-            <ellipse id="f-front-delts" class="muscle-part" cx="67" cy="80" rx="17" ry="13" fill="#2a2a2a" onclick="clickMuscle('front-delts')"/>
-            <ellipse class="muscle-part" cx="133" cy="80" rx="17" ry="13" fill="#2a2a2a" onclick="clickMuscle('front-delts')"/>
-            <ellipse id="f-side-delts" class="muscle-part" cx="51" cy="82" rx="11" ry="9" fill="#2a2a2a" onclick="clickMuscle('side-delts')"/>
-            <ellipse class="muscle-part" cx="149" cy="82" rx="11" ry="9" fill="#2a2a2a" onclick="clickMuscle('side-delts')"/>
-            <path id="f-chest" class="muscle-part" d="M82 73 Q72 83 72 98 Q80 106 98 106 L98 73 Z" fill="#2a2a2a" onclick="clickMuscle('chest')"/>
-            <path class="muscle-part" d="M118 73 Q128 83 128 98 Q120 106 102 106 L102 73 Z" fill="#2a2a2a" onclick="clickMuscle('chest')"/>
-            <rect id="f-abs" class="muscle-part" x="87" y="108" width="11" height="43" rx="3" fill="#2a2a2a" onclick="clickMuscle('abs')"/>
-            <rect class="muscle-part" x="102" y="108" width="11" height="43" rx="3" fill="#2a2a2a" onclick="clickMuscle('abs')"/>
-            <path id="f-obliques" class="muscle-part" d="M76 106 Q70 118 72 152 L87 152 L87 106 Z" fill="#2a2a2a" onclick="clickMuscle('obliques')"/>
-            <path class="muscle-part" d="M124 106 Q130 118 128 152 L113 152 L113 106 Z" fill="#2a2a2a" onclick="clickMuscle('obliques')"/>
-            <ellipse id="f-biceps" class="muscle-part" cx="58" cy="110" rx="10" ry="19" fill="#2a2a2a" onclick="clickMuscle('biceps')"/>
-            <ellipse class="muscle-part" cx="142" cy="110" rx="10" ry="19" fill="#2a2a2a" onclick="clickMuscle('biceps')"/>
-            <path id="f-forearms" class="muscle-part" d="M49 130 Q45 145 48 163 L56 163 Q53 145 56 130 Z" fill="#2a2a2a" onclick="clickMuscle('forearms')"/>
-            <path class="muscle-part" d="M151 130 Q155 145 152 163 L144 163 Q147 145 144 130 Z" fill="#2a2a2a" onclick="clickMuscle('forearms')"/>
-            <path id="f-quads" class="muscle-part" d="M85 173 Q75 193 77 237 Q83 245 95 245 L97 222 Q89 212 89 173 Z" fill="#2a2a2a" onclick="clickMuscle('quads')"/>
-            <path class="muscle-part" d="M115 173 Q125 193 123 237 Q117 245 105 245 L103 222 Q111 212 111 173 Z" fill="#2a2a2a" onclick="clickMuscle('quads')"/>
-            <path id="f-calves" class="muscle-part" d="M87 262 Q91 286 89 314 L81 314 Q79 286 79 262 Z" fill="#2a2a2a" onclick="clickMuscle('calves')"/>
-            <path class="muscle-part" d="M113 262 Q109 286 111 314 L119 314 Q121 286 121 262 Z" fill="#2a2a2a" onclick="clickMuscle('calves')"/>
-            <ellipse cx="83" cy="321" rx="12" ry="6" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
-            <ellipse cx="117" cy="321" rx="12" ry="6" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
-          </svg>
-          <svg id="svg-back" class="body-svg" viewBox="0 0 200 370" xmlns="http://www.w3.org/2000/svg" style="display:none;">
-            <ellipse cx="100" cy="26" rx="21" ry="24" fill="#222" stroke="#333" stroke-width="1"/>
-            <rect x="92" y="48" width="16" height="13" rx="4" fill="#1a1a1a"/>
-            <path id="b-traps" class="muscle-part" d="M92 50 Q81 55 69 70 Q75 76 88 76 L92 66 Z" fill="#2a2a2a" onclick="clickMuscle('traps')"/>
-            <path class="muscle-part" d="M108 50 Q119 55 131 70 Q125 76 112 76 L108 66 Z" fill="#2a2a2a" onclick="clickMuscle('traps')"/>
-            <ellipse id="b-rear-delts" class="muscle-part" cx="61" cy="82" rx="15" ry="11" fill="#2a2a2a" onclick="clickMuscle('rear-delts')"/>
-            <ellipse class="muscle-part" cx="139" cy="82" rx="15" ry="11" fill="#2a2a2a" onclick="clickMuscle('rear-delts')"/>
-            <path id="b-lats" class="muscle-part" d="M77 88 Q63 103 65 143 L80 146 Q78 118 83 88 Z" fill="#2a2a2a" onclick="clickMuscle('lats')"/>
-            <path class="muscle-part" d="M123 88 Q137 103 135 143 L120 146 Q122 118 117 88 Z" fill="#2a2a2a" onclick="clickMuscle('lats')"/>
-            <rect id="b-erectors" class="muscle-part" x="88" y="110" width="10" height="48" rx="3" fill="#2a2a2a" onclick="clickMuscle('erectors')"/>
-            <rect class="muscle-part" x="102" y="110" width="10" height="48" rx="3" fill="#2a2a2a" onclick="clickMuscle('erectors')"/>
-            <ellipse id="b-triceps" class="muscle-part" cx="55" cy="113" rx="10" ry="21" fill="#2a2a2a" onclick="clickMuscle('triceps')"/>
-            <ellipse class="muscle-part" cx="145" cy="113" rx="10" ry="21" fill="#2a2a2a" onclick="clickMuscle('triceps')"/>
-            <path id="b-glutes" class="muscle-part" d="M85 160 Q75 170 77 197 Q85 207 100 207 L100 160 Z" fill="#2a2a2a" onclick="clickMuscle('glutes')"/>
-            <path class="muscle-part" d="M115 160 Q125 170 123 197 Q115 207 100 207 L100 160 Z" fill="#2a2a2a" onclick="clickMuscle('glutes')"/>
-            <path id="b-hamstrings" class="muscle-part" d="M81 205 Q75 225 77 250 Q83 257 95 257 L97 227 Q89 215 85 205 Z" fill="#2a2a2a" onclick="clickMuscle('hamstrings')"/>
-            <path class="muscle-part" d="M119 205 Q125 225 123 250 Q117 257 105 257 L103 227 Q111 215 115 205 Z" fill="#2a2a2a" onclick="clickMuscle('hamstrings')"/>
-            <path id="b-calves" class="muscle-part" d="M79 269 Q75 292 79 318 Q84 324 91 322 Q95 296 93 269 Z" fill="#2a2a2a" onclick="clickMuscle('calves')"/>
-            <path class="muscle-part" d="M121 269 Q125 292 121 318 Q116 324 109 322 Q105 296 107 269 Z" fill="#2a2a2a" onclick="clickMuscle('calves')"/>
-            <ellipse cx="84" cy="327" rx="12" ry="6" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
-            <ellipse cx="116" cy="327" rx="12" ry="6" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
-          </svg>
+        <div class="body-panel-title">3D Muscle Map</div>
+        <div class="body-wrap" id="body-wrap">
+          <canvas id="body-canvas"></canvas>
+          <div class="body-hint" id="body-hint">drag to rotate</div>
         </div>
         <div class="view-btns">
           <button class="vbtn active" id="vbtn-front" onclick="setView('front')">Front</button>
@@ -677,7 +637,7 @@ function showTab(tab){
   document.getElementById('tab-library').classList.toggle('active',tab==='library');
   if(tab==='profile') populateProfileForm();
   if(tab==='diet' && !dietInit){renderDietPlans();dietInit=true;}
-  if(tab==='library' && !libInit){libRender();libInit=true;}
+  if(tab==='library' && !libInit){libRender();initThreeBody();libInit=true;}
 }
 
 function populateProfileForm(){
@@ -1598,34 +1558,161 @@ var EXERCISES=[
   {name:'Side Bend Cable',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques']},
 ];
 
-var libCat='all', libSel=null, libView='front', libInit=false, libMuscleFilter=null, muscleEls=null;
+var libCat='all', libSel=null, libView='front', libInit=false, libMuscleFilter=null;
 
-function buildMuscleEls(){
-  muscleEls={};
-  document.querySelectorAll('.muscle-part').forEach(function(el){
-    var oc=el.getAttribute('onclick')||''; var m=oc.match(/'([^']+)'/);
-    if(m){ (muscleEls[m[1]]=muscleEls[m[1]]||[]).push(el); }
+// ── 3D BODY (Three.js) ──
+var scene3d=null, camera3d=null, renderer3d=null, person=null, muscleMeshes={}, targetRotY=0, dragging=false, dragMoved=false, lastX=0, lastY=0, ptrTilt=0, raycaster3d=null, mouse3d=null, threeReady=false;
+var BASE_COL=0x383838;
+
+function initThreeBody(){
+  if(threeReady) return;
+  if(typeof THREE==='undefined'){
+    var w=document.getElementById('body-wrap');
+    if(w) w.innerHTML='<div style="padding:20px;font-size:11px;color:var(--muted);text-align:center;">3D view needs an internet connection to load.</div>';
+    return;
+  }
+  var canvas=document.getElementById('body-canvas');
+  var wrap=document.getElementById('body-wrap');
+  var W=wrap.clientWidth, H=wrap.clientHeight;
+  scene3d=new THREE.Scene();
+  camera3d=new THREE.PerspectiveCamera(40,W/H,0.1,100);
+  camera3d.position.set(0,0.3,11);
+  renderer3d=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});
+  renderer3d.setSize(W,H,false);
+  renderer3d.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  scene3d.add(new THREE.AmbientLight(0xffffff,0.65));
+  var d1=new THREE.DirectionalLight(0xffffff,0.9); d1.position.set(3,5,6); scene3d.add(d1);
+  var d2=new THREE.DirectionalLight(0xe24b4a,0.25); d2.position.set(-4,2,-5); scene3d.add(d2);
+  person=new THREE.Group(); scene3d.add(person);
+  buildPerson();
+  raycaster3d=new THREE.Raycaster(); mouse3d=new THREE.Vector2();
+  bindBodyEvents(canvas);
+  threeReady=true;
+  animate3d();
+}
+
+function mat(){ return new THREE.MeshStandardMaterial({color:BASE_COL,roughness:0.6,metalness:0.1}); }
+
+function addPart(key,geo,x,y,z,rx,ry,rz){
+  var m=new THREE.Mesh(geo,mat());
+  m.position.set(x,y,z);
+  if(rx)m.rotation.x=rx; if(ry)m.rotation.y=ry; if(rz)m.rotation.z=rz;
+  m.userData.muscle=key||null;
+  person.add(m);
+  if(key){ (muscleMeshes[key]=muscleMeshes[key]||[]).push(m); }
+  return m;
+}
+
+function buildPerson(){
+  muscleMeshes={};
+  var dark=new THREE.MeshStandardMaterial({color:0x222222,roughness:0.7});
+  // head + neck (non-highlight)
+  var head=new THREE.Mesh(new THREE.SphereGeometry(0.62,20,20),dark); head.position.set(0,4.05,0); person.add(head);
+  var neck=new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.3,0.5,12),dark); neck.position.set(0,3.45,0); person.add(neck);
+  // traps (upper back/shoulders)
+  addPart('traps',new THREE.BoxGeometry(1.5,0.5,0.7),0,3.15,-0.25);
+  // chest
+  addPart('chest',new THREE.BoxGeometry(1.7,1.0,0.55),0,2.55,0.42);
+  // lats (sides/back of torso)
+  addPart('lats',new THREE.BoxGeometry(0.45,1.3,0.8),-0.95,2.1,-0.15);
+  addPart('lats',new THREE.BoxGeometry(0.45,1.3,0.8),0.95,2.1,-0.15);
+  // erectors (lower back)
+  addPart('erectors',new THREE.BoxGeometry(0.7,1.3,0.4),0,1.85,-0.55);
+  // abs (front)
+  addPart('abs',new THREE.BoxGeometry(0.95,1.35,0.4),0,1.7,0.5);
+  // obliques
+  addPart('obliques',new THREE.BoxGeometry(0.35,1.1,0.5),-0.72,1.65,0.35);
+  addPart('obliques',new THREE.BoxGeometry(0.35,1.1,0.5),0.72,1.65,0.35);
+  // delts
+  addPart('front-delts',new THREE.SphereGeometry(0.48,16,16),-1.18,3.0,0.18);
+  addPart('front-delts',new THREE.SphereGeometry(0.48,16,16),1.18,3.0,0.18);
+  addPart('side-delts',new THREE.SphereGeometry(0.4,16,16),-1.45,2.95,0);
+  addPart('side-delts',new THREE.SphereGeometry(0.4,16,16),1.45,2.95,0);
+  addPart('rear-delts',new THREE.SphereGeometry(0.42,16,16),-1.18,3.0,-0.25);
+  addPart('rear-delts',new THREE.SphereGeometry(0.42,16,16),1.18,3.0,-0.25);
+  // upper arms: biceps (front) + triceps (back)
+  addPart('biceps',new THREE.CylinderGeometry(0.32,0.28,1.3,12),-1.5,2.05,0.18);
+  addPart('biceps',new THREE.CylinderGeometry(0.32,0.28,1.3,12),1.5,2.05,0.18);
+  addPart('triceps',new THREE.CylinderGeometry(0.32,0.28,1.3,12),-1.5,2.05,-0.2);
+  addPart('triceps',new THREE.CylinderGeometry(0.32,0.28,1.3,12),1.5,2.05,-0.2);
+  // forearms
+  addPart('forearms',new THREE.CylinderGeometry(0.24,0.2,1.25,12),-1.62,0.85,0.05);
+  addPart('forearms',new THREE.CylinderGeometry(0.24,0.2,1.25,12),1.62,0.85,0.05);
+  // hands (non-highlight)
+  var hL=new THREE.Mesh(new THREE.SphereGeometry(0.22,12,12),dark); hL.position.set(-1.68,0.1,0.05); person.add(hL);
+  var hR=new THREE.Mesh(new THREE.SphereGeometry(0.22,12,12),dark); hR.position.set(1.68,0.1,0.05); person.add(hR);
+  // hips/pelvis (non-highlight)
+  var hip=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.7,0.7),dark); hip.position.set(0,0.95,0); person.add(hip);
+  // glutes (back)
+  addPart('glutes',new THREE.SphereGeometry(0.5,16,16),-0.42,0.75,-0.4);
+  addPart('glutes',new THREE.SphereGeometry(0.5,16,16),0.42,0.75,-0.4);
+  // quads (front thigh) + hamstrings (back thigh)
+  addPart('quads',new THREE.CylinderGeometry(0.42,0.34,1.7,14),-0.5,-0.2,0.12);
+  addPart('quads',new THREE.CylinderGeometry(0.42,0.34,1.7,14),0.5,-0.2,0.12);
+  addPart('hamstrings',new THREE.CylinderGeometry(0.4,0.32,1.7,14),-0.5,-0.2,-0.22);
+  addPart('hamstrings',new THREE.CylinderGeometry(0.4,0.32,1.7,14),0.5,-0.2,-0.22);
+  // knees (non-highlight)
+  var kL=new THREE.Mesh(new THREE.SphereGeometry(0.3,12,12),dark); kL.position.set(-0.5,-1.2,0); person.add(kL);
+  var kR=new THREE.Mesh(new THREE.SphereGeometry(0.3,12,12),dark); kR.position.set(0.5,-1.2,0); person.add(kR);
+  // calves
+  addPart('calves',new THREE.CylinderGeometry(0.32,0.18,1.6,14),-0.5,-2.05,-0.05);
+  addPart('calves',new THREE.CylinderGeometry(0.32,0.18,1.6,14),0.5,-2.05,-0.05);
+  // feet (non-highlight)
+  var fL=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.25,0.8),dark); fL.position.set(-0.5,-2.95,0.2); person.add(fL);
+  var fR=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.25,0.8),dark); fR.position.set(0.5,-2.95,0.2); person.add(fR);
+  person.scale.set(0.92,0.92,0.92);
+  person.position.y=-0.3;
+}
+
+function bindBodyEvents(canvas){
+  canvas.addEventListener('pointerdown',function(e){dragging=true;dragMoved=false;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId);});
+  canvas.addEventListener('pointermove',function(e){
+    if(!dragging) return;
+    var dx=e.clientX-lastX, dy=e.clientY-lastY;
+    if(Math.abs(dx)+Math.abs(dy)>3) dragMoved=true;
+    targetRotY+=dx*0.01;
+    ptrTilt=Math.max(-0.5,Math.min(0.5,ptrTilt+dy*0.005));
+    lastX=e.clientX; lastY=e.clientY;
   });
+  canvas.addEventListener('pointerup',function(e){
+    dragging=false;
+    if(!dragMoved) pickMuscle(e);
+  });
+  canvas.addEventListener('pointerleave',function(){dragging=false;});
+}
+
+function pickMuscle(e){
+  if(!renderer3d) return;
+  var rect=renderer3d.domElement.getBoundingClientRect();
+  mouse3d.x=((e.clientX-rect.left)/rect.width)*2-1;
+  mouse3d.y=-((e.clientY-rect.top)/rect.height)*2+1;
+  raycaster3d.setFromCamera(mouse3d,camera3d);
+  var hits=raycaster3d.intersectObjects(person.children);
+  if(hits.length){ var key=hits[0].object.userData.muscle; if(key) clickMuscle(key); }
+}
+
+function animate3d(){
+  requestAnimationFrame(animate3d);
+  if(!renderer3d) return;
+  person.rotation.y += (targetRotY - person.rotation.y)*0.12;
+  person.rotation.x += (ptrTilt - person.rotation.x)*0.12;
+  renderer3d.render(scene3d,camera3d);
 }
 
 function setView(v){
   libView=v;
-  document.getElementById('svg-front').style.display=v==='front'?'block':'none';
-  document.getElementById('svg-back').style.display=v==='back'?'block':'none';
+  targetRotY = v==='back' ? Math.PI : 0;
+  ptrTilt=0;
   document.getElementById('vbtn-front').classList.toggle('active',v==='front');
   document.getElementById('vbtn-back').classList.toggle('active',v==='back');
-  if(libSel) paintEx(libSel);
-  else if(libMuscleFilter) paintKeys(MK[libMuscleFilter]||[libMuscleFilter],'#e24b4a');
 }
 
 function clearHL(){
-  if(!muscleEls) buildMuscleEls();
-  for(var k in muscleEls){ muscleEls[k].forEach(function(el){ el.style.fill='#2a2a2a'; }); }
+  for(var k in muscleMeshes){ muscleMeshes[k].forEach(function(m){ m.material.color.setHex(BASE_COL); }); }
 }
 
-function paintKeys(keys,color){
-  if(!muscleEls) buildMuscleEls();
-  keys.forEach(function(k){ (muscleEls[k]||[]).forEach(function(el){ el.style.fill=color; }); });
+function paintKeys(keys,colorHex){
+  keys.forEach(function(k){ (muscleMeshes[k]||[]).forEach(function(m){ m.material.color.setHex(colorHex); }); });
 }
 
 function musclesToKeys(names){
@@ -1635,11 +1722,12 @@ function musclesToKeys(names){
 }
 
 function paintEx(ex){
+  if(!threeReady) return;
   clearHL();
   var pKeys=MK[ex.muscles[0].toLowerCase()]||[];
   var sKeys=musclesToKeys(ex.muscles.slice(1)).filter(function(k){ return pKeys.indexOf(k)<0; });
-  paintKeys(sKeys,'#c9a84c');
-  paintKeys(pKeys,'#e24b4a');
+  paintKeys(sKeys,0xc9a84c);
+  paintKeys(pKeys,0xe24b4a);
 }
 
 function highlightEx(ex){
@@ -1653,7 +1741,7 @@ function highlightEx(ex){
 function clickMuscle(mkey){
   libMuscleFilter=libMuscleFilter===mkey?null:mkey; libSel=null;
   if(libMuscleFilter){
-    clearHL(); paintKeys([mkey],'#e24b4a');
+    clearHL(); paintKeys([mkey],0xe24b4a);
     document.getElementById('sel-info').innerHTML='<div class="sel-info-name">'+mkey.replace(/-/g,' ').toUpperCase()+'</div><div class="sel-info-muscles">Showing exercises for this muscle</div>';
   } else {
     clearHL();
