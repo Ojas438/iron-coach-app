@@ -1415,6 +1415,187 @@ var EXERCISES=[
   {name:'Cable Woodchop',type:'compound',category:'core',primary:'Obliques',muscles:['Obliques','Core']},
   {name:'Suitcase Carry',type:'compound',category:'core',primary:'Anti-Lateral Flexion',muscles:['Obliques','Traps','Core']},
   {name:'Mountain Climber',type:'compound',category:'core',primary:'Core',muscles:['Rectus Abdominis','Hip Flexors','Obliques']},
+  {name:'Close-Grip Bench Press (Chest)',type:'compound',category:'chest',primary:'Inner Chest',muscles:['Inner Pecs','Triceps','Front Delts']},
+  {name:'Reverse-Grip Bench Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Triceps']},
+  {name:'Wide-Grip Bench Press',type:'compound',category:'chest',primary:'Outer Chest',muscles:['Pecs','Front Delts']},
+  {name:'Paused Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Board Press',type:'compound',category:'chest',primary:'Chest & Triceps',muscles:['Pecs','Triceps']},
+  {name:'Pin Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Incline Smith Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Decline Smith Press',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps']},
+  {name:'Single-Arm Cable Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
+  {name:'Single-Arm Dumbbell Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps','Core']},
+  {name:'Incline Cable Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Decline Cable Press',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps']},
+  {name:'Machine Incline Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Machine Decline Press',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps']},
+  {name:'Banded Push-Up',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Archer Push-Up',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts','Core']},
+  {name:'Plyometric Push-Up',type:'compound',category:'chest',primary:'Explosive Chest',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Deficit Push-Up',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Ring Push-Up',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts','Core']},
+  {name:'Wide-Grip Dip',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Front Delts','Triceps']},
+  {name:'Machine Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
+  {name:'Incline Machine Fly',type:'isolation',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'Cable Crossover (High)',type:'isolation',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs']},
+  {name:'Cable Crossover (Low)',type:'isolation',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts']},
+  {name:'Squeeze Press',type:'isolation',category:'chest',primary:'Inner Chest',muscles:['Inner Pecs','Triceps']},
+  {name:'Snatch-Grip Deadlift',type:'compound',category:'back',primary:'Full Back',muscles:['Lats','Traps','Erectors','Glutes','Hamstrings']},
+  {name:'Trap Bar Deadlift',type:'compound',category:'back',primary:'Full Back',muscles:['Quads','Glutes','Traps','Erectors','Lats']},
+  {name:'Block Pull',type:'compound',category:'back',primary:'Upper Back',muscles:['Traps','Erectors','Lats','Glutes']},
+  {name:'Paused Deadlift',type:'compound',category:'back',primary:'Full Back',muscles:['Lats','Erectors','Glutes','Hamstrings']},
+  {name:'Romanian Dumbbell Deadlift',type:'compound',category:'back',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors']},
+  {name:'Single-Leg Romanian Deadlift',type:'compound',category:'back',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Core','Erectors']},
+  {name:'Wide-Grip Barbell Row',type:'compound',category:'back',primary:'Upper Back',muscles:['Rhomboids','Rear Delts','Lats','Traps']},
+  {name:'Underhand Barbell Row',type:'compound',category:'back',primary:'Lower Lats',muscles:['Lats','Biceps','Rhomboids']},
+  {name:'Smith Machine Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps']},
+  {name:'Incline Dumbbell Row',type:'compound',category:'back',primary:'Upper Back',muscles:['Rhomboids','Rear Delts','Lats','Biceps']},
+  {name:'Dumbbell Chest-Supported Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Rear Delts','Biceps']},
+  {name:'Wide-Grip Pulldown',type:'compound',category:'back',primary:'Outer Lats',muscles:['Lats','Teres Major','Biceps']},
+  {name:'Underhand Pulldown',type:'compound',category:'back',primary:'Lower Lats',muscles:['Lats','Biceps']},
+  {name:'Neutral-Grip Pulldown',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Brachialis','Biceps']},
+  {name:'Single-Arm Pulldown',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Teres Major']},
+  {name:'Kneeling Cable Pulldown',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps']},
+  {name:'Assisted Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts']},
+  {name:'Weighted Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts','Core']},
+  {name:'Commando Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Obliques']},
+  {name:'Archer Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Core']},
+  {name:'Gironda Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps']},
+  {name:'Standing Cable Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Biceps']},
+  {name:'Wide Cable Row',type:'compound',category:'back',primary:'Upper Back',muscles:['Rhomboids','Rear Delts','Traps']},
+  {name:'Rope Cable Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Biceps','Rear Delts']},
+  {name:'Machine High Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps']},
+  {name:'Machine Low Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Biceps']},
+  {name:'Hyperextension (Back)',type:'isolation',category:'back',primary:'Erectors',muscles:['Erectors','Glutes','Hamstrings']},
+  {name:'Barbell Shrug Behind Back',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps']},
+  {name:'Incline Dumbbell Shrug',type:'isolation',category:'back',primary:'Lower Traps',muscles:['Lower Traps','Upper Traps']},
+  {name:'Trap Bar Shrug',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps']},
+  {name:'Snatch-Grip Shrug',type:'isolation',category:'back',primary:'Traps',muscles:['Upper Traps','Rear Delts']},
+  {name:'Seated Smith Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
+  {name:'Behind-the-Neck Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Side Delts','Front Delts','Triceps']},
+  {name:'Single-Arm Dumbbell Press (Shoulder)',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Core']},
+  {name:'Single-Arm Landmine Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Core']},
+  {name:'Seated Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Dumbbell Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Cable Y-Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Lower Traps']},
+  {name:'Egyptian Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Partial Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Behind-Body Cable Lateral',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Seated Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
+  {name:'Incline Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
+  {name:'Bent-Over Lateral Raise',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Traps']},
+  {name:'Seated Rear Delt Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids']},
+  {name:'Incline Rear Delt Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids']},
+  {name:'Cable Rear Delt Row',type:'compound',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Traps']},
+  {name:'Dumbbell Upright Row',type:'compound',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps','Biceps']},
+  {name:'Wide-Grip Upright Row',type:'compound',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps']},
+  {name:'Seated Arnold Press',type:'compound',category:'shoulders',primary:'All Delts',muscles:['Front Delts','Side Delts','Rear Delts','Triceps']},
+  {name:'Viking Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
+  {name:'Landmine Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Prone Trap Raise',type:'isolation',category:'shoulders',primary:'Lower Traps',muscles:['Lower Traps','Rear Delts']},
+  {name:'Wide-Grip Barbell Curl',type:'isolation',category:'arms',primary:'Short Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'Close-Grip Barbell Curl',type:'isolation',category:'arms',primary:'Long Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'Seated Dumbbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Standing Cable Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'High Cable Curl',type:'isolation',category:'arms',primary:'Biceps Peak',muscles:['Biceps']},
+  {name:'Rope Hammer Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Biceps','Brachioradialis']},
+  {name:'Seated Incline Curl',type:'isolation',category:'arms',primary:'Long Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'Machine Preacher Curl',type:'isolation',category:'arms',primary:'Short Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'EZ-Bar Preacher Curl',type:'isolation',category:'arms',primary:'Short Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'Single-Arm Preacher Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Dumbbell Spider Curl',type:'isolation',category:'arms',primary:'Short Head Bicep',muscles:['Biceps']},
+  {name:'Cable Hammer Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Biceps','Brachioradialis']},
+  {name:'Reverse EZ-Bar Curl',type:'isolation',category:'arms',primary:'Brachioradialis',muscles:['Brachioradialis','Brachialis']},
+  {name:'Cable Reverse Curl',type:'isolation',category:'arms',primary:'Brachioradialis',muscles:['Brachioradialis','Forearms']},
+  {name:'Overhead Cable Curl',type:'isolation',category:'arms',primary:'Biceps Peak',muscles:['Biceps']},
+  {name:'Decline Dumbbell Extension',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Single-Arm Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'V-Bar Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Single-Arm Overhead Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
+  {name:'Cross-Body Extension',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'EZ-Bar Skull Crusher',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Dumbbell Skull Crusher',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Incline Skull Crusher',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
+  {name:'Seated Overhead Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
+  {name:'Cable Kickback',type:'isolation',category:'arms',primary:'Triceps Lateral Head',muscles:['Triceps']},
+  {name:'Bench Dip Weighted',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Front Delts']},
+  {name:'Ring Dip',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Pecs','Front Delts']},
+  {name:'Reverse Wrist Curl Cable',type:'isolation',category:'arms',primary:'Forearms',muscles:['Forearms']},
+  {name:'Cable Wrist Curl',type:'isolation',category:'arms',primary:'Forearms',muscles:['Forearms']},
+  {name:'Towel Pull-Up',type:'isolation',category:'arms',primary:'Grip',muscles:['Forearms','Lats','Biceps']},
+  {name:'Reverse Curl Cable',type:'isolation',category:'arms',primary:'Brachioradialis',muscles:['Brachioradialis','Forearms']},
+  {name:'Pause Front Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Core','Glutes']},
+  {name:'Tempo Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Smith Machine Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Belt Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes']},
+  {name:'Anderson Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Erectors']},
+  {name:'Wide-Stance Squat',type:'compound',category:'legs',primary:'Adductors',muscles:['Adductors','Quads','Glutes']},
+  {name:'Narrow-Stance Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes']},
+  {name:'Overhead Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Core','Glutes','Front Delts']},
+  {name:'Single-Leg Press',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Wide-Stance Leg Press',type:'compound',category:'legs',primary:'Glutes',muscles:['Glutes','Adductors','Quads']},
+  {name:'Narrow-Stance Leg Press',type:'compound',category:'legs',primary:'Quads',muscles:['Quads']},
+  {name:'High-Foot Leg Press',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Quads']},
+  {name:'Reverse Hack Squat',type:'compound',category:'legs',primary:'Glutes',muscles:['Glutes','Hamstrings','Quads']},
+  {name:'Front Foot Elevated Split Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes']},
+  {name:'Deficit Reverse Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Walking Dumbbell Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Barbell Reverse Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Smith Machine Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Goblet Reverse Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core']},
+  {name:'Single-Leg Extension',type:'isolation',category:'legs',primary:'Quads',muscles:['Quads']},
+  {name:'Single-Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
+  {name:'Standing Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
+  {name:'Swiss Ball Leg Curl',type:'compound',category:'legs',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Core']},
+  {name:'Single-Leg Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
+  {name:'Smith Machine Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
+  {name:'Seated Machine Calf Raise',type:'isolation',category:'legs',primary:'Soleus',muscles:['Soleus','Calves']},
+  {name:'Hack Squat Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
+  {name:'Standing Adductor Cable',type:'isolation',category:'legs',primary:'Adductors',muscles:['Adductors']},
+  {name:'Copenhagen Plank',type:'compound',category:'legs',primary:'Adductors',muscles:['Adductors','Core','Obliques']},
+  {name:'Banded Lateral Walk',type:'isolation',category:'legs',primary:'Abductors',muscles:['Gluteus Medius']},
+  {name:'Depth Jump',type:'compound',category:'legs',primary:'Explosive Power',muscles:['Quads','Glutes','Calves']},
+  {name:'Broad Jump',type:'compound',category:'legs',primary:'Explosive Power',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Skater Jump',type:'compound',category:'legs',primary:'Explosive Power',muscles:['Quads','Glutes','Adductors']},
+  {name:'Sled Push (Legs)',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Calves']},
+  {name:'Single-Leg Hip Thrust (Bodyweight)',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Banded Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'B-Stance Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Smith Machine Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Machine Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Dumbbell Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Elevated Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Banded Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Cable Glute Kickback',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Machine Glute Kickback',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes']},
+  {name:'Standing Cable Abduction',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius']},
+  {name:'Seated Hip Abduction',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius']},
+  {name:'Curtsy Lunge (Glute)',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Adductors','Quads']},
+  {name:'Step-Up High Box',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Quads','Hamstrings']},
+  {name:'Bulgarian Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Quads']},
+  {name:'Single-Leg RDL (Glute)',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Kneeling Squat',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Glute Focused Back Extension',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Erectors']},
+  {name:'Weighted Crunch',type:'isolation',category:'core',primary:'Upper Abs',muscles:['Rectus Abdominis']},
+  {name:'Machine Crunch',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis']},
+  {name:'Decline Weighted Sit-Up',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Hip Flexors']},
+  {name:'Cable Side Bend',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques']},
+  {name:'Dumbbell Side Bend',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques']},
+  {name:'Hanging Oblique Raise',type:'compound',category:'core',primary:'Obliques',muscles:['Obliques','Hip Flexors','Rectus Abdominis']},
+  {name:'Cable Oblique Crunch',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques']},
+  {name:'Captain\'s Chair Leg Raise',type:'compound',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis']},
+  {name:'Decline Leg Raise',type:'isolation',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis']},
+  {name:'Toe Touch Crunch',type:'isolation',category:'core',primary:'Upper Abs',muscles:['Rectus Abdominis']},
+  {name:'Plank Shoulder Tap',type:'isolation',category:'core',primary:'Core',muscles:['Transverse Abs','Obliques','Front Delts']},
+  {name:'Side Plank Rotation',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs']},
+  {name:'Stir-the-Pot',type:'compound',category:'core',primary:'Core',muscles:['Transverse Abs','Obliques','Rectus Abdominis']},
+  {name:'Cable Pallof Hold',type:'isolation',category:'core',primary:'Anti-Rotation',muscles:['Obliques','Transverse Abs']},
+  {name:'Standing Cable Crunch',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques']},
+  {name:'Jackknife Sit-Up',type:'compound',category:'core',primary:'Full Core',muscles:['Rectus Abdominis','Hip Flexors']},
+  {name:'Plate Russian Twist',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs']},
+  {name:'Weighted Hanging Leg Raise',type:'compound',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis','Obliques']},
+  {name:'Ab Rollout from Feet',type:'compound',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques','Lats']},
+  {name:'Side Bend Cable',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques']},
 ];
 
 var libCat='all', libSel=null, libView='front', libInit=false, libMuscleFilter=null, muscleEls=null;
@@ -1488,9 +1669,11 @@ function setCat(el,c){
   libRender();
 }
 
+var libFiltered=[], libShown=0, LIB_BATCH=40, libScrollBound=false;
+
 function libRender(){
   var q=(document.getElementById('lib-search')||{value:''}).value.toLowerCase();
-  var out=[];
+  libFiltered=[];
   for(var i=0;i<EXERCISES.length;i++){
     var ex=EXERCISES[i];
     if(libCat!=='all'&&ex.category!==libCat) continue;
@@ -1503,22 +1686,38 @@ function libRender(){
       var keys=musclesToKeys(ex.muscles);
       if(keys.indexOf(libMuscleFilter)<0) continue;
     }
-    out.push({ex:ex,idx:i});
+    libFiltered.push({ex:ex,idx:i});
   }
   var cnt=document.getElementById('lib-count');
-  if(cnt) cnt.textContent=out.length+' exercise'+(out.length!==1?'s':'')+(libMuscleFilter?' for '+libMuscleFilter.replace(/-/g,' '):'');
+  if(cnt) cnt.textContent=libFiltered.length+' exercise'+(libFiltered.length!==1?'s':'')+(libMuscleFilter?' for '+libMuscleFilter.replace(/-/g,' '):'');
   var grid=document.getElementById('lib-grid'); if(!grid) return;
-  if(!out.length){grid.innerHTML='<div class="lib-empty">No exercises found.</div>';return;}
-  var html='';
-  for(var k=0;k<out.length;k++){
-    var e=out[k].ex, idx=out[k].idx;
-    html+='<div class="ex-card'+(libSel&&libSel.name===e.name?' sel':'')+'" data-idx="'+idx+'" onclick="selectEx('+idx+')">'+
-      '<div class="ex-card-top"><div class="ex-card-name">'+e.name+'</div><div class="ex-card-badge '+e.type+'">'+e.type+'</div></div>'+
-      '<div class="ex-card-primary">Target: <strong>'+e.primary+'</strong></div>'+
-      '<div class="ex-card-tags">'+e.muscles.map(function(m,mi){return '<span class="ex-card-tag'+(mi===0?' p':'')+'">'+m+'</span>';}).join('')+'</div>'+
-    '</div>';
+  if(!libFiltered.length){grid.innerHTML='<div class="lib-empty">No exercises found.</div>';return;}
+  grid.innerHTML=''; libShown=0;
+  libRenderMore();
+  if(!libScrollBound){
+    grid.addEventListener('scroll',function(){
+      if(grid.scrollTop+grid.clientHeight >= grid.scrollHeight-300){ libRenderMore(); }
+    });
+    libScrollBound=true;
   }
-  grid.innerHTML=html;
+}
+
+function libCardHTML(e,idx){
+  return '<div class="ex-card'+(libSel&&libSel.name===e.name?' sel':'')+'" data-idx="'+idx+'" onclick="selectEx('+idx+')">'+
+    '<div class="ex-card-top"><div class="ex-card-name">'+e.name+'</div><div class="ex-card-badge '+e.type+'">'+e.type+'</div></div>'+
+    '<div class="ex-card-primary">Target: <strong>'+e.primary+'</strong></div>'+
+    '<div class="ex-card-tags">'+e.muscles.map(function(m,mi){return '<span class="ex-card-tag'+(mi===0?' p':'')+'">'+m+'</span>';}).join('')+'</div>'+
+  '</div>';
+}
+
+function libRenderMore(){
+  var grid=document.getElementById('lib-grid'); if(!grid) return;
+  if(libShown>=libFiltered.length) return;
+  var end=Math.min(libShown+LIB_BATCH,libFiltered.length);
+  var html='';
+  for(var k=libShown;k<end;k++){ html+=libCardHTML(libFiltered[k].ex,libFiltered[k].idx); }
+  grid.insertAdjacentHTML('beforeend',html);
+  libShown=end;
 }
 
 function selectEx(idx){
