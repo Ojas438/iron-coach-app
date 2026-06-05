@@ -19,6 +19,24 @@
   body{background:var(--bg);color:var(--text);font-family:var(--font-body);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 
   /* ── ONBOARDING ── */
+  /* LOGIN */
+  #login-screen{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at 50% 30%,rgba(226,75,74,.12),#080808 70%);}
+  #login-screen.hidden{display:none;}
+  .login-card{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:18px;padding:34px 28px;width:100%;max-width:380px;box-shadow:0 30px 80px rgba(0,0,0,.7);text-align:center;}
+  .login-logo{font-family:var(--font-display);font-size:42px;font-weight:900;letter-spacing:.03em;line-height:1;margin-bottom:6px;}
+  .login-logo span{color:var(--red);font-style:italic;}
+  .login-tagline{font-size:12px;color:var(--muted2);letter-spacing:.05em;text-transform:uppercase;margin-bottom:26px;}
+  .login-field{text-align:left;margin-bottom:14px;}
+  .login-field label{font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:5px;}
+  .login-field input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:12px 14px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .login-field input:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-glow);}
+  .login-field input::placeholder{color:#3a3a3a;}
+  .login-error{color:var(--red);font-size:12px;min-height:16px;margin-bottom:8px;text-align:left;}
+  .login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--red),var(--red-dark));border:none;border-radius:10px;color:#fff;font-size:16px;font-family:var(--font-display);font-weight:800;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 6px 24px rgba(226,75,74,.4);}
+  .login-btn:hover{transform:translateY(-1px);}
+  .login-note{font-size:10px;color:var(--muted);margin-top:16px;line-height:1.5;}
+  .logout-link{font-size:10px;color:var(--muted);cursor:pointer;text-decoration:underline;margin-left:8px;}
+  .logout-link:hover{color:var(--red);}
   #onboarding{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;background:radial-gradient(ellipse at 50% 0%,rgba(226,75,74,0.08) 0%,transparent 70%);}
 
   .ob-eyebrow{font-family:var(--font-display);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
@@ -316,6 +334,25 @@
 </head>
 <body>
 
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">IRON<span>COACH</span></div>
+    <div class="login-tagline">Sign in to your training account</div>
+    <div class="login-field">
+      <label>Gmail</label>
+      <input type="email" id="login-email" placeholder="you@gmail.com" autocomplete="email"/>
+    </div>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="login-username" placeholder="e.g. IronMike" autocomplete="username"/>
+    </div>
+    <div class="login-error" id="login-error"></div>
+    <button class="login-btn" onclick="doLogin()">SIGN IN →</button>
+    <div class="login-note">Your streak and plan are saved to this account on this device.</div>
+  </div>
+</div>
+
 <!-- ONBOARDING -->
 <div id="onboarding">
   <div class="ob-eyebrow">Elite AI Coaching</div>
@@ -506,6 +543,7 @@
 
       <button class="save-btn" onclick="saveProfile()">✓ SAVE & UPDATE PROFILE</button>
       <div class="saved-msg" id="saved-msg">✅ Profile updated — your coach is dialled in.</div>
+      <div style="text-align:center;margin-top:18px;font-size:11px;color:var(--muted);">Signed in as <span id="account-label">guest</span> <span class="logout-link" onclick="logout()">Log out</span></div>
     </div>
   </div>
 
@@ -652,6 +690,57 @@ let userProfile={};let goal='build muscle / hypertrophy';const history=[];
 const selections={exp:'',goal:'',days:'',equip:''};
 const pSelections={'p-exp':'','p-goal':'','p-days':'','p-equip':''};
 
+// ── LOGIN / ACCOUNT ──
+let currentUser=null;
+
+function getCurrentUser(){
+  try{ return JSON.parse(localStorage.getItem('ic_user')||'null'); }catch(e){ return null; }
+}
+
+function userKey(base){
+  return currentUser && currentUser.email ? base+'_'+currentUser.email.toLowerCase() : base;
+}
+
+function doLogin(){
+  var email=(document.getElementById('login-email').value||'').trim();
+  var username=(document.getElementById('login-username').value||'').trim();
+  var err=document.getElementById('login-error');
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ err.textContent='Enter a valid email address.'; return; }
+  if(!username){ err.textContent='Choose a username.'; return; }
+  err.textContent='';
+  currentUser={email:email,username:username};
+  try{ localStorage.setItem('ic_user',JSON.stringify(currentUser)); }catch(e){}
+  applyLogin();
+}
+
+function applyLogin(){
+  document.getElementById('login-screen').classList.add('hidden');
+  var lbl=document.getElementById('user-label');
+  if(lbl) lbl.textContent=currentUser.username;
+  var acc=document.getElementById('account-label');
+  if(acc) acc.textContent=currentUser.username+' ('+currentUser.email+')';
+  // refresh per-user data
+  if(typeof renderStreak==='function') renderStreak();
+  if(typeof renderPlan==='function') renderPlan();
+}
+
+function logout(){
+  try{ localStorage.removeItem('ic_user'); }catch(e){}
+  currentUser=null;
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('login-email').value='';
+  document.getElementById('login-username').value='';
+}
+
+function initLogin(){
+  currentUser=getCurrentUser();
+  if(currentUser && currentUser.email){
+    applyLogin();
+  } else {
+    document.getElementById('login-screen').classList.remove('hidden');
+  }
+}
+
 function showTab(tab){
   document.getElementById('chat-view').style.display=tab==='chat'?'flex':'none';
   document.getElementById('profile-view').style.display=tab==='profile'?'block':'none';
@@ -797,17 +886,16 @@ function grow(el){el.style.height='42px';el.style.height=Math.min(el.scrollHeigh
 
 // ── MY PLAN ──
 function savePlan(content){
-  try{ localStorage.setItem('ic_plan', JSON.stringify({text:content, saved:Date.now()})); }catch(e){}
-  // jump to plan tab so they see it
+  try{ localStorage.setItem(userKey('ic_plan'), JSON.stringify({text:content, saved:Date.now()})); }catch(e){}
   showTab('plan');
 }
 
 function getPlan(){
-  try{ return JSON.parse(localStorage.getItem('ic_plan')||'null'); }catch(e){ return null; }
+  try{ return JSON.parse(localStorage.getItem(userKey('ic_plan'))||'null'); }catch(e){ return null; }
 }
 
 function clearPlan(){
-  try{ localStorage.removeItem('ic_plan'); }catch(e){}
+  try{ localStorage.removeItem(userKey('ic_plan')); }catch(e){}
   renderPlan();
 }
 
@@ -1144,8 +1232,8 @@ function playBeep(){
 
 // ── STREAK COUNTER ──
 function streakKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function getWorkouts(){try{return JSON.parse(localStorage.getItem('ic_workouts')||'[]');}catch(e){return [];}}
-function saveWorkouts(arr){try{localStorage.setItem('ic_workouts',JSON.stringify(arr));}catch(e){}}
+function getWorkouts(){try{return JSON.parse(localStorage.getItem(userKey('ic_workouts'))||'[]');}catch(e){return [];}}
+function saveWorkouts(arr){try{localStorage.setItem(userKey('ic_workouts'),JSON.stringify(arr));}catch(e){}}
 
 function computeStreak(){
   var set={}; getWorkouts().forEach(function(d){set[d]=true;});
@@ -1237,6 +1325,8 @@ function logWorkout(){
 
 // init streak number on load
 renderStreak();
+// show login (or restore session)
+initLogin();
 
 // ── EXERCISE LIBRARY ──
 // map exercise muscle names -> clickable body-part keys
