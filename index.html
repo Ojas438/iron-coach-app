@@ -35,6 +35,11 @@
   .login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--red),var(--red-dark));border:none;border-radius:10px;color:#fff;font-size:16px;font-family:var(--font-display);font-weight:800;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 6px 24px rgba(226,75,74,.4);}
   .login-btn:hover{transform:translateY(-1px);}
   .login-note{font-size:10px;color:var(--muted);margin-top:16px;line-height:1.5;}
+  .google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px;background:#fff;border:none;border-radius:10px;color:#1a1a1a;font-size:15px;font-weight:600;font-family:var(--font-body);cursor:pointer;transition:all .2s;margin-bottom:18px;}
+  .google-btn:hover{background:#f0f0f0;transform:translateY(-1px);}
+  .g-icon{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#4285f4,#ea4335,#fbbc05,#34a853);color:#fff;font-weight:800;font-size:13px;font-family:var(--font-display);}
+  .login-divider{display:flex;align-items:center;gap:10px;margin-bottom:18px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em;}
+  .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--border2);}
   .logout-link{font-size:10px;color:var(--muted);cursor:pointer;text-decoration:underline;margin-left:8px;}
   .logout-link:hover{color:var(--red);}
   #onboarding{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;background:radial-gradient(ellipse at 50% 0%,rgba(226,75,74,0.08) 0%,transparent 70%);}
@@ -273,6 +278,32 @@
   .save-plan-btn:hover{background:var(--red);color:#fff;border-color:var(--red);}
   .save-plan-btn.saved{background:var(--surface3);color:var(--green);border-color:var(--border2);}
 
+  /* 1RM CALCULATOR */
+  #onerm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+  #onerm-overlay.open{display:flex;}
+  .onerm-modal{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:20px;padding:28px 24px;width:100%;max-width:380px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.7);max-height:90vh;overflow-y:auto;}
+  .onerm-title{font-family:var(--font-display);font-size:24px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;text-align:center;}
+  .onerm-sub{font-size:12px;color:var(--muted2);text-align:center;margin-bottom:22px;}
+  .onerm-inputs{display:flex;align-items:flex-end;gap:10px;margin-bottom:20px;}
+  .onerm-field{flex:1;}
+  .onerm-field label{font-size:10px;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:5px;}
+  .onerm-field input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:12px;font-size:20px;font-family:var(--font-display);font-weight:700;color:var(--text);outline:none;text-align:center;transition:border-color .2s;}
+  .onerm-field input:focus{border-color:var(--red);}
+  .onerm-field input::placeholder{color:#333;}
+  .onerm-unit{display:flex;flex-direction:column;gap:4px;}
+  .onerm-unit-btn{padding:6px 12px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:12px;font-weight:700;font-family:var(--font-display);cursor:pointer;transition:all .15s;}
+  .onerm-unit-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
+  .onerm-result{background:linear-gradient(135deg,rgba(226,75,74,.15),rgba(226,75,74,.04));border:1px solid rgba(226,75,74,.3);border-radius:12px;padding:18px;text-align:center;margin-bottom:20px;}
+  .onerm-result-label{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;}
+  .onerm-result-val{font-family:var(--font-display);font-size:46px;font-weight:900;color:var(--red);line-height:1;}
+  .onerm-table-title{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:10px;}
+  .onerm-table{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border2);border-radius:10px;overflow:hidden;}
+  .onerm-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--surface);}
+  .onerm-row-pct{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--muted2);width:46px;}
+  .onerm-row-reps{font-size:11px;color:var(--muted);flex:1;text-align:center;}
+  .onerm-row-weight{font-family:var(--font-display);font-size:16px;font-weight:800;color:var(--text);}
+  .onerm-note{font-size:10px;color:var(--muted);margin-top:16px;line-height:1.5;text-align:center;}
+
   /* CHAT */
   #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
   .goal-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
@@ -331,6 +362,9 @@
   .saved-msg.show{display:block;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -339,6 +373,10 @@
   <div class="login-card">
     <div class="login-logo">IRON<span>COACH</span></div>
     <div class="login-tagline">Sign in to your training account</div>
+    <button class="google-btn" id="google-btn" onclick="googleSignIn()">
+      <span class="g-icon">G</span> Continue with Google
+    </button>
+    <div class="login-divider"><span>or use a guest account</span></div>
     <div class="login-field">
       <label>Gmail</label>
       <input type="email" id="login-email" placeholder="you@gmail.com" autocomplete="email"/>
@@ -349,7 +387,7 @@
     </div>
     <div class="login-error" id="login-error"></div>
     <button class="login-btn" onclick="doLogin()">SIGN IN →</button>
-    <div class="login-note">Your streak and plan are saved to this account on this device.</div>
+    <div class="login-note">Google sign-in syncs your data across devices. Guest login saves to this device only.</div>
   </div>
 </div>
 
@@ -468,6 +506,7 @@
     <div class="messages" id="messages"></div>
     <div class="quick-bar">
       <button class="qr qr-timer" onclick="openTimer()">⏱️ Rest Timer</button>
+      <button class="qr qr-timer" onclick="openOneRM()">🏋️ 1RM Calc</button>
       <button class="qr" onclick="sendQuick('Build me a personalized weekly workout program based on my profile.')">🗓 My Program</button>
       <button class="qr" onclick="sendQuick('What are the best exercises for my goal and experience level?')">💪 Best Exercises</button>
       <button class="qr" onclick="sendQuick('What should I eat pre and post workout to maximize results?')">🥗 Nutrition</button>
@@ -683,6 +722,36 @@
       <div class="streak-msg" id="streak-msg"></div>
     </div>
   </div>
+
+  <!-- 1RM CALCULATOR OVERLAY -->
+  <div id="onerm-overlay">
+    <div class="onerm-modal">
+      <button class="timer-close" onclick="closeOneRM()">✕</button>
+      <div class="onerm-title">1RM Calculator</div>
+      <div class="onerm-sub">Estimate your one-rep max</div>
+      <div class="onerm-inputs">
+        <div class="onerm-field">
+          <label>Weight</label>
+          <input type="number" id="onerm-weight" placeholder="185" inputmode="decimal" oninput="calcOneRM()"/>
+        </div>
+        <div class="onerm-unit">
+          <button class="onerm-unit-btn active" id="unit-lb" onclick="setRMUnit('lb')">lb</button>
+          <button class="onerm-unit-btn" id="unit-kg" onclick="setRMUnit('kg')">kg</button>
+        </div>
+        <div class="onerm-field">
+          <label>Reps</label>
+          <input type="number" id="onerm-reps" placeholder="5" inputmode="numeric" oninput="calcOneRM()"/>
+        </div>
+      </div>
+      <div class="onerm-result">
+        <div class="onerm-result-label">Estimated 1RM</div>
+        <div class="onerm-result-val" id="onerm-max">—</div>
+      </div>
+      <div class="onerm-table-title">Training Percentages</div>
+      <div class="onerm-table" id="onerm-table"></div>
+      <div class="onerm-note">Estimates use the Epley &amp; Brzycki formulas (averaged). Real max can vary — always use a spotter.</div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -692,6 +761,83 @@ const pSelections={'p-exp':'','p-goal':'','p-days':'','p-equip':''};
 
 // ── LOGIN / ACCOUNT ──
 let currentUser=null;
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  FIREBASE CONFIG — paste your keys from the Firebase console   ║
+// ║  (Project settings → Your apps → SDK setup → Config)          ║
+// ╚══════════════════════════════════════════════════════════════╝
+var firebaseConfig = {
+  apiKey: "PASTE_API_KEY",
+  authDomain: "PASTE_AUTH_DOMAIN",
+  projectId: "PASTE_PROJECT_ID",
+  storageBucket: "PASTE_STORAGE_BUCKET",
+  messagingSenderId: "PASTE_SENDER_ID",
+  appId: "PASTE_APP_ID"
+};
+var FIREBASE_ON = firebaseConfig.apiKey.indexOf('PASTE')<0 && typeof firebase!=='undefined';
+var fbAuth=null, fbDb=null;
+
+function initFirebase(){
+  if(!FIREBASE_ON) return false;
+  try{
+    firebase.initializeApp(firebaseConfig);
+    fbAuth=firebase.auth();
+    fbDb=firebase.firestore();
+    fbAuth.onAuthStateChanged(function(user){
+      if(user){ onFirebaseLogin(user); }
+    });
+    return true;
+  }catch(e){ FIREBASE_ON=false; return false; }
+}
+
+function googleSignIn(){
+  var err=document.getElementById('login-error');
+  if(!FIREBASE_ON || !fbAuth){
+    err.textContent='Google login isn\u2019t set up yet — use a guest account below for now.';
+    return;
+  }
+  var provider=new firebase.auth.GoogleAuthProvider();
+  fbAuth.signInWithPopup(provider).catch(function(e){ err.textContent=e.message; });
+}
+
+function onFirebaseLogin(user){
+  currentUser={email:user.email, username:user.displayName||user.email.split('@')[0], uid:user.uid, cloud:true};
+  try{ localStorage.setItem('ic_user',JSON.stringify(currentUser)); }catch(e){}
+  applyLogin();
+  loadCloudData();
+}
+
+function cloudDoc(){ return fbDb.collection('users').doc(currentUser.uid); }
+
+function loadCloudData(){
+  if(!currentUser||!currentUser.cloud||!fbDb) return;
+  cloudDoc().get().then(function(doc){
+    if(doc.exists){
+      var d=doc.data();
+      try{
+        if(d.workouts) localStorage.setItem(userKey('ic_workouts'),JSON.stringify(d.workouts));
+        if(d.plan) localStorage.setItem(userKey('ic_plan'),JSON.stringify(d.plan));
+      }catch(e){}
+      if(d.profile && typeof d.profile==='object') userProfile=d.profile;
+    }
+    if(typeof renderStreak==='function') renderStreak();
+    if(typeof renderPlan==='function') renderPlan();
+  }).catch(function(){});
+}
+
+function cloudSave(){
+  if(!currentUser||!currentUser.cloud||!fbDb) return;
+  try{
+    cloudDoc().set({
+      workouts:getWorkouts(),
+      plan:getPlan(),
+      profile:userProfile,
+      username:currentUser.username,
+      email:currentUser.email,
+      updated:Date.now()
+    },{merge:true});
+  }catch(e){}
+}
 
 function getCurrentUser(){
   try{ return JSON.parse(localStorage.getItem('ic_user')||'null'); }catch(e){ return null; }
@@ -708,7 +854,7 @@ function doLogin(){
   if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ err.textContent='Enter a valid email address.'; return; }
   if(!username){ err.textContent='Choose a username.'; return; }
   err.textContent='';
-  currentUser={email:email,username:username};
+  currentUser={email:email,username:username,cloud:false};
   try{ localStorage.setItem('ic_user',JSON.stringify(currentUser)); }catch(e){}
   applyLogin();
 }
@@ -718,26 +864,33 @@ function applyLogin(){
   var lbl=document.getElementById('user-label');
   if(lbl) lbl.textContent=currentUser.username;
   var acc=document.getElementById('account-label');
-  if(acc) acc.textContent=currentUser.username+' ('+currentUser.email+')';
-  // refresh per-user data
+  if(acc) acc.textContent=currentUser.username+' ('+currentUser.email+')'+(currentUser.cloud?' · synced':' · local');
   if(typeof renderStreak==='function') renderStreak();
   if(typeof renderPlan==='function') renderPlan();
 }
 
 function logout(){
   try{ localStorage.removeItem('ic_user'); }catch(e){}
+  if(FIREBASE_ON && fbAuth){ try{ fbAuth.signOut(); }catch(e){} }
   currentUser=null;
   document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('login-email').value='';
-  document.getElementById('login-username').value='';
+  var em=document.getElementById('login-email'), un=document.getElementById('login-username');
+  if(em) em.value=''; if(un) un.value='';
 }
 
 function initLogin(){
+  initFirebase();
   currentUser=getCurrentUser();
-  if(currentUser && currentUser.email){
+  if(currentUser && currentUser.email && !currentUser.cloud){
+    // restore local/guest session immediately
     applyLogin();
-  } else {
+  } else if(!currentUser){
     document.getElementById('login-screen').classList.remove('hidden');
+  }
+  // if cloud user, onAuthStateChanged will restore them automatically
+  if(currentUser && currentUser.cloud && !FIREBASE_ON){
+    // firebase not available now; fall back to showing them logged in locally
+    applyLogin();
   }
 }
 
@@ -782,8 +935,10 @@ function saveProfile(){
   if(pSelections['p-goal']){userProfile.goal=pSelections['p-goal'];goal=pSelections['p-goal'];}
   if(pSelections['p-days']) userProfile.daysPerWeek=pSelections['p-days'];
   if(pSelections['p-equip']) userProfile.equipment=pSelections['p-equip'];
-  document.getElementById('user-label').textContent=`${userProfile.age||'?'}y • ${(userProfile.experience||'unknown').split(' ')[0]}`;
+  if(currentUser && currentUser.username){ document.getElementById('user-label').textContent=currentUser.username; }
+  else { document.getElementById('user-label').textContent=`${userProfile.age||'?'}y • ${(userProfile.experience||'unknown').split(' ')[0]}`; }
   const m=document.getElementById('saved-msg'); m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),3000);
+  if(typeof cloudSave==='function') cloudSave();
 }
 
 function selectChip(type,el,value){
@@ -887,6 +1042,7 @@ function grow(el){el.style.height='42px';el.style.height=Math.min(el.scrollHeigh
 // ── MY PLAN ──
 function savePlan(content){
   try{ localStorage.setItem(userKey('ic_plan'), JSON.stringify({text:content, saved:Date.now()})); }catch(e){}
+  if(typeof cloudSave==='function') cloudSave();
   showTab('plan');
 }
 
@@ -896,6 +1052,7 @@ function getPlan(){
 
 function clearPlan(){
   try{ localStorage.removeItem(userKey('ic_plan')); }catch(e){}
+  if(typeof cloudSave==='function') cloudSave();
   renderPlan();
 }
 
@@ -1230,10 +1387,58 @@ function playBeep(){
   }catch(e){}
 }
 
+// ── 1RM CALCULATOR ──
+var rmUnit='lb';
+
+function openOneRM(){
+  document.getElementById('onerm-overlay').classList.add('open');
+  calcOneRM();
+}
+function closeOneRM(){ document.getElementById('onerm-overlay').classList.remove('open'); }
+
+function setRMUnit(u){
+  rmUnit=u;
+  document.getElementById('unit-lb').classList.toggle('active',u==='lb');
+  document.getElementById('unit-kg').classList.toggle('active',u==='kg');
+  calcOneRM();
+}
+
+function calcOneRM(){
+  var w=parseFloat(document.getElementById('onerm-weight').value);
+  var r=parseInt(document.getElementById('onerm-reps').value,10);
+  var maxEl=document.getElementById('onerm-max');
+  var table=document.getElementById('onerm-table');
+  if(!w||!r||w<=0||r<=0){ maxEl.textContent='—'; table.innerHTML=''; return; }
+  if(r>20){ maxEl.textContent='reps too high'; table.innerHTML='<div class="onerm-row"><span class="onerm-row-reps">Use 1–12 reps for an accurate estimate.</span></div>'; return; }
+  // Epley and Brzycki, averaged
+  var epley = w*(1+r/30);
+  var brzycki = w*(36/(37-r));
+  var oneRM = Math.round((epley+brzycki)/2);
+  maxEl.textContent = oneRM+' '+rmUnit;
+  // percentage table
+  var rows=[
+    {pct:100,reps:'1 rep'},
+    {pct:95,reps:'2 reps'},
+    {pct:90,reps:'3–4 reps'},
+    {pct:85,reps:'5–6 reps'},
+    {pct:80,reps:'7–8 reps'},
+    {pct:75,reps:'9–10 reps'},
+    {pct:70,reps:'11–12 reps'},
+    {pct:65,reps:'12–15 reps'},
+    {pct:60,reps:'warm-up'}
+  ];
+  table.innerHTML=rows.map(function(row){
+    var wt=Math.round(oneRM*row.pct/100);
+    // round to nearest 5
+    wt=Math.round(wt/5)*5;
+    return '<div class="onerm-row"><span class="onerm-row-pct">'+row.pct+'%</span><span class="onerm-row-reps">'+row.reps+'</span><span class="onerm-row-weight">'+wt+' '+rmUnit+'</span></div>';
+  }).join('');
+}
+
 // ── STREAK COUNTER ──
 function streakKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function getWorkouts(){try{return JSON.parse(localStorage.getItem(userKey('ic_workouts'))||'[]');}catch(e){return [];}}
-function saveWorkouts(arr){try{localStorage.setItem(userKey('ic_workouts'),JSON.stringify(arr));}catch(e){}}
+function saveWorkouts(arr){try{localStorage.setItem(userKey('ic_workouts'),JSON.stringify(arr));}catch(e){} if(typeof cloudSave==='function') cloudSave();}
 
 function computeStreak(){
   var set={}; getWorkouts().forEach(function(d){set[d]=true;});
