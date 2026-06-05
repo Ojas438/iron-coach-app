@@ -1605,63 +1605,111 @@ function addPart(key,geo,x,y,z,rx,ry,rz){
 
 function buildPerson(){
   muscleMeshes={};
-  var dark=new THREE.MeshStandardMaterial({color:0x222222,roughness:0.7});
-  // head + neck (non-highlight)
-  var head=new THREE.Mesh(new THREE.SphereGeometry(0.62,20,20),dark); head.position.set(0,4.05,0); person.add(head);
-  var neck=new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.3,0.5,12),dark); neck.position.set(0,3.45,0); person.add(neck);
-  // traps (upper back/shoulders)
-  addPart('traps',new THREE.BoxGeometry(1.5,0.5,0.7),0,3.15,-0.25);
-  // chest
-  addPart('chest',new THREE.BoxGeometry(1.7,1.0,0.55),0,2.55,0.42);
-  // lats (sides/back of torso)
-  addPart('lats',new THREE.BoxGeometry(0.45,1.3,0.8),-0.95,2.1,-0.15);
-  addPart('lats',new THREE.BoxGeometry(0.45,1.3,0.8),0.95,2.1,-0.15);
-  // erectors (lower back)
-  addPart('erectors',new THREE.BoxGeometry(0.7,1.3,0.4),0,1.85,-0.55);
-  // abs (front)
-  addPart('abs',new THREE.BoxGeometry(0.95,1.35,0.4),0,1.7,0.5);
-  // obliques
-  addPart('obliques',new THREE.BoxGeometry(0.35,1.1,0.5),-0.72,1.65,0.35);
-  addPart('obliques',new THREE.BoxGeometry(0.35,1.1,0.5),0.72,1.65,0.35);
-  // delts
-  addPart('front-delts',new THREE.SphereGeometry(0.48,16,16),-1.18,3.0,0.18);
-  addPart('front-delts',new THREE.SphereGeometry(0.48,16,16),1.18,3.0,0.18);
-  addPart('side-delts',new THREE.SphereGeometry(0.4,16,16),-1.45,2.95,0);
-  addPart('side-delts',new THREE.SphereGeometry(0.4,16,16),1.45,2.95,0);
-  addPart('rear-delts',new THREE.SphereGeometry(0.42,16,16),-1.18,3.0,-0.25);
-  addPart('rear-delts',new THREE.SphereGeometry(0.42,16,16),1.18,3.0,-0.25);
-  // upper arms: biceps (front) + triceps (back)
-  addPart('biceps',new THREE.CylinderGeometry(0.32,0.28,1.3,12),-1.5,2.05,0.18);
-  addPart('biceps',new THREE.CylinderGeometry(0.32,0.28,1.3,12),1.5,2.05,0.18);
-  addPart('triceps',new THREE.CylinderGeometry(0.32,0.28,1.3,12),-1.5,2.05,-0.2);
-  addPart('triceps',new THREE.CylinderGeometry(0.32,0.28,1.3,12),1.5,2.05,-0.2);
-  // forearms
-  addPart('forearms',new THREE.CylinderGeometry(0.24,0.2,1.25,12),-1.62,0.85,0.05);
-  addPart('forearms',new THREE.CylinderGeometry(0.24,0.2,1.25,12),1.62,0.85,0.05);
-  // hands (non-highlight)
-  var hL=new THREE.Mesh(new THREE.SphereGeometry(0.22,12,12),dark); hL.position.set(-1.68,0.1,0.05); person.add(hL);
-  var hR=new THREE.Mesh(new THREE.SphereGeometry(0.22,12,12),dark); hR.position.set(1.68,0.1,0.05); person.add(hR);
-  // hips/pelvis (non-highlight)
-  var hip=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.7,0.7),dark); hip.position.set(0,0.95,0); person.add(hip);
-  // glutes (back)
-  addPart('glutes',new THREE.SphereGeometry(0.5,16,16),-0.42,0.75,-0.4);
-  addPart('glutes',new THREE.SphereGeometry(0.5,16,16),0.42,0.75,-0.4);
-  // quads (front thigh) + hamstrings (back thigh)
-  addPart('quads',new THREE.CylinderGeometry(0.42,0.34,1.7,14),-0.5,-0.2,0.12);
-  addPart('quads',new THREE.CylinderGeometry(0.42,0.34,1.7,14),0.5,-0.2,0.12);
-  addPart('hamstrings',new THREE.CylinderGeometry(0.4,0.32,1.7,14),-0.5,-0.2,-0.22);
-  addPart('hamstrings',new THREE.CylinderGeometry(0.4,0.32,1.7,14),0.5,-0.2,-0.22);
-  // knees (non-highlight)
-  var kL=new THREE.Mesh(new THREE.SphereGeometry(0.3,12,12),dark); kL.position.set(-0.5,-1.2,0); person.add(kL);
-  var kR=new THREE.Mesh(new THREE.SphereGeometry(0.3,12,12),dark); kR.position.set(0.5,-1.2,0); person.add(kR);
-  // calves
-  addPart('calves',new THREE.CylinderGeometry(0.32,0.18,1.6,14),-0.5,-2.05,-0.05);
-  addPart('calves',new THREE.CylinderGeometry(0.32,0.18,1.6,14),0.5,-2.05,-0.05);
-  // feet (non-highlight)
-  var fL=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.25,0.8),dark); fL.position.set(-0.5,-2.95,0.2); person.add(fL);
-  var fR=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.25,0.8),dark); fR.position.set(0.5,-2.95,0.2); person.add(fR);
-  person.scale.set(0.92,0.92,0.92);
-  person.position.y=-0.3;
+  var dark=new THREE.MeshStandardMaterial({color:0x222222,roughness:0.75,metalness:0.05});
+  var addDark=function(geo,x,y,z,rx,ry,rz){var m=new THREE.Mesh(geo,dark);m.position.set(x,y,z);if(rx)m.rotation.x=rx;if(ry)m.rotation.y=ry;if(rz)m.rotation.z=rz;person.add(m);return m;};
+
+  // head + neck
+  addDark(new THREE.SphereGeometry(0.6,24,24),0,4.15,0).scale.set(0.92,1.08,0.95);
+  addDark(new THREE.CylinderGeometry(0.27,0.32,0.55,16),0,3.5,0);
+  // sternocleidomastoid hint (neck sides)
+  addDark(new THREE.CylinderGeometry(0.1,0.13,0.5,8),-0.16,3.5,0.16,0,0,0.2);
+  addDark(new THREE.CylinderGeometry(0.1,0.13,0.5,8),0.16,3.5,0.16,0,0,-0.2);
+
+  // TRAPS — sloped from neck to shoulders (two angled wedges)
+  addPart('traps',new THREE.CylinderGeometry(0.12,0.6,1.0,4),-0.55,3.2,-0.2,0,0,0.7);
+  addPart('traps',new THREE.CylinderGeometry(0.12,0.6,1.0,4),0.55,3.2,-0.2,0,0,-0.7);
+  addPart('traps',new THREE.BoxGeometry(0.8,0.45,0.55),0,3.32,-0.32);
+
+  // CHEST — two rounded pec domes
+  var pec=new THREE.SphereGeometry(0.62,20,16);
+  var pl=addPart('chest',pec,-0.44,2.62,0.42); pl.scale.set(1.0,0.78,0.6);
+  var pr=addPart('chest',pec,0.44,2.62,0.42); pr.scale.set(1.0,0.78,0.6);
+
+  // torso core mass (non-highlight base so it doesn't look hollow)
+  addDark(new THREE.CylinderGeometry(0.82,0.7,2.2,20),0,2.0,0);
+
+  // LATS — flared wings on the back/sides (tapered)
+  var latL=addPart('lats',new THREE.CylinderGeometry(0.3,0.7,1.5,12),-0.78,2.15,-0.18,0,0,0.18); latL.scale.set(0.7,1,0.85);
+  var latR=addPart('lats',new THREE.CylinderGeometry(0.3,0.7,1.5,12),0.78,2.15,-0.18,0,0,-0.18); latR.scale.set(0.7,1,0.85);
+
+  // ERECTORS — two columns down the spine
+  addPart('erectors',new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.16,1.1,4,8):new THREE.CylinderGeometry(0.17,0.17,1.3,10),-0.18,1.75,-0.5);
+  addPart('erectors',new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.16,1.1,4,8):new THREE.CylinderGeometry(0.17,0.17,1.3,10),0.18,1.75,-0.5);
+
+  // ABS — 6-pack: 3 rows of 2
+  var absGeo=new THREE.BoxGeometry(0.32,0.3,0.28);
+  for(var r=0;r<3;r++){
+    addPart('abs',absGeo,-0.2,2.05-r*0.4,0.52);
+    addPart('abs',absGeo,0.2,2.05-r*0.4,0.52);
+  }
+  // OBLIQUES — angled slabs at the waist
+  addPart('obliques',new THREE.BoxGeometry(0.28,1.0,0.45),-0.62,1.6,0.34,0,0,0.12);
+  addPart('obliques',new THREE.BoxGeometry(0.28,1.0,0.45),0.62,1.6,0.34,0,0,-0.12);
+
+  // DELTS — capped rounded shoulders, 3 heads each
+  var deltGeo=new THREE.SphereGeometry(0.46,18,16);
+  var fdl=addPart('front-delts',deltGeo,-1.12,2.95,0.26); fdl.scale.set(0.85,0.9,0.85);
+  var fdr=addPart('front-delts',deltGeo,1.12,2.95,0.26); fdr.scale.set(0.85,0.9,0.85);
+  var sdl=addPart('side-delts',deltGeo,-1.42,2.9,0); sdl.scale.set(0.9,0.95,0.95);
+  var sdr=addPart('side-delts',deltGeo,1.42,2.9,0); sdr.scale.set(0.9,0.95,0.95);
+  var rdl=addPart('rear-delts',deltGeo,-1.12,2.95,-0.26); rdl.scale.set(0.85,0.9,0.85);
+  var rdr=addPart('rear-delts',deltGeo,1.12,2.95,-0.26); rdr.scale.set(0.85,0.9,0.85);
+
+  // BICEPS — peaked (capsule), front of upper arm
+  var biGeo=new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.27,0.7,6,12):new THREE.CylinderGeometry(0.3,0.26,1.2,12);
+  var biL=addPart('biceps',biGeo,-1.5,2.05,0.16); biL.scale.set(1,1,0.85);
+  var biR=addPart('biceps',biGeo,1.5,2.05,0.16); biR.scale.set(1,1,0.85);
+  // TRICEPS — horseshoe mass, back of upper arm
+  var trGeo=new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.28,0.72,6,12):new THREE.CylinderGeometry(0.31,0.27,1.25,12);
+  addPart('triceps',trGeo,-1.52,2.03,-0.2);
+  addPart('triceps',trGeo,1.52,2.03,-0.2);
+
+  // elbows
+  addDark(new THREE.SphereGeometry(0.22,12,12),-1.55,1.4,0);
+  addDark(new THREE.SphereGeometry(0.22,12,12),1.55,1.4,0);
+
+  // FOREARMS — tapered
+  var faGeo=new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.22,0.85,6,12):new THREE.CylinderGeometry(0.24,0.18,1.2,12);
+  var faL=addPart('forearms',faGeo,-1.62,0.78,0.04); faL.scale.set(1,1,0.9);
+  var faR=addPart('forearms',faGeo,1.62,0.78,0.04); faR.scale.set(1,1,0.9);
+  // hands
+  addDark(new THREE.SphereGeometry(0.2,12,12),-1.66,0.08,0.04).scale.set(0.8,1.1,0.55);
+  addDark(new THREE.SphereGeometry(0.2,12,12),1.66,0.08,0.04).scale.set(0.8,1.1,0.55);
+
+  // pelvis
+  addDark(new THREE.SphereGeometry(0.75,20,16),0,0.85,0).scale.set(1.05,0.7,0.8);
+
+  // GLUTES — rounded
+  var glGeo=new THREE.SphereGeometry(0.52,18,16);
+  var glL=addPart('glutes',glGeo,-0.4,0.7,-0.42); glL.scale.set(0.95,0.95,0.85);
+  var glR=addPart('glutes',glGeo,0.4,0.7,-0.42); glR.scale.set(0.95,0.95,0.85);
+
+  // QUADS — big teardrop front thigh
+  var quGeo=new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.4,1.1,6,14):new THREE.CylinderGeometry(0.44,0.34,1.8,14);
+  var quL=addPart('quads',quGeo,-0.5,-0.15,0.14); quL.scale.set(1,1,0.9);
+  var quR=addPart('quads',quGeo,0.5,-0.15,0.14); quR.scale.set(1,1,0.9);
+  // HAMSTRINGS — back thigh
+  var haGeo=new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.36,1.1,6,14):new THREE.CylinderGeometry(0.4,0.32,1.8,14);
+  addPart('hamstrings',haGeo,-0.5,-0.15,-0.22);
+  addPart('hamstrings',haGeo,0.5,-0.15,-0.22);
+
+  // knees
+  addDark(new THREE.SphereGeometry(0.28,14,14),-0.5,-1.25,0.05);
+  addDark(new THREE.SphereGeometry(0.28,14,14),0.5,-1.25,0.05);
+
+  // CALVES — diamond gastroc
+  var caGeo=new THREE.CapsuleGeometry?new THREE.CapsuleGeometry(0.3,0.9,6,14):new THREE.CylinderGeometry(0.33,0.16,1.5,14);
+  var caL=addPart('calves',caGeo,-0.5,-2.0,-0.06); caL.scale.set(1,1,1.05);
+  var caR=addPart('calves',caGeo,0.5,-2.0,-0.06); caR.scale.set(1,1,1.05);
+  // shins
+  addDark(new THREE.CylinderGeometry(0.16,0.12,1.4,10),-0.5,-2.0,0.16);
+  addDark(new THREE.CylinderGeometry(0.16,0.12,1.4,10),0.5,-2.0,0.16);
+  // feet
+  addDark(new THREE.BoxGeometry(0.38,0.22,0.78),-0.5,-2.92,0.22);
+  addDark(new THREE.BoxGeometry(0.38,0.22,0.78),0.5,-2.92,0.22);
+
+  person.scale.set(0.9,0.9,0.9);
+  person.position.y=-0.25;
 }
 
 function bindBodyEvents(canvas){
