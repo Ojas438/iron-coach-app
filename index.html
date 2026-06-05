@@ -189,6 +189,49 @@
   .streak-banner-btn:hover{transform:translateY(-1px);}
   .streak-banner-btn.done{background:var(--surface3);color:var(--green);box-shadow:none;border:1px solid var(--border2);}
 
+  /* EXERCISE LIBRARY */
+  #library-view{flex:1;display:none;flex-direction:column;overflow:hidden;}
+  .lib-search-bar{padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;position:relative;}
+  .lib-search-bar input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 14px 10px 38px;font-size:14px;font-family:var(--font-body);color:var(--text);outline:none;transition:border-color .2s;}
+  .lib-search-bar input:focus{border-color:var(--red);}
+  .lib-search-bar input::placeholder{color:#333;}
+  .lib-search-icon{position:absolute;left:27px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted);pointer-events:none;}
+  .lib-layout{flex:1;display:flex;overflow:hidden;}
+  .body-panel{width:190px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border2);display:flex;flex-direction:column;align-items:center;padding:12px 10px;overflow-y:auto;}
+  .body-panel-title{font-family:var(--font-display);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .body-wrap{width:145px;height:260px;flex-shrink:0;}
+  .body-svg{width:100%;height:100%;}
+  .view-btns{display:flex;gap:5px;margin-top:8px;}
+  .vbtn{padding:4px 14px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted2);font-size:11px;font-weight:700;font-family:var(--font-display);letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
+  .vbtn.active,.vbtn:hover{border-color:var(--red);color:var(--red);}
+  .sel-info{margin-top:10px;padding:8px;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;width:100%;}
+  .sel-info-name{font-family:var(--font-display);font-size:12px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.02em;margin-bottom:2px;}
+  .sel-info-muscles{font-size:10px;color:var(--muted2);line-height:1.5;}
+  .leg-row{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted2);margin-top:6px;align-self:flex-start;}
+  .leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .ex-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+  .cat-bar{padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0;}
+  .ccat{font-size:10px;font-weight:700;padding:4px 11px;border-radius:4px;border:1px solid var(--border2);background:transparent;color:var(--muted2);cursor:pointer;font-family:var(--font-display);letter-spacing:.06em;text-transform:uppercase;transition:all .15s;}
+  .ccat:hover{border-color:var(--red);color:var(--text);}
+  .ccat.active{background:var(--red);border-color:var(--red);color:#fff;}
+  .ex-count{padding:6px 14px;font-size:10px;color:var(--muted);border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0;}
+  .ex-grid{flex:1;overflow-y:auto;padding:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;align-content:start;}
+  .ex-card{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:8px;padding:11px;cursor:pointer;transition:all .2s;}
+  .ex-card:hover,.ex-card.sel{border-color:var(--red);}
+  .ex-card.sel{background:linear-gradient(145deg,rgba(226,75,74,.07),var(--surface2));}
+  .ex-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:4px;margin-bottom:4px;}
+  .ex-card-name{font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.2;}
+  .ex-card-badge{font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;letter-spacing:.05em;text-transform:uppercase;font-family:var(--font-display);white-space:nowrap;flex-shrink:0;}
+  .ex-card-badge.compound{background:rgba(226,75,74,.15);color:var(--red);border:1px solid rgba(226,75,74,.3);}
+  .ex-card-badge.isolation{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.25);}
+  .ex-card-primary{font-size:10px;color:var(--muted2);margin-bottom:4px;}
+  .ex-card-primary strong{color:var(--text);font-weight:600;}
+  .ex-card-tags{display:flex;flex-wrap:wrap;gap:3px;}
+  .ex-card-tag{font-size:9px;padding:1px 6px;border-radius:3px;border:1px solid var(--border2);color:var(--muted2);background:var(--bg);}
+  .ex-card-tag.p{border-color:rgba(226,75,74,.35);color:var(--red);background:rgba(226,75,74,.06);}
+  .lib-empty{text-align:center;color:var(--muted);font-size:13px;padding:30px;grid-column:1/-1;}
+  .muscle-part{transition:fill .25s,filter .25s;cursor:pointer;}
+
   /* CHAT */
   #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
   .goal-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;gap:7px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
@@ -336,6 +379,7 @@
 
   <div class="tab-bar">
     <div class="tab active" id="tab-chat" onclick="showTab('chat')">⚡ Coach</div>
+    <div class="tab" id="tab-library" onclick="showTab('library')">💪 Exercises</div>
     <div class="tab" id="tab-diet" onclick="showTab('diet')">🥗 Diet</div>
     <div class="tab" id="tab-profile" onclick="showTab('profile')">👤 My Stats</div>
   </div>
@@ -461,6 +505,88 @@
     <button class="nutri-fab" id="nutri-fab" onclick="toggleNutriChat()">💬 Ask Nutritionist</button>
   </div>
 
+  <!-- EXERCISE LIBRARY -->
+  <div id="library-view">
+    <div class="lib-search-bar">
+      <span class="lib-search-icon">🔍</span>
+      <input id="lib-search" placeholder="Search exercises or muscles..." oninput="libRender()"/>
+    </div>
+    <div class="lib-layout">
+      <div class="body-panel">
+        <div class="body-panel-title">Muscle Map</div>
+        <div class="body-wrap">
+          <svg id="svg-front" class="body-svg" viewBox="0 0 200 370" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="26" rx="21" ry="24" fill="#222" stroke="#333" stroke-width="1"/>
+            <rect x="92" y="48" width="16" height="13" rx="4" fill="#1a1a1a"/>
+            <ellipse id="f-front-delts" class="muscle-part" cx="67" cy="80" rx="17" ry="13" fill="#2a2a2a" onclick="clickMuscle('front-delts')"/>
+            <ellipse class="muscle-part" cx="133" cy="80" rx="17" ry="13" fill="#2a2a2a" onclick="clickMuscle('front-delts')"/>
+            <ellipse id="f-side-delts" class="muscle-part" cx="51" cy="82" rx="11" ry="9" fill="#2a2a2a" onclick="clickMuscle('side-delts')"/>
+            <ellipse class="muscle-part" cx="149" cy="82" rx="11" ry="9" fill="#2a2a2a" onclick="clickMuscle('side-delts')"/>
+            <path id="f-chest" class="muscle-part" d="M82 73 Q72 83 72 98 Q80 106 98 106 L98 73 Z" fill="#2a2a2a" onclick="clickMuscle('chest')"/>
+            <path class="muscle-part" d="M118 73 Q128 83 128 98 Q120 106 102 106 L102 73 Z" fill="#2a2a2a" onclick="clickMuscle('chest')"/>
+            <rect id="f-abs" class="muscle-part" x="87" y="108" width="11" height="43" rx="3" fill="#2a2a2a" onclick="clickMuscle('abs')"/>
+            <rect class="muscle-part" x="102" y="108" width="11" height="43" rx="3" fill="#2a2a2a" onclick="clickMuscle('abs')"/>
+            <path id="f-obliques" class="muscle-part" d="M76 106 Q70 118 72 152 L87 152 L87 106 Z" fill="#2a2a2a" onclick="clickMuscle('obliques')"/>
+            <path class="muscle-part" d="M124 106 Q130 118 128 152 L113 152 L113 106 Z" fill="#2a2a2a" onclick="clickMuscle('obliques')"/>
+            <ellipse id="f-biceps" class="muscle-part" cx="58" cy="110" rx="10" ry="19" fill="#2a2a2a" onclick="clickMuscle('biceps')"/>
+            <ellipse class="muscle-part" cx="142" cy="110" rx="10" ry="19" fill="#2a2a2a" onclick="clickMuscle('biceps')"/>
+            <path id="f-forearms" class="muscle-part" d="M49 130 Q45 145 48 163 L56 163 Q53 145 56 130 Z" fill="#2a2a2a" onclick="clickMuscle('forearms')"/>
+            <path class="muscle-part" d="M151 130 Q155 145 152 163 L144 163 Q147 145 144 130 Z" fill="#2a2a2a" onclick="clickMuscle('forearms')"/>
+            <path id="f-quads" class="muscle-part" d="M85 173 Q75 193 77 237 Q83 245 95 245 L97 222 Q89 212 89 173 Z" fill="#2a2a2a" onclick="clickMuscle('quads')"/>
+            <path class="muscle-part" d="M115 173 Q125 193 123 237 Q117 245 105 245 L103 222 Q111 212 111 173 Z" fill="#2a2a2a" onclick="clickMuscle('quads')"/>
+            <path id="f-calves" class="muscle-part" d="M87 262 Q91 286 89 314 L81 314 Q79 286 79 262 Z" fill="#2a2a2a" onclick="clickMuscle('calves')"/>
+            <path class="muscle-part" d="M113 262 Q109 286 111 314 L119 314 Q121 286 121 262 Z" fill="#2a2a2a" onclick="clickMuscle('calves')"/>
+            <ellipse cx="83" cy="321" rx="12" ry="6" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
+            <ellipse cx="117" cy="321" rx="12" ry="6" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
+          </svg>
+          <svg id="svg-back" class="body-svg" viewBox="0 0 200 370" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+            <ellipse cx="100" cy="26" rx="21" ry="24" fill="#222" stroke="#333" stroke-width="1"/>
+            <rect x="92" y="48" width="16" height="13" rx="4" fill="#1a1a1a"/>
+            <path id="b-traps" class="muscle-part" d="M92 50 Q81 55 69 70 Q75 76 88 76 L92 66 Z" fill="#2a2a2a" onclick="clickMuscle('traps')"/>
+            <path class="muscle-part" d="M108 50 Q119 55 131 70 Q125 76 112 76 L108 66 Z" fill="#2a2a2a" onclick="clickMuscle('traps')"/>
+            <ellipse id="b-rear-delts" class="muscle-part" cx="61" cy="82" rx="15" ry="11" fill="#2a2a2a" onclick="clickMuscle('rear-delts')"/>
+            <ellipse class="muscle-part" cx="139" cy="82" rx="15" ry="11" fill="#2a2a2a" onclick="clickMuscle('rear-delts')"/>
+            <path id="b-lats" class="muscle-part" d="M77 88 Q63 103 65 143 L80 146 Q78 118 83 88 Z" fill="#2a2a2a" onclick="clickMuscle('lats')"/>
+            <path class="muscle-part" d="M123 88 Q137 103 135 143 L120 146 Q122 118 117 88 Z" fill="#2a2a2a" onclick="clickMuscle('lats')"/>
+            <rect id="b-erectors" class="muscle-part" x="88" y="110" width="10" height="48" rx="3" fill="#2a2a2a" onclick="clickMuscle('erectors')"/>
+            <rect class="muscle-part" x="102" y="110" width="10" height="48" rx="3" fill="#2a2a2a" onclick="clickMuscle('erectors')"/>
+            <ellipse id="b-triceps" class="muscle-part" cx="55" cy="113" rx="10" ry="21" fill="#2a2a2a" onclick="clickMuscle('triceps')"/>
+            <ellipse class="muscle-part" cx="145" cy="113" rx="10" ry="21" fill="#2a2a2a" onclick="clickMuscle('triceps')"/>
+            <path id="b-glutes" class="muscle-part" d="M85 160 Q75 170 77 197 Q85 207 100 207 L100 160 Z" fill="#2a2a2a" onclick="clickMuscle('glutes')"/>
+            <path class="muscle-part" d="M115 160 Q125 170 123 197 Q115 207 100 207 L100 160 Z" fill="#2a2a2a" onclick="clickMuscle('glutes')"/>
+            <path id="b-hamstrings" class="muscle-part" d="M81 205 Q75 225 77 250 Q83 257 95 257 L97 227 Q89 215 85 205 Z" fill="#2a2a2a" onclick="clickMuscle('hamstrings')"/>
+            <path class="muscle-part" d="M119 205 Q125 225 123 250 Q117 257 105 257 L103 227 Q111 215 115 205 Z" fill="#2a2a2a" onclick="clickMuscle('hamstrings')"/>
+            <path id="b-calves" class="muscle-part" d="M79 269 Q75 292 79 318 Q84 324 91 322 Q95 296 93 269 Z" fill="#2a2a2a" onclick="clickMuscle('calves')"/>
+            <path class="muscle-part" d="M121 269 Q125 292 121 318 Q116 324 109 322 Q105 296 107 269 Z" fill="#2a2a2a" onclick="clickMuscle('calves')"/>
+            <ellipse cx="84" cy="327" rx="12" ry="6" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
+            <ellipse cx="116" cy="327" rx="12" ry="6" fill="#1a1a1a" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="view-btns">
+          <button class="vbtn active" id="vbtn-front" onclick="setView('front')">Front</button>
+          <button class="vbtn" id="vbtn-back" onclick="setView('back')">Back</button>
+        </div>
+        <div class="sel-info" id="sel-info"><div style="font-size:10px;color:var(--muted);">Click a muscle or exercise</div></div>
+        <div class="leg-row"><div class="leg-dot" style="background:#e24b4a;box-shadow:0 0 5px #e24b4a88"></div>Primary</div>
+        <div class="leg-row"><div class="leg-dot" style="background:#c9a84c;box-shadow:0 0 4px #c9a84c66"></div>Secondary</div>
+      </div>
+      <div class="ex-panel">
+        <div class="cat-bar">
+          <button class="ccat active" onclick="setCat(this,'all')">All</button>
+          <button class="ccat" onclick="setCat(this,'chest')">Chest</button>
+          <button class="ccat" onclick="setCat(this,'back')">Back</button>
+          <button class="ccat" onclick="setCat(this,'shoulders')">Shoulders</button>
+          <button class="ccat" onclick="setCat(this,'arms')">Arms</button>
+          <button class="ccat" onclick="setCat(this,'legs')">Legs</button>
+          <button class="ccat" onclick="setCat(this,'glutes')">Glutes</button>
+          <button class="ccat" onclick="setCat(this,'core')">Core</button>
+        </div>
+        <div class="ex-count" id="lib-count"></div>
+        <div class="ex-grid" id="lib-grid"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- NUTRITION CHAT PANEL -->
   <div id="nutri-chat-panel">
     <div class="nutri-chat-header">
@@ -544,11 +670,14 @@ function showTab(tab){
   document.getElementById('chat-view').style.display=tab==='chat'?'flex':'none';
   document.getElementById('profile-view').style.display=tab==='profile'?'block':'none';
   document.getElementById('diet-view').style.display=tab==='diet'?'flex':'none';
+  document.getElementById('library-view').style.display=tab==='library'?'flex':'none';
   document.getElementById('tab-chat').classList.toggle('active',tab==='chat');
   document.getElementById('tab-profile').classList.toggle('active',tab==='profile');
   document.getElementById('tab-diet').classList.toggle('active',tab==='diet');
+  document.getElementById('tab-library').classList.toggle('active',tab==='library');
   if(tab==='profile') populateProfileForm();
   if(tab==='diet' && !dietInit){renderDietPlans();dietInit=true;}
+  if(tab==='library' && !libInit){libRender();libInit=true;}
 }
 
 function populateProfileForm(){
@@ -1043,6 +1172,190 @@ function logWorkout(){
 
 // init streak number on load
 renderStreak();
+
+// ── EXERCISE LIBRARY ──
+var MUSCLE_MAP={
+  'chest':['f-chest'],'upper pecs':['f-chest'],'lower pecs':['f-chest'],'inner pecs':['f-chest'],'pecs':['f-chest'],
+  'front delts':['f-front-delts'],'side delts':['f-side-delts'],'rear delts':['b-rear-delts'],'rotator cuff':['b-rear-delts'],
+  'triceps':['f-triceps','b-triceps'],'biceps':['f-biceps'],'brachialis':['f-biceps'],'brachioradialis':['f-forearms'],'forearms':['f-forearms'],
+  'lats':['b-lats'],'traps':['b-traps'],'upper traps':['b-traps'],'rhomboids':['b-traps'],'erectors':['b-erectors'],'teres major':['b-lats'],
+  'abs':['f-abs'],'rectus abdominis':['f-abs'],'upper abs':['f-abs'],'lower abs':['f-abs'],'obliques':['f-obliques'],'transverse abs':['f-obliques'],'core':['f-abs','f-obliques'],'hip flexors':['f-abs'],
+  'glutes':['b-glutes'],'gluteus medius':['b-glutes'],'glute med':['b-glutes'],
+  'quads':['f-quads'],'hamstrings':['b-hamstrings'],'adductors':['f-quads'],
+  'calves':['f-calves','b-calves'],'gastrocnemius':['b-calves'],'soleus':['b-calves'],
+};
+
+var EXERCISES=[
+  {name:'Barbell Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Incline Barbell Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Dumbbell Bench Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts','Triceps']},
+  {name:'Incline Dumbbell Press',type:'compound',category:'chest',primary:'Upper Chest',muscles:['Upper Pecs','Front Delts','Triceps']},
+  {name:'Dumbbell Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
+  {name:'Cable Fly',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs','Front Delts']},
+  {name:'Pec Deck Machine',type:'isolation',category:'chest',primary:'Chest',muscles:['Pecs']},
+  {name:'Chest Dip',type:'compound',category:'chest',primary:'Lower Chest',muscles:['Lower Pecs','Triceps','Front Delts']},
+  {name:'Push-Up',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts','Core']},
+  {name:'Machine Chest Press',type:'compound',category:'chest',primary:'Chest',muscles:['Pecs','Triceps','Front Delts']},
+  {name:'Dumbbell Pullover',type:'compound',category:'chest',primary:'Chest & Lats',muscles:['Pecs','Lats','Triceps']},
+  {name:'Conventional Deadlift',type:'compound',category:'back',primary:'Full Back',muscles:['Lats','Traps','Erectors','Glutes','Hamstrings']},
+  {name:'Romanian Deadlift',type:'compound',category:'back',primary:'Hamstrings',muscles:['Hamstrings','Glutes','Erectors','Lats']},
+  {name:'Barbell Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps']},
+  {name:'Pendlay Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Lats','Rhomboids','Traps','Biceps']},
+  {name:'T-Bar Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Traps','Biceps']},
+  {name:'Pull-Up',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts','Core']},
+  {name:'Chin-Up',type:'compound',category:'back',primary:'Lats & Biceps',muscles:['Lats','Biceps','Traps']},
+  {name:'Lat Pulldown',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Biceps','Rear Delts']},
+  {name:'Seated Cable Row',type:'compound',category:'back',primary:'Mid Back',muscles:['Rhomboids','Lats','Biceps','Traps']},
+  {name:'Single-Arm Dumbbell Row',type:'compound',category:'back',primary:'Lats',muscles:['Lats','Rhomboids','Biceps','Rear Delts']},
+  {name:'Face Pull',type:'isolation',category:'back',primary:'Rear Delts',muscles:['Rear Delts','Traps','Rotator Cuff']},
+  {name:'Straight-Arm Pulldown',type:'isolation',category:'back',primary:'Lats',muscles:['Lats','Teres Major']},
+  {name:'Good Morning',type:'compound',category:'back',primary:'Erectors',muscles:['Erectors','Hamstrings','Glutes']},
+  {name:'Back Extension',type:'isolation',category:'back',primary:'Erectors',muscles:['Erectors','Glutes','Hamstrings']},
+  {name:'Shrug',type:'isolation',category:'back',primary:'Upper Traps',muscles:['Upper Traps']},
+  {name:'Barbell Overhead Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps','Traps']},
+  {name:'Seated Dumbbell Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Side Delts','Triceps']},
+  {name:'Arnold Press',type:'compound',category:'shoulders',primary:'All Delts',muscles:['Front Delts','Side Delts','Rear Delts','Triceps']},
+  {name:'Push Press',type:'compound',category:'shoulders',primary:'Shoulders',muscles:['Front Delts','Triceps','Quads','Core']},
+  {name:'Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Cable Lateral Raise',type:'isolation',category:'shoulders',primary:'Side Delts',muscles:['Side Delts']},
+  {name:'Front Raise',type:'isolation',category:'shoulders',primary:'Front Delts',muscles:['Front Delts']},
+  {name:'Rear Delt Fly',type:'isolation',category:'shoulders',primary:'Rear Delts',muscles:['Rear Delts','Rhomboids','Traps']},
+  {name:'Upright Row',type:'compound',category:'shoulders',primary:'Side Delts',muscles:['Side Delts','Traps','Biceps']},
+  {name:'Barbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis','Brachioradialis']},
+  {name:'Dumbbell Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Hammer Curl',type:'isolation',category:'arms',primary:'Brachialis',muscles:['Brachialis','Biceps','Brachioradialis']},
+  {name:'Preacher Curl',type:'isolation',category:'arms',primary:'Short Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'Incline Dumbbell Curl',type:'isolation',category:'arms',primary:'Long Head Bicep',muscles:['Biceps','Brachialis']},
+  {name:'Cable Curl',type:'isolation',category:'arms',primary:'Biceps',muscles:['Biceps','Brachialis']},
+  {name:'Concentration Curl',type:'isolation',category:'arms',primary:'Biceps Peak',muscles:['Biceps']},
+  {name:'Tricep Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Rope Pushdown',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Skull Crusher',type:'isolation',category:'arms',primary:'Triceps',muscles:['Triceps']},
+  {name:'Overhead Tricep Extension',type:'isolation',category:'arms',primary:'Triceps Long Head',muscles:['Triceps']},
+  {name:'Close-Grip Bench Press',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Pecs','Front Delts']},
+  {name:'Tricep Dip',type:'compound',category:'arms',primary:'Triceps',muscles:['Triceps','Front Delts','Lower Pecs']},
+  {name:'Wrist Curl',type:'isolation',category:'arms',primary:'Forearms',muscles:['Forearms']},
+  {name:'Barbell Back Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core','Adductors']},
+  {name:'Front Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Core','Glutes']},
+  {name:'Goblet Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Core','Adductors']},
+  {name:'Hack Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings']},
+  {name:'Leg Press',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Adductors']},
+  {name:'Leg Extension',type:'isolation',category:'legs',primary:'Quads',muscles:['Quads']},
+  {name:'Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
+  {name:'Seated Leg Curl',type:'isolation',category:'legs',primary:'Hamstrings',muscles:['Hamstrings']},
+  {name:'Walking Lunge',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Bulgarian Split Squat',type:'compound',category:'legs',primary:'Quads',muscles:['Quads','Glutes','Hamstrings','Core']},
+  {name:'Standing Calf Raise',type:'isolation',category:'legs',primary:'Gastrocnemius',muscles:['Calves','Gastrocnemius']},
+  {name:'Seated Calf Raise',type:'isolation',category:'legs',primary:'Soleus',muscles:['Soleus','Calves']},
+  {name:'Hip Thrust',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Glute Bridge',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Core']},
+  {name:'Cable Kickback',type:'isolation',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings']},
+  {name:'Bulgarian Split Squat (Glute)',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Quads','Hamstrings']},
+  {name:'Hip Abduction',type:'isolation',category:'glutes',primary:'Glute Med',muscles:['Gluteus Medius']},
+  {name:'Reverse Hyperextension',type:'compound',category:'glutes',primary:'Glutes',muscles:['Glutes','Hamstrings','Erectors']},
+  {name:'Plank',type:'isolation',category:'core',primary:'Core',muscles:['Transverse Abs','Obliques','Erectors']},
+  {name:'Side Plank',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs']},
+  {name:'Ab Wheel Rollout',type:'compound',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques','Lats']},
+  {name:'Cable Crunch',type:'isolation',category:'core',primary:'Abs',muscles:['Rectus Abdominis','Obliques']},
+  {name:'Hanging Leg Raise',type:'compound',category:'core',primary:'Lower Abs',muscles:['Hip Flexors','Rectus Abdominis','Obliques']},
+  {name:'Russian Twist',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Transverse Abs']},
+  {name:'Bicycle Crunch',type:'isolation',category:'core',primary:'Obliques',muscles:['Obliques','Rectus Abdominis']},
+  {name:'Hollow Body Hold',type:'isolation',category:'core',primary:'Core',muscles:['Rectus Abdominis','Transverse Abs']},
+];
+
+var libCat='all', libSel=null, libView='front', libInit=false, libMuscleFilter=null;
+
+function setView(v){
+  libView=v;
+  document.getElementById('svg-front').style.display=v==='front'?'block':'none';
+  document.getElementById('svg-back').style.display=v==='back'?'block':'none';
+  document.getElementById('vbtn-front').classList.toggle('active',v==='front');
+  document.getElementById('vbtn-back').classList.toggle('active',v==='back');
+  if(libSel) highlightEx(libSel);
+  else if(libMuscleFilter) clickMuscleHighlight(libMuscleFilter);
+}
+
+function clearHL(){document.querySelectorAll('.muscle-part').forEach(function(el){el.style.fill='';el.style.filter='';});}
+
+function highlightIds(ids,color,filter){
+  ids.forEach(function(id){
+    var el=document.getElementById(id); if(el){el.style.fill=color;el.style.filter=filter;}
+    document.querySelectorAll('.muscle-part').forEach(function(p){
+      var oc=p.getAttribute('onclick')||''; var m=oc.match(/'([^']+)'/);
+      if(m){var mids=MUSCLE_MAP[m[1]]||[]; if(mids.indexOf(id)>-1 && (!p.style.fill||color==='#e24b4a')){p.style.fill=color;p.style.filter=filter;}}
+    });
+  });
+}
+
+function highlightEx(ex){
+  clearHL();
+  var pm=ex.muscles[0].toLowerCase();
+  highlightIds(MUSCLE_MAP[pm]||[],'#e24b4a','drop-shadow(0 0 6px #e24b4a99)');
+  ex.muscles.slice(1).forEach(function(m){
+    var ids=(MUSCLE_MAP[m.toLowerCase()]||[]).filter(function(id){var el=document.getElementById(id);return !el||el.style.fill!=='#e24b4a';});
+    highlightIds(ids,'#c9a84c','drop-shadow(0 0 4px #c9a84c77)');
+  });
+  document.getElementById('sel-info').innerHTML='<div class="sel-info-name">'+ex.name+'</div><div class="sel-info-muscles"><span style="color:var(--red)">●</span> '+ex.muscles[0]+(ex.muscles.length>1?'<br><span style="color:var(--gold)">●</span> '+ex.muscles.slice(1).join(', '):'')+'</div>';
+  var back=['lats','rhomboids','traps','erectors','rear delts','glutes','hamstrings'];
+  var isBack=back.some(function(b){return ex.muscles[0].toLowerCase().indexOf(b)>-1;});
+  if(isBack) setView('back'); else setView('front');
+}
+
+function clickMuscleHighlight(mkey){
+  clearHL();
+  document.querySelectorAll('.muscle-part').forEach(function(el){
+    var oc=el.getAttribute('onclick')||''; if(oc.indexOf("'"+mkey+"'")>-1){el.style.fill='#e24b4a';el.style.filter='drop-shadow(0 0 6px #e24b4a99)';}
+  });
+}
+
+function clickMuscle(mkey){
+  libMuscleFilter=libMuscleFilter===mkey?null:mkey; libSel=null;
+  if(libMuscleFilter){
+    clickMuscleHighlight(mkey);
+    document.getElementById('sel-info').innerHTML='<div class="sel-info-name">'+mkey.replace(/-/g,' ').toUpperCase()+'</div><div class="sel-info-muscles">Showing exercises for this muscle</div>';
+  } else {
+    clearHL();
+    document.getElementById('sel-info').innerHTML='<div style="font-size:10px;color:var(--muted);">Click a muscle or exercise</div>';
+  }
+  libRender();
+}
+
+function setCat(el,c){
+  document.querySelectorAll('.ccat').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active'); libCat=c; libMuscleFilter=null; libSel=null; clearHL();
+  document.getElementById('sel-info').innerHTML='<div style="font-size:10px;color:var(--muted);">Click a muscle or exercise</div>';
+  libRender();
+}
+
+function libRender(){
+  var q=(document.getElementById('lib-search')||{value:''}).value.toLowerCase();
+  var filtered=EXERCISES.map(function(ex,i){return Object.assign({},ex,{idx:i});}).filter(function(ex){
+    var mc=libCat==='all'||ex.category===libCat;
+    var mq=!q||ex.name.toLowerCase().indexOf(q)>-1||ex.muscles.some(function(m){return m.toLowerCase().indexOf(q)>-1;})||ex.primary.toLowerCase().indexOf(q)>-1;
+    var mm=!libMuscleFilter||ex.muscles.some(function(m){
+      var mk=m.toLowerCase(); var mapped=MUSCLE_MAP[libMuscleFilter]||[];
+      return mk.indexOf(libMuscleFilter.replace(/-/g,' '))>-1||mapped.some(function(id){return mk.indexOf(id.replace('f-','').replace('b-',''))>-1;});
+    });
+    return mc&&mq&&mm;
+  });
+  var cnt=document.getElementById('lib-count');
+  if(cnt) cnt.textContent=filtered.length+' exercise'+(filtered.length!==1?'s':'')+(libMuscleFilter?' for '+libMuscleFilter.replace(/-/g,' '):'');
+  var grid=document.getElementById('lib-grid'); if(!grid) return;
+  if(!filtered.length){grid.innerHTML='<div class="lib-empty">No exercises found.</div>';return;}
+  grid.innerHTML=filtered.map(function(ex){
+    return '<div class="ex-card'+(libSel&&libSel.name===ex.name?' sel':'')+'" data-idx="'+ex.idx+'" onclick="selectEx('+ex.idx+')">'+
+      '<div class="ex-card-top"><div class="ex-card-name">'+ex.name+'</div><div class="ex-card-badge '+ex.type+'">'+ex.type+'</div></div>'+
+      '<div class="ex-card-primary">Target: <strong>'+ex.primary+'</strong></div>'+
+      '<div class="ex-card-tags">'+ex.muscles.map(function(m,i){return '<span class="ex-card-tag'+(i===0?' p':'')+'">'+m+'</span>';}).join('')+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+function selectEx(idx){
+  libSel=EXERCISES[idx]; libMuscleFilter=null;
+  document.querySelectorAll('.ex-card').forEach(function(c){c.classList.toggle('sel',parseInt(c.dataset.idx)===idx);});
+  highlightEx(libSel);
+}
 </script>
 </body>
 </html>
