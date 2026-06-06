@@ -1274,6 +1274,113 @@ const DIET_PLANS=[
     {time:'7:00 PM',name:'Salmon Dinner',cals:560,desc:'200g salmon, sweet potato, steamed broccoli, olive oil',p:'42g',c:'44g',f:'20g'},
     {time:'9:00 PM',name:'DF Snack',cals:280,desc:'Almond butter on rice cakes, handful of mixed nuts',p:'8g',c:'22g',f:'18g'},
    ]},
+  {id:'diabetic-lowcarb',icon:'🩺',color:'#4a7ae2',name:'Diabetic — Low Carb',sub:'Under 100g carbs · Steady Sugar',filters:['diabetic'],
+   desc:'A lower-carb approach to minimize blood sugar spikes, built on protein, healthy fats, and non-starchy vegetables.',
+   note:'Always consult your doctor or a registered dietitian before changing your diet, especially if you take medication.',
+   meals:[
+    {time:'7:30 AM',name:'Veggie Egg Scramble',cals:360,desc:'3 eggs, spinach, peppers, mushrooms, half avocado',p:'24g',c:'12g',f:'24g'},
+    {time:'10:30 AM',name:'Snack',cals:200,desc:'String cheese + small handful almonds',p:'12g',c:'6g',f:'16g'},
+    {time:'1:00 PM',name:'Chicken Salad',cals:440,desc:'Grilled chicken, big leafy salad, olive oil & vinegar',p:'42g',c:'14g',f:'24g'},
+    {time:'4:00 PM',name:'Snack',cals:180,desc:'Celery with 2 tbsp natural peanut butter',p:'8g',c:'10g',f:'14g'},
+    {time:'6:30 PM',name:'Salmon & Veg',cals:460,desc:'Baked salmon, roasted zucchini & cauliflower',p:'40g',c:'14g',f:'26g'},
+    {time:'8:30 PM',name:'Snack',cals:140,desc:'Plain Greek yogurt, few berries',p:'16g',c:'10g',f:'4g'}
+   ]},
+  {id:'diabetic-med',icon:'🩺',color:'#4a7ae2',name:'Diabetic — Mediterranean',sub:'Heart-Healthy · Low GI',filters:['diabetic'],
+   desc:'Mediterranean-style eating shown to help blood sugar and heart health — olive oil, fish, legumes, and whole grains in controlled portions.',
+   note:'Always consult your doctor or a registered dietitian before changing your diet, especially if you take medication.',
+   meals:[
+    {time:'7:30 AM',name:'Greek Yogurt Bowl',cals:380,desc:'Greek yogurt, walnuts, cinnamon, few berries',p:'24g',c:'30g',f:'18g'},
+    {time:'10:30 AM',name:'Snack',cals:180,desc:'Apple slices with almond butter',p:'5g',c:'22g',f:'10g'},
+    {time:'1:00 PM',name:'Lentil & Tuna Salad',cals:470,desc:'Lentils, tuna, tomato, cucumber, olive oil, lemon',p:'34g',c:'38g',f:'18g'},
+    {time:'4:00 PM',name:'Snack',cals:160,desc:'Hummus with veg sticks',p:'6g',c:'18g',f:'8g'},
+    {time:'7:00 PM',name:'Grilled Fish Plate',cals:480,desc:'White fish, quinoa, roasted vegetables, olive oil',p:'38g',c:'36g',f:'18g'},
+    {time:'8:30 PM',name:'Snack',cals:120,desc:'Small handful of mixed nuts',p:'4g',c:'5g',f:'10g'}
+   ]},
+  {id:'diabetic-veg',icon:'🩺',color:'#4a7ae2',name:'Diabetic — Vegetarian',sub:'Plant-Forward · Low GI',filters:['diabetic','vegan'],
+   desc:'A meat-free, blood-sugar-friendly plan using beans, lentils, tofu, and whole grains with controlled portions.',
+   note:'Always consult your doctor or a registered dietitian before changing your diet, especially if you take medication.',
+   meals:[
+    {time:'7:30 AM',name:'Tofu Scramble',cals:340,desc:'Tofu, spinach, peppers, wholegrain toast slice',p:'22g',c:'30g',f:'14g'},
+    {time:'10:30 AM',name:'Snack',cals:180,desc:'Pear with a few walnuts',p:'4g',c:'24g',f:'9g'},
+    {time:'1:00 PM',name:'Bean & Quinoa Bowl',cals:460,desc:'Black beans, quinoa, avocado, salsa, greens',p:'20g',c:'56g',f:'16g'},
+    {time:'4:00 PM',name:'Snack',cals:150,desc:'Edamame, lightly salted',p:'12g',c:'12g',f:'6g'},
+    {time:'7:00 PM',name:'Lentil Curry',cals:470,desc:'Lentil & vegetable curry, small portion brown rice',p:'22g',c:'62g',f:'10g'},
+    {time:'8:30 PM',name:'Snack',cals:130,desc:'Plain soy yogurt with cinnamon',p:'8g',c:'12g',f:'4g'}
+   ]},
+  {id:'diabetic-weightloss',icon:'🩺',color:'#4a7ae2',name:'Diabetic — Weight Loss',sub:'~1500 cal · Low GI Deficit',filters:['diabetic','fat-loss'],
+   desc:'A calorie-controlled, low glycemic plan for those managing both weight and blood sugar. Portion sizes kept modest.',
+   note:'Always consult your doctor or a registered dietitian before changing your diet, especially if you take medication.',
+   meals:[
+    {time:'8:00 AM',name:'Egg White Veggie Omelette',cals:260,desc:'6 egg whites, 1 yolk, lots of veg, 1 slice rye',p:'28g',c:'20g',f:'8g'},
+    {time:'11:00 AM',name:'Snack',cals:120,desc:'Small Greek yogurt, cinnamon',p:'14g',c:'8g',f:'3g'},
+    {time:'1:00 PM',name:'Big Chicken Salad',cals:380,desc:'Chicken breast, huge salad, light olive oil dressing',p:'40g',c:'14g',f:'16g'},
+    {time:'4:00 PM',name:'Snack',cals:120,desc:'Cucumber & a few almonds',p:'4g',c:'6g',f:'9g'},
+    {time:'6:30 PM',name:'Lean Protein & Veg',cals:400,desc:'White fish or turkey, non-starchy veg, small sweet potato',p:'38g',c:'30g',f:'12g'},
+    {time:'8:30 PM',name:'Snack',cals:100,desc:'Sugar-free jelly or a few berries',p:'2g',c:'10g',f:'1g'}
+   ]},
+  {id:'muscle-lean',icon:'🔥',color:'#e24b4a',name:'Lean Gains',sub:'~2600 cal · Clean Bulk',filters:['muscle'],
+   desc:'A cleaner, slightly lower-calorie muscle plan for minimal fat gain while still growing.',
+   meals:[
+    {time:'7:00 AM',name:'Egg & Oat Breakfast',cals:520,desc:'4 eggs, 1 cup oats, berries',p:'34g',c:'52g',f:'16g'},
+    {time:'10:00 AM',name:'Snack',cals:300,desc:'Greek yogurt, honey, almonds',p:'24g',c:'28g',f:'10g'},
+    {time:'1:00 PM',name:'Turkey Rice Bowl',cals:600,desc:'Lean turkey mince, rice, mixed veg',p:'48g',c:'62g',f:'12g'},
+    {time:'4:00 PM',name:'Shake',cals:360,desc:'Whey, banana, oat milk',p:'34g',c:'42g',f:'5g'},
+    {time:'7:00 PM',name:'Steak & Potato',cals:560,desc:'Lean steak, baked potato, greens',p:'46g',c:'44g',f:'18g'},
+    {time:'9:30 PM',name:'Casein Snack',cals:260,desc:'Cottage cheese, walnuts',p:'28g',c:'12g',f:'10g'}
+   ]},
+  {id:'muscle-mass',icon:'🔥',color:'#e24b4a',name:'Mass Gainer',sub:'~3800 cal · Aggressive Bulk',filters:['muscle'],
+   desc:'A high-calorie surplus plan for hard gainers struggling to put on size. Big portions, calorie-dense foods.',
+   meals:[
+    {time:'7:00 AM',name:'Big Breakfast',cals:820,desc:'5 eggs, 1.5 cups oats, peanut butter, whole milk',p:'48g',c:'78g',f:'34g'},
+    {time:'10:00 AM',name:'Mass Shake',cals:720,desc:'2 scoops whey, oats, banana, PB, whole milk',p:'56g',c:'82g',f:'18g'},
+    {time:'1:00 PM',name:'Double Chicken Rice',cals:880,desc:'300g chicken, 2.5 cups rice, veg, olive oil',p:'72g',c:'96g',f:'20g'},
+    {time:'4:00 PM',name:'Snack',cals:480,desc:'Bagel with PB & honey, milk',p:'20g',c:'64g',f:'18g'},
+    {time:'7:30 PM',name:'Beef Pasta',cals:760,desc:'250g beef mince, pasta, tomato sauce, cheese',p:'56g',c:'78g',f:'22g'},
+    {time:'10:00 PM',name:'Night Shake',cals:420,desc:'Casein or cottage cheese, nuts, banana',p:'38g',c:'30g',f:'16g'}
+   ]},
+  {id:'fatloss-highprotein',icon:'🏃',color:'#5a9e2f',name:'Fat Loss — High Protein',sub:'~1800 cal · High Satiety',filters:['fat-loss'],
+   desc:'Higher protein keeps you full and protects muscle in a deficit. Built around lean meats and volume foods.',
+   meals:[
+    {time:'8:00 AM',name:'Protein Oats',cals:380,desc:'Oats cooked with whey, berries',p:'34g',c:'44g',f:'7g'},
+    {time:'11:00 AM',name:'Snack',cals:150,desc:'Beef jerky + apple',p:'18g',c:'16g',f:'2g'},
+    {time:'1:00 PM',name:'Chicken & Veg',cals:420,desc:'Chicken breast, huge veg portion, small rice',p:'48g',c:'30g',f:'10g'},
+    {time:'4:00 PM',name:'Snack',cals:150,desc:'Protein shake with water',p:'30g',c:'4g',f:'2g'},
+    {time:'7:00 PM',name:'Lean Stir Fry',cals:460,desc:'Prawns or chicken, loads of veg, small noodles',p:'42g',c:'34g',f:'14g'},
+    {time:'8:30 PM',name:'Snack',cals:140,desc:'Low-fat Greek yogurt',p:'18g',c:'10g',f:'2g'}
+   ]},
+  {id:'fatloss-if',icon:'🏃',color:'#5a9e2f',name:'Fat Loss — 16:8 Fasting',sub:'~1700 cal · 2 Meals + Snack',filters:['fat-loss'],
+   desc:'Intermittent fasting with an 8-hour eating window (noon–8pm). Fewer, bigger meals make the deficit easier to stick to.',
+   meals:[
+    {time:'12:00 PM',name:'Break-Fast Meal',cals:650,desc:'Chicken, rice, big salad, olive oil',p:'52g',c:'58g',f:'20g'},
+    {time:'3:30 PM',name:'Snack',cals:250,desc:'Greek yogurt, berries, few nuts',p:'20g',c:'22g',f:'9g'},
+    {time:'7:30 PM',name:'Dinner',cals:620,desc:'Salmon, sweet potato, broccoli',p:'44g',c:'46g',f:'24g'}
+   ]},
+  {id:'keto-veg',icon:'🥑',color:'#c9a84c',name:'Keto — Vegetarian',sub:'Under 30g carbs · Meat-Free',filters:['keto','vegan'],
+   desc:'A vegetarian take on keto using eggs, dairy, nuts, seeds, and low-carb vegetables.',
+   meals:[
+    {time:'9:00 AM',name:'Cheese Omelette',cals:560,desc:'3 eggs, cheese, spinach, avocado, butter',p:'28g',c:'6g',f:'46g'},
+    {time:'12:30 PM',name:'Halloumi Salad',cals:520,desc:'Grilled halloumi, leaves, olives, olive oil',p:'26g',c:'8g',f:'42g'},
+    {time:'4:00 PM',name:'Snack',cals:300,desc:'Macadamias + cheese',p:'10g',c:'5g',f:'28g'},
+    {time:'7:30 PM',name:'Veggie Keto Bowl',cals:600,desc:'Cauliflower rice, paneer, peppers, cream sauce',p:'30g',c:'12g',f:'46g'}
+   ]},
+  {id:'vegan-cut',icon:'🌱',color:'#5a9e2f',name:'Vegan — Fat Loss',sub:'~1700 cal · Plant Deficit',filters:['vegan','fat-loss','dairy-free'],
+   desc:'A lower-calorie plant-based plan high in volume and protein from tofu, legumes, and seitan.',
+   meals:[
+    {time:'7:30 AM',name:'Tofu Scramble',cals:320,desc:'Tofu, spinach, mushrooms, 1 slice toast',p:'24g',c:'26g',f:'12g'},
+    {time:'11:00 AM',name:'Snack',cals:160,desc:'Edamame + apple',p:'12g',c:'20g',f:'5g'},
+    {time:'1:00 PM',name:'Lentil Salad',cals:420,desc:'Lentils, greens, cherry tomato, light dressing',p:'24g',c:'48g',f:'10g'},
+    {time:'4:00 PM',name:'Shake',cals:180,desc:'Pea protein with water, berries',p:'24g',c:'14g',f:'2g'},
+    {time:'7:00 PM',name:'Seitan Stir Fry',cals:460,desc:'Seitan, loads of veg, small rice',p:'38g',c:'44g',f:'10g'}
+   ]},
+  {id:'gf-muscle',icon:'🌾',color:'#c9a84c',name:'Gluten-Free — Muscle',sub:'~2900 cal · GF Bulk',filters:['gluten-free','muscle'],
+   desc:'A higher-calorie muscle plan that is 100% gluten-free, using rice, potatoes, and certified GF oats.',
+   meals:[
+    {time:'7:00 AM',name:'GF Power Breakfast',cals:620,desc:'4 eggs, GF oats, banana, almond butter',p:'34g',c:'62g',f:'24g'},
+    {time:'10:00 AM',name:'Snack',cals:320,desc:'Rice cakes, GF protein bar',p:'22g',c:'40g',f:'8g'},
+    {time:'1:00 PM',name:'Chicken & Rice',cals:680,desc:'200g chicken, 1.5 cups rice, veg',p:'52g',c:'72g',f:'12g'},
+    {time:'4:00 PM',name:'Shake',cals:360,desc:'Whey, banana, GF oats, milk',p:'40g',c:'40g',f:'6g'},
+    {time:'7:00 PM',name:'Steak & Potato',cals:620,desc:'Steak, baked potato, greens, olive oil',p:'48g',c:'48g',f:'22g'}
+   ]}
 ];
 
 function setDietFilter(el,f){
