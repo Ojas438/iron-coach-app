@@ -278,10 +278,10 @@
   .save-plan-btn:hover{background:var(--red);color:#fff;border-color:var(--red);}
   .save-plan-btn.saved{background:var(--surface3);color:var(--green);border-color:var(--border2);}
 
-  /* 1RM CALCULATOR */
-  #onerm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
-  #onerm-overlay.open{display:flex;}
-  .onerm-modal{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:20px;padding:28px 24px;width:100%;max-width:380px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.7);max-height:90vh;overflow-y:auto;}
+  /* TOOLS / 1RM CALCULATOR */
+  #tools-view{flex:1;display:none;flex-direction:column;overflow:hidden;}
+  .tools-scroll{flex:1;overflow-y:auto;padding:18px 16px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+  .tool-card{background:linear-gradient(145deg,var(--surface),var(--surface2));border:1px solid var(--border2);border-radius:16px;padding:24px;max-width:440px;margin:0 auto 16px;box-shadow:0 12px 30px rgba(0,0,0,.35);}
   .onerm-title{font-family:var(--font-display);font-size:24px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;text-align:center;}
   .onerm-sub{font-size:12px;color:var(--muted2);text-align:center;margin-bottom:22px;}
   .onerm-inputs{display:flex;align-items:flex-end;gap:10px;margin-bottom:20px;}
@@ -481,6 +481,7 @@
     <div class="tab" id="tab-plan" onclick="showTab('plan')">📋 My Plan</div>
     <div class="tab" id="tab-library" onclick="showTab('library')">💪 Exercises</div>
     <div class="tab" id="tab-diet" onclick="showTab('diet')">🥗 Diet</div>
+    <div class="tab" id="tab-tools" onclick="showTab('tools')">🧮 Tools</div>
     <div class="tab" id="tab-profile" onclick="showTab('profile')">👤 My Stats</div>
   </div>
 
@@ -506,7 +507,6 @@
     <div class="messages" id="messages"></div>
     <div class="quick-bar">
       <button class="qr qr-timer" onclick="openTimer()">⏱️ Rest Timer</button>
-      <button class="qr qr-timer" onclick="openOneRM()">🏋️ 1RM Calc</button>
       <button class="qr" onclick="sendQuick('Build me a personalized weekly workout program based on my profile.')">🗓 My Program</button>
       <button class="qr" onclick="sendQuick('What are the best exercises for my goal and experience level?')">💪 Best Exercises</button>
       <button class="qr" onclick="sendQuick('What should I eat pre and post workout to maximize results?')">🥗 Nutrition</button>
@@ -650,6 +650,37 @@
     <div class="plan-scroll" id="plan-scroll"></div>
   </div>
 
+  <!-- TOOLS -->
+  <div id="tools-view">
+    <div class="tools-scroll">
+      <div class="tool-card">
+        <div class="onerm-title">1RM Calculator</div>
+        <div class="onerm-sub">Estimate your one-rep max & working weights</div>
+        <div class="onerm-inputs">
+          <div class="onerm-field">
+            <label>Weight</label>
+            <input type="number" id="onerm-weight" placeholder="185" inputmode="decimal" oninput="calcOneRM()"/>
+          </div>
+          <div class="onerm-unit">
+            <button class="onerm-unit-btn active" id="unit-lb" onclick="setRMUnit('lb')">lb</button>
+            <button class="onerm-unit-btn" id="unit-kg" onclick="setRMUnit('kg')">kg</button>
+          </div>
+          <div class="onerm-field">
+            <label>Reps</label>
+            <input type="number" id="onerm-reps" placeholder="5" inputmode="numeric" oninput="calcOneRM()"/>
+          </div>
+        </div>
+        <div class="onerm-result">
+          <div class="onerm-result-label">Estimated 1RM</div>
+          <div class="onerm-result-val" id="onerm-max">—</div>
+        </div>
+        <div class="onerm-table-title">Training Percentages</div>
+        <div class="onerm-table" id="onerm-table"></div>
+        <div class="onerm-note">Estimates use the Epley &amp; Brzycki formulas (averaged). Real max can vary — always use a spotter.</div>
+      </div>
+    </div>
+  </div>
+
   <!-- NUTRITION CHAT PANEL -->
   <div id="nutri-chat-panel">
     <div class="nutri-chat-header">
@@ -723,35 +754,7 @@
     </div>
   </div>
 
-  <!-- 1RM CALCULATOR OVERLAY -->
-  <div id="onerm-overlay">
-    <div class="onerm-modal">
-      <button class="timer-close" onclick="closeOneRM()">✕</button>
-      <div class="onerm-title">1RM Calculator</div>
-      <div class="onerm-sub">Estimate your one-rep max</div>
-      <div class="onerm-inputs">
-        <div class="onerm-field">
-          <label>Weight</label>
-          <input type="number" id="onerm-weight" placeholder="185" inputmode="decimal" oninput="calcOneRM()"/>
-        </div>
-        <div class="onerm-unit">
-          <button class="onerm-unit-btn active" id="unit-lb" onclick="setRMUnit('lb')">lb</button>
-          <button class="onerm-unit-btn" id="unit-kg" onclick="setRMUnit('kg')">kg</button>
-        </div>
-        <div class="onerm-field">
-          <label>Reps</label>
-          <input type="number" id="onerm-reps" placeholder="5" inputmode="numeric" oninput="calcOneRM()"/>
-        </div>
-      </div>
-      <div class="onerm-result">
-        <div class="onerm-result-label">Estimated 1RM</div>
-        <div class="onerm-result-val" id="onerm-max">—</div>
-      </div>
-      <div class="onerm-table-title">Training Percentages</div>
-      <div class="onerm-table" id="onerm-table"></div>
-      <div class="onerm-note">Estimates use the Epley &amp; Brzycki formulas (averaged). Real max can vary — always use a spotter.</div>
-    </div>
-  </div>
+  <!-- 1RM CALCULATOR OVERLAY (moved to Tools tab) -->
 </div>
 
 <script>
@@ -900,16 +903,19 @@ function showTab(tab){
   document.getElementById('diet-view').style.display=tab==='diet'?'flex':'none';
   document.getElementById('library-view').style.display=tab==='library'?'flex':'none';
   document.getElementById('plan-view').style.display=tab==='plan'?'flex':'none';
+  document.getElementById('tools-view').style.display=tab==='tools'?'flex':'none';
   document.getElementById('tab-chat').classList.toggle('active',tab==='chat');
   document.getElementById('tab-profile').classList.toggle('active',tab==='profile');
   document.getElementById('tab-diet').classList.toggle('active',tab==='diet');
   document.getElementById('tab-library').classList.toggle('active',tab==='library');
   document.getElementById('tab-plan').classList.toggle('active',tab==='plan');
+  document.getElementById('tab-tools').classList.toggle('active',tab==='tools');
   if(tab==='profile') populateProfileForm();
   if(tab==='diet' && !dietInit){renderDietPlans();dietInit=true;}
   if(tab==='library' && !libInit){libRender();setTimeout(initThreeBody,60);libInit=true;}
   if(tab==='library' && threeReady){setTimeout(resize3d,60);}
   if(tab==='plan') renderPlan();
+  if(tab==='tools') calcOneRM();
 }
 
 function populateProfileForm(){
@@ -1389,12 +1395,6 @@ function playBeep(){
 
 // ── 1RM CALCULATOR ──
 var rmUnit='lb';
-
-function openOneRM(){
-  document.getElementById('onerm-overlay').classList.add('open');
-  calcOneRM();
-}
-function closeOneRM(){ document.getElementById('onerm-overlay').classList.remove('open'); }
 
 function setRMUnit(u){
   rmUnit=u;
