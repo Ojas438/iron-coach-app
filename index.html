@@ -121,6 +121,22 @@
   .meal-row:last-child{border-bottom:none;}
   .meal-row:hover{background:rgba(226,75,74,.04);}
   .meal-time{font-family:var(--font-display);font-size:11px;font-weight:700;color:var(--red);width:70px;flex-shrink:0;letter-spacing:.05em;text-transform:uppercase;margin-top:3px;}
+  .diet-card-tap{cursor:pointer;transition:border-color .15s,transform .1s;}
+  .diet-card-tap:hover{border-color:rgba(226,75,74,.5);}
+  .diet-card-tap:active{transform:scale(.995);}
+  .diet-card-arrow{font-size:24px;color:var(--muted);font-weight:300;margin-left:auto;padding-left:8px;}
+  .diet-card-foot{padding:10px 16px;font-size:11px;font-weight:600;color:var(--red);border-top:1px solid var(--border);letter-spacing:.03em;}
+  .week-back{display:inline-block;font-size:12px;font-weight:600;color:var(--muted2);cursor:pointer;margin-bottom:14px;padding:6px 0;transition:color .15s;}
+  .week-back:hover{color:var(--red);}
+  .train-toggle-label{font-size:11px;color:var(--muted2);margin:8px 0 8px;}
+  .train-toggle{display:flex;gap:5px;margin-bottom:18px;}
+  .tday{flex:1;padding:9px 0;border-radius:7px;border:1px solid var(--border2);background:var(--bg);color:var(--muted);font-family:var(--font-display);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+  .tday.on{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 3px 10px rgba(226,75,74,.35);}
+  .week-day-header{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border2);}
+  .week-day-header.workout{background:linear-gradient(90deg,rgba(226,75,74,.14),transparent);}
+  .week-day-header.rest{background:linear-gradient(90deg,rgba(120,120,120,.12),transparent);}
+  .week-day-name{font-family:var(--font-display);font-size:17px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;}
+  .week-day-tag{font-size:10px;font-weight:600;color:var(--muted2);}
   .meal-info{flex:1;}
   .meal-name{font-size:13.5px;font-weight:500;color:var(--text);margin-bottom:2px;}
   .meal-cals{color:var(--muted);font-size:11px;font-weight:400;}
@@ -608,7 +624,7 @@
   <div id="diet-view">
     <div class="diet-search-bar">
       <span class="diet-search-icon">🔍</span>
-      <input id="diet-search" placeholder="Search meal plans, foods, or restrictions..." oninput="renderDietPlans()"/>
+      <input id="diet-search" placeholder="Search meal plans, foods, or restrictions..." oninput="dietOpenPlan=null;renderDietPlans()"/>
     </div>
     <div class="diet-restrictions">
       <button class="chip active" onclick="setDietFilter(this,'all')">All</button>
@@ -1387,44 +1403,108 @@ function setDietFilter(el,f){
   document.querySelectorAll('.diet-restrictions .chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
   dietFilter=f;
+  dietOpenPlan=null;
   renderDietPlans();
 }
 
-function renderDietPlans(){
-  const scroll=document.getElementById('diet-scroll');
-  const q=(document.getElementById('diet-search')||{value:''}).value.toLowerCase();
-  let plans=DIET_PLANS.filter(p=>{
-    const matchFilter=dietFilter==='all'||p.filters.indexOf(dietFilter)>-1;
-    const matchSearch=!q||p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||
-      p.meals.some(m=>m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q));
+// which days are training days (default: 4-day split)
+var dietDays=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var dietDayFull={Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday',Sun:'Sunday'};
+var dietWorkout={Mon:true,Tue:true,Wed:false,Thu:true,Fri:true,Sat:true,Sun:false};
+var dietOpenPlan=null;
+
+function toggleTrainDay(d){
+  dietWorkout[d]=!dietWorkout[d];
+  renderWeek(dietOpenPlan);
+}
+
+// build a rest-day version of a meal: cut carbs, recompute cals
+function restMeal(m){
+  var carbNum=parseFloat(m.c)||0;
+  var newCarb=Math.round(carbNum*0.5);
+  var diff=carbNum-newCarb;            // grams of carbs removed
+  var newCals=Math.max(0, m.cals - diff*4);  // 4 cal per gram carb
+  return {time:m.time,name:m.name,cals:Math.round(newCals/10)*10,desc:m.desc,p:m.p,c:newCarb+'g',f:m.f};
+}
+
+function mealRowHTML(m){
+  return '<div class="meal-row">'+
+    '<div class="meal-time">'+m.time+'</div>'+
+    '<div class="meal-info">'+
+      '<div class="meal-name">'+m.name+' <span class="meal-cals">· '+m.cals+' cal</span></div>'+
+      '<div class="meal-desc">'+m.desc+'</div>'+
+      '<div class="macro-pills">'+
+        '<span class="mpill protein">'+m.p+' protein</span>'+
+        '<span class="mpill">'+m.c+' carbs</span>'+
+        '<span class="mpill">'+m.f+' fat</span>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function filteredPlans(){
+  var q=(document.getElementById('diet-search')||{value:''}).value.toLowerCase();
+  return DIET_PLANS.filter(function(p){
+    var matchFilter=dietFilter==='all'||p.filters.indexOf(dietFilter)>-1;
+    var matchSearch=!q||p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||
+      p.meals.some(function(m){return m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q);});
     return matchFilter&&matchSearch;
   });
+}
+
+function renderDietPlans(){
+  if(dietOpenPlan){ renderWeek(dietOpenPlan); return; }
+  var scroll=document.getElementById('diet-scroll');
+  var plans=filteredPlans();
   if(!plans.length){scroll.innerHTML='<div class="diet-empty">No meal plans match. Try a different filter or search.</div>';return;}
-  scroll.innerHTML='<div class="diet-section-title">'+plans.length+' Meal Plan'+(plans.length!==1?'s':'')+'</div>'+
-    plans.map(p=>(
-      '<div class="diet-card">'+
+  scroll.innerHTML='<div class="diet-section-title">'+plans.length+' Meal Plan'+(plans.length!==1?'s':'')+' · tap for the 7-day week</div>'+
+    plans.map(function(p){
+      var totalCals=p.meals.reduce(function(s,m){return s+m.cals;},0);
+      return '<div class="diet-card diet-card-tap" onclick="openWeek(\''+p.id+'\')">'+
         '<div class="diet-card-header" style="border-left:3px solid '+p.color+';">'+
           '<div class="diet-card-icon" style="background:'+p.color+'22;">'+p.icon+'</div>'+
-          '<div><div class="diet-card-title">'+p.name+'</div><div class="diet-card-sub">'+p.sub+'</div></div>'+
+          '<div style="flex:1;"><div class="diet-card-title">'+p.name+'</div><div class="diet-card-sub">'+p.sub+'</div></div>'+
+          '<div class="diet-card-arrow">›</div>'+
         '</div>'+
         '<div class="diet-card-desc">'+p.desc+'</div>'+
-        (p.note?'<div class="diet-note">'+p.note+'</div>':'')+
-        p.meals.map(m=>(
-          '<div class="meal-row">'+
-            '<div class="meal-time">'+m.time+'</div>'+
-            '<div class="meal-info">'+
-              '<div class="meal-name">'+m.name+' <span class="meal-cals">· '+m.cals+' cal</span></div>'+
-              '<div class="meal-desc">'+m.desc+'</div>'+
-              '<div class="macro-pills">'+
-                '<span class="mpill protein">'+m.p+' protein</span>'+
-                '<span class="mpill">'+m.c+' carbs</span>'+
-                '<span class="mpill">'+m.f+' fat</span>'+
-              '</div>'+
-            '</div>'+
-          '</div>'
-        )).join('')+
-      '</div>'
-    )).join('');
+        '<div class="diet-card-foot">~'+totalCals+' cal/day · 7-day plan ›</div>'+
+      '</div>';
+    }).join('');
+}
+
+function openWeek(id){ dietOpenPlan=id; renderWeek(id); document.getElementById('diet-scroll').scrollTop=0; }
+function closeWeek(){ dietOpenPlan=null; renderDietPlans(); }
+
+function renderWeek(id){
+  var p=DIET_PLANS.filter(function(x){return x.id===id;})[0];
+  if(!p){ closeWeek(); return; }
+  var scroll=document.getElementById('diet-scroll');
+  var html='<div class="week-back" onclick="closeWeek()">‹ All plans</div>'+
+    '<div class="diet-card-header" style="border-left:3px solid '+p.color+';border-bottom:none;padding-left:12px;margin-bottom:6px;">'+
+      '<div class="diet-card-icon" style="background:'+p.color+'22;">'+p.icon+'</div>'+
+      '<div><div class="diet-card-title">'+p.name+'</div><div class="diet-card-sub">'+p.sub+'</div></div>'+
+    '</div>';
+  if(p.note) html+='<div class="diet-note">'+p.note+'</div>';
+  // training day toggles
+  html+='<div class="train-toggle-label">Tap your training days — meals adjust automatically</div><div class="train-toggle">';
+  dietDays.forEach(function(d){
+    html+='<button class="tday'+(dietWorkout[d]?' on':'')+'" onclick="toggleTrainDay(\''+d+'\')">'+d+'</button>';
+  });
+  html+='</div>';
+  // 7 day cards
+  dietDays.forEach(function(d){
+    var isW=dietWorkout[d];
+    var meals=isW?p.meals:p.meals.map(restMeal);
+    var dayCals=meals.reduce(function(s,m){return s+m.cals;},0);
+    html+='<div class="diet-card">'+
+      '<div class="week-day-header '+(isW?'workout':'rest')+'">'+
+        '<span class="week-day-name">'+dietDayFull[d]+'</span>'+
+        '<span class="week-day-tag">'+(isW?'💪 Workout Day':'😴 Rest Day')+' · '+dayCals+' cal</span>'+
+      '</div>'+
+      meals.map(mealRowHTML).join('')+
+    '</div>';
+  });
+  scroll.innerHTML=html;
 }
 
 // ── NUTRITION CHAT ──
