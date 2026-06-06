@@ -316,6 +316,11 @@
   .macro-c-val.f{color:#4a7ae2;}
   .macro-c-g{font-size:10px;color:var(--muted);margin-top:2px;}
   .macro-c-label{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.08em;margin-top:5px;}
+  .plate-visual{min-height:60px;display:flex;align-items:center;justify-content:center;}
+  .plate-bar-vis{display:flex;align-items:center;gap:3px;flex-wrap:nowrap;overflow-x:auto;padding:10px 0;}
+  .plate-bar-stub{width:30px;height:8px;background:linear-gradient(90deg,#555,#888);border-radius:3px;flex-shrink:0;}
+  .plate-disc{min-width:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.4);}
+  .plate-disc span{font-family:var(--font-display);font-size:12px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);transform:rotate(-90deg);white-space:nowrap;}
 
   /* CHAT */
   #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
@@ -738,32 +743,34 @@
         <div class="onerm-note">Uses the Mifflin–St Jeor equation. Protein set high to protect muscle; adjust to taste.</div>
       </div>
 
-      <!-- PROTEIN TARGET -->
+      <!-- PLATE CALCULATOR -->
       <div class="tool-card">
-        <div class="onerm-title">Protein Target</div>
-        <div class="onerm-sub">How much protein you need per day</div>
+        <div class="onerm-title">Plate Calculator</div>
+        <div class="onerm-sub">What to load on each side of the bar</div>
         <div class="onerm-inputs">
           <div class="onerm-field">
-            <label>Body Weight</label>
-            <input type="number" id="prot-weight" placeholder="175" inputmode="decimal" oninput="calcProtein()"/>
+            <label>Target Weight</label>
+            <input type="number" id="plate-weight" placeholder="225" inputmode="decimal" oninput="calcPlates()"/>
           </div>
           <div class="onerm-unit">
-            <button class="onerm-unit-btn active" id="prot-lb" onclick="setProtUnit('lb')">lb</button>
-            <button class="onerm-unit-btn" id="prot-kg" onclick="setProtUnit('kg')">kg</button>
+            <button class="onerm-unit-btn active" id="plate-lb" onclick="setPlateUnit('lb')">lb</button>
+            <button class="onerm-unit-btn" id="plate-kg" onclick="setPlateUnit('kg')">kg</button>
           </div>
         </div>
-        <div class="onerm-field" style="margin-bottom:18px;"><label>Goal</label>
-          <select id="prot-goal" onchange="calcProtein()">
-            <option value="maintain">General health / maintain</option>
-            <option value="muscle" selected>Build muscle</option>
-            <option value="cut">Lose fat (preserve muscle)</option>
+        <div class="onerm-field" style="margin-bottom:18px;"><label>Bar Weight</label>
+          <select id="plate-bar" onchange="calcPlates()">
+            <option value="45">Standard barbell (45 lb / 20 kg)</option>
+            <option value="35">Women's barbell (35 lb / 15 kg)</option>
+            <option value="15">EZ curl bar (15 lb / 7 kg)</option>
+            <option value="0">No bar (dumbbell/machine)</option>
           </select>
         </div>
-        <div class="onerm-result">
-          <div class="onerm-result-label">Daily Protein</div>
-          <div class="onerm-result-val" id="prot-result">—</div>
+        <div class="plate-visual" id="plate-visual"></div>
+        <div class="onerm-result" style="margin-top:18px;">
+          <div class="onerm-result-label">Per Side</div>
+          <div class="onerm-result-val" id="plate-perside" style="font-size:24px;">—</div>
         </div>
-        <div class="onerm-note" id="prot-note">A common target is 0.7–1g of protein per pound of bodyweight when training hard.</div>
+        <div class="onerm-note" id="plate-note">Enter a weight to see the plate breakdown.</div>
       </div>
     </div>
   </div>
@@ -1002,7 +1009,7 @@ function showTab(tab){
   if(tab==='library' && !libInit){libRender();setTimeout(initThreeBody,60);libInit=true;}
   if(tab==='library' && threeReady){setTimeout(resize3d,60);}
   if(tab==='plan') renderPlan();
-  if(tab==='tools'){calcOneRM();calcTdee();calcProtein();}
+  if(tab==='tools'){calcOneRM();calcTdee();calcPlates();}
 }
 
 function populateProfileForm(){
@@ -1564,32 +1571,50 @@ function calcTdee(){
     '<div class="macro-c"><div class="macro-c-val f">'+fat+'</div><div class="macro-c-g">grams</div><div class="macro-c-label">Fat</div></div>';
 }
 
-// ── PROTEIN TARGET ──
-var protUnit='lb';
-function setProtUnit(u){
-  protUnit=u;
-  document.getElementById('prot-lb').classList.toggle('active',u==='lb');
-  document.getElementById('prot-kg').classList.toggle('active',u==='kg');
-  calcProtein();
+// ── PLATE CALCULATOR ──
+var plateUnit='lb';
+function setPlateUnit(u){
+  plateUnit=u;
+  document.getElementById('plate-lb').classList.toggle('active',u==='lb');
+  document.getElementById('plate-kg').classList.toggle('active',u==='kg');
+  // adjust bar options label hint by switching default value sensibly
+  calcPlates();
 }
-function calcProtein(){
-  var w=parseFloat(document.getElementById('prot-weight').value);
-  var goal=document.getElementById('prot-goal').value;
-  var resEl=document.getElementById('prot-result');
-  var noteEl=document.getElementById('prot-note');
-  if(!w||w<=0){ resEl.textContent='—'; return; }
-  var lb = protUnit==='lb' ? w : w*2.20462;
-  // grams per lb depending on goal
-  var perLb = goal==='cut'?1.0 : goal==='muscle'?0.9 : 0.7;
-  var low = Math.round(lb*(perLb-0.1));
-  var high = Math.round(lb*(perLb+0.1));
-  resEl.textContent = low+'–'+high+' g';
-  var msgs={
-    maintain:'For general health, 0.6–0.8g per lb is plenty.',
-    muscle:'For building muscle, aim for 0.8–1g per lb of bodyweight daily.',
-    cut:'While cutting, keep protein high (0.9–1.1g per lb) to hold onto muscle.'
-  };
-  noteEl.textContent=msgs[goal];
+function calcPlates(){
+  var target=parseFloat(document.getElementById('plate-weight').value);
+  var bar=parseFloat(document.getElementById('plate-bar').value);
+  var vis=document.getElementById('plate-visual');
+  var ps=document.getElementById('plate-perside');
+  var note=document.getElementById('plate-note');
+  if(!target||target<=0){ ps.textContent='—'; vis.innerHTML=''; note.textContent='Enter a weight to see the plate breakdown.'; return; }
+  // bar weight: if kg mode, convert the lb-based option to kg equivalents
+  var barW=bar;
+  if(plateUnit==='kg'){ barW = bar===45?20 : bar===35?15 : bar===15?7 : 0; }
+  if(target<barW){ ps.textContent='—'; vis.innerHTML=''; note.textContent='Target is lighter than the bar itself ('+barW+' '+plateUnit+').'; return; }
+  var perSide=(target-barW)/2;
+  // available plates
+  var plates = plateUnit==='lb' ? [45,35,25,10,5,2.5] : [25,20,15,10,5,2.5,1.25];
+  var colors = {45:'#e24b4a',25:'#c9a84c',20:'#e24b4a',35:'#4a7ae2',15:'#c9a84c',10:'#5a9e2f',5:'#888',2.5:'#666',1.25:'#555'};
+  var remaining=perSide; var used=[];
+  plates.forEach(function(p){
+    while(remaining>=p-0.001){ used.push(p); remaining=Math.round((remaining-p)*100)/100; }
+  });
+  ps.textContent=perSide % 1===0 ? perSide+' '+plateUnit : perSide.toFixed(2)+' '+plateUnit;
+  if(!used.length){
+    vis.innerHTML='<div style="color:var(--muted);font-size:12px;text-align:center;padding:20px;">Just the bar — no plates needed.</div>';
+  } else {
+    // visual: bar + plates stacked
+    var html='<div class="plate-bar-vis"><div class="plate-bar-stub"></div>';
+    used.forEach(function(p){
+      var c=colors[p]||'#666';
+      var h=40+ (plateUnit==='lb'? (p/45)*60 : (p/25)*60);
+      html+='<div class="plate-disc" style="background:'+c+';height:'+h+'px;" title="'+p+'"><span>'+p+'</span></div>';
+    });
+    html+='</div>';
+    vis.innerHTML=html;
+  }
+  var leftover = remaining>0.01 ? ' (can\u2019t make exact — '+remaining.toFixed(2)+' '+plateUnit+' short per side)' : '';
+  note.textContent='Load each side: '+used.join(' + ')+(leftover||'');
 }
 
 // ── STREAK COUNTER ──
