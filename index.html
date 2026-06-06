@@ -337,6 +337,11 @@
   .plate-bar-stub{width:30px;height:8px;background:linear-gradient(90deg,#555,#888);border-radius:3px;flex-shrink:0;}
   .plate-disc{min-width:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.4);}
   .plate-disc span{font-family:var(--font-display);font-size:12px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);transform:rotate(-90deg);white-space:nowrap;}
+  .bmi-category{font-family:var(--font-display);font-size:15px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-top:6px;}
+  .bmi-scale{display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:16px;position:relative;}
+  .bmi-seg{flex:1;}
+  .bmi-marker{position:absolute;top:-4px;width:3px;height:18px;background:#fff;border-radius:2px;box-shadow:0 0 6px rgba(0,0,0,.6);transform:translateX(-50%);}
+  .bmi-scale-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:5px;}
 
   /* CHAT */
   #chat-view{flex:1;display:flex;flex-direction:column;overflow:hidden;}
@@ -788,6 +793,27 @@
         </div>
         <div class="onerm-note" id="plate-note">Enter a weight to see the plate breakdown.</div>
       </div>
+
+      <!-- BMI CALCULATOR -->
+      <div class="tool-card">
+        <div class="onerm-title">BMI Calculator</div>
+        <div class="onerm-sub">Body Mass Index &amp; healthy range</div>
+        <div class="tdee-unit-row">
+          <button class="onerm-unit-btn active" id="bmi-imp" onclick="setBmiUnit('imp')">lb / in</button>
+          <button class="onerm-unit-btn" id="bmi-met" onclick="setBmiUnit('met')">kg / cm</button>
+        </div>
+        <div class="tdee-grid">
+          <div class="onerm-field"><label id="bmi-weight-label">Weight (lb)</label><input type="number" id="bmi-weight" placeholder="175" inputmode="decimal" oninput="calcBmi()"/></div>
+          <div class="onerm-field"><label id="bmi-height-label">Height (in)</label><input type="number" id="bmi-height" placeholder="70" inputmode="decimal" oninput="calcBmi()"/></div>
+        </div>
+        <div class="onerm-result">
+          <div class="onerm-result-label">Your BMI</div>
+          <div class="onerm-result-val" id="bmi-result">—</div>
+          <div class="bmi-category" id="bmi-category"></div>
+        </div>
+        <div class="bmi-scale" id="bmi-scale"></div>
+        <div class="onerm-note">BMI is a rough screen and doesn't account for muscle mass — very muscular people often read "overweight" while being lean. Use it as one data point, not the whole picture.</div>
+      </div>
     </div>
   </div>
 
@@ -1025,7 +1051,7 @@ function showTab(tab){
   if(tab==='library' && !libInit){libRender();setTimeout(initThreeBody,60);libInit=true;}
   if(tab==='library' && threeReady){setTimeout(resize3d,60);}
   if(tab==='plan') renderPlan();
-  if(tab==='tools'){calcOneRM();calcTdee();calcPlates();}
+  if(tab==='tools'){calcOneRM();calcTdee();calcPlates();calcBmi();}
 }
 
 function populateProfileForm(){
@@ -1802,6 +1828,44 @@ function calcPlates(){
   }
   var leftover = remaining>0.01 ? ' (can\u2019t make exact — '+remaining.toFixed(2)+' '+plateUnit+' short per side)' : '';
   note.textContent='Load each side: '+used.join(' + ')+(leftover||'');
+}
+
+// ── BMI CALCULATOR ──
+var bmiUnit='imp';
+function setBmiUnit(u){
+  bmiUnit=u;
+  document.getElementById('bmi-imp').classList.toggle('active',u==='imp');
+  document.getElementById('bmi-met').classList.toggle('active',u==='met');
+  document.getElementById('bmi-weight-label').textContent=u==='imp'?'Weight (lb)':'Weight (kg)';
+  document.getElementById('bmi-height-label').textContent=u==='imp'?'Height (in)':'Height (cm)';
+  calcBmi();
+}
+function calcBmi(){
+  var w=parseFloat(document.getElementById('bmi-weight').value);
+  var h=parseFloat(document.getElementById('bmi-height').value);
+  var resEl=document.getElementById('bmi-result');
+  var catEl=document.getElementById('bmi-category');
+  var scaleEl=document.getElementById('bmi-scale');
+  if(!w||!h||w<=0||h<=0){ resEl.textContent='—'; catEl.textContent=''; catEl.style.color=''; scaleEl.innerHTML=''; return; }
+  var kg=bmiUnit==='imp'?w*0.453592:w;
+  var m=bmiUnit==='imp'?h*0.0254:h/100;
+  var bmi=kg/(m*m);
+  if(!isFinite(bmi)||bmi<=0){ resEl.textContent='—'; catEl.textContent=''; scaleEl.innerHTML=''; return; }
+  resEl.textContent=bmi.toFixed(1);
+  var cat,color;
+  if(bmi<18.5){cat='Underweight';color='#4a7ae2';}
+  else if(bmi<25){cat='Healthy Weight';color='#5a9e2f';}
+  else if(bmi<30){cat='Overweight';color='#c9a84c';}
+  else{cat='Obese';color='#e24b4a';}
+  catEl.textContent=cat; catEl.style.color=color;
+  // scale bar: 15 to 40 BMI range
+  var pct=Math.max(0,Math.min(100,((bmi-15)/(40-15))*100));
+  scaleEl.innerHTML=
+    '<div class="bmi-seg" style="background:#4a7ae2;"></div>'+
+    '<div class="bmi-seg" style="background:#5a9e2f;flex:1.4;"></div>'+
+    '<div class="bmi-seg" style="background:#c9a84c;"></div>'+
+    '<div class="bmi-seg" style="background:#e24b4a;flex:1.4;"></div>'+
+    '<div class="bmi-marker" style="left:'+pct+'%;"></div>';
 }
 
 // ── STREAK COUNTER ──
