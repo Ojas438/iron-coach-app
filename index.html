@@ -1874,10 +1874,10 @@ function calcBmi(){
   catEl.textContent=cat; catEl.style.color=color;
   var pct=Math.max(0,Math.min(100,((bmi-15)/(40-15))*100));
   scaleEl.innerHTML=
-    '<div class="bmi-seg" style="background:#4a7ae2;"></div>'+
-    '<div class="bmi-seg" style="background:#5a9e2f;flex:1.4;"></div>'+
-    '<div class="bmi-seg" style="background:#c9a84c;"></div>'+
-    '<div class="bmi-seg" style="background:#e24b4a;flex:1.4;"></div>'+
+    '<div class="bmi-seg" style="background:#4a7ae2;flex:3.5;"></div>'+
+    '<div class="bmi-seg" style="background:#5a9e2f;flex:6.5;"></div>'+
+    '<div class="bmi-seg" style="background:#c9a84c;flex:5;"></div>'+
+    '<div class="bmi-seg" style="background:#e24b4a;flex:10;"></div>'+
     '<div class="bmi-marker" style="left:'+pct+'%;"></div>';
   // percentile vs population
   var age=parseInt(document.getElementById('bmi-age').value,10);
