@@ -236,9 +236,20 @@
   .quote-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:7px;}
   .quote-author{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);}
   .quote-actions{display:flex;align-items:center;gap:6px;}
-  .quote-filter{background:var(--bg);border:1px solid var(--border2);border-radius:6px;color:var(--muted2);font-size:11px;font-family:var(--font-body);padding:4px 8px;outline:none;max-width:150px;}
-  .quote-shuffle{background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted2);font-size:14px;width:28px;height:26px;cursor:pointer;transition:all .15s;line-height:1;}
+  .quote-pick-btn{background:var(--bg);border:1px solid var(--border2);border-radius:6px;color:var(--muted2);font-size:11px;font-family:var(--font-body);padding:4px 9px;cursor:pointer;display:flex;align-items:center;gap:4px;max-width:150px;transition:all .15s;}
+  .quote-pick-btn:hover{border-color:var(--red);color:var(--text);}
+  .quote-pick-btn span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .quote-shuffle{background:transparent;border:1px solid var(--border2);border-radius:6px;color:var(--muted2);font-size:14px;width:28px;height:26px;cursor:pointer;transition:all .15s;line-height:1;flex-shrink:0;}
   .quote-shuffle:hover{border-color:var(--red);color:var(--red);transform:rotate(45deg);}
+  .quote-picker{display:none;margin-top:10px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:8px;}
+  .quote-picker.open{display:block;}
+  .quote-search{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:12px;font-family:var(--font-body);padding:8px 10px;outline:none;margin-bottom:8px;box-sizing:border-box;}
+  .quote-search:focus{border-color:var(--red);}
+  .quote-people{max-height:170px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+  .quote-person{text-align:left;background:transparent;border:none;color:var(--muted2);font-size:12px;font-family:var(--font-body);padding:7px 9px;border-radius:5px;cursor:pointer;transition:all .12s;}
+  .quote-person:hover{background:var(--surface2);color:var(--text);}
+  .quote-person.active{background:rgba(226,75,74,.15);color:var(--red);font-weight:600;}
+  .quote-person-empty{font-size:11px;color:var(--muted);padding:10px;text-align:center;}
 
   /* EXERCISE LIBRARY */
   #library-view{flex:1;display:none;flex-direction:column;overflow:hidden;}
@@ -556,9 +567,13 @@
       <div class="quote-row">
         <div class="quote-author" id="quote-author"></div>
         <div class="quote-actions">
-          <select class="quote-filter" id="quote-filter" onchange="newQuote()"></select>
+          <button class="quote-pick-btn" id="quote-pick-btn" onclick="toggleQuotePicker()" title="Choose person">👤 <span id="quote-current">All</span></button>
           <button class="quote-shuffle" onclick="newQuote()" title="New quote">↻</button>
         </div>
+      </div>
+      <div class="quote-picker" id="quote-picker">
+        <input type="text" class="quote-search" id="quote-search" placeholder="Search a person..." oninput="renderQuotePeople()"/>
+        <div class="quote-people" id="quote-people"></div>
       </div>
     </div>
     <div class="goal-bar">
@@ -2089,28 +2104,83 @@ var QUOTES=[
   {t:'Rule your mind or it will rule you.',a:'Horace'},
   {t:'Courage is grace under pressure.',a:'Ernest Hemingway'},
   {t:'Fall seven times, stand up eight.',a:'Japanese Proverb'},
+  {t:'Champions aren\u2019t made in gyms. They\u2019re made from something deep inside them — a desire, a dream, a vision.',a:'Muhammad Ali'},
+  {t:'The mind is the limit. As long as the mind can envision it, you can do it.',a:'Arnold Schwarzenegger'},
+  {t:'Hard work beats talent when talent doesn\u2019t work hard.',a:'Tim Notke'},
+  {t:'It\u2019s supposed to be hard. If it were easy, everyone would do it.',a:'Tom Hanks'},
+  {t:'You miss 100% of the shots you don\u2019t take.',a:'Wayne Gretzky'},
+  {t:'Don\u2019t limit your challenges. Challenge your limits.',a:'Jerry Dunn'},
+  {t:'The successful man will profit from his mistakes and try again in a different way.',a:'Dale Carnegie'},
+  {t:'Continuous effort, not strength or intelligence, is the key to unlocking our potential.',a:'Winston Churchill'},
+  {t:'Success is not final, failure is not fatal: it is the courage to continue that counts.',a:'Winston Churchill'},
+  {t:'Believe you can and you\u2019re halfway there.',a:'Theodore Roosevelt'},
+  {t:'Nothing in the world is worth having or worth doing unless it means effort, pain, difficulty.',a:'Theodore Roosevelt'},
+  {t:'Discipline is the bridge between goals and accomplishment.',a:'Jim Rohn'},
+  {t:'If you want something you\u2019ve never had, you must be willing to do something you\u2019ve never done.',a:'Thomas Jefferson'},
+  {t:'The only way to do great work is to love what you do.',a:'Steve Jobs'},
+  {t:'I hated every minute of training, but I said: suffer now and live the rest of your life as a champion.',a:'Muhammad Ali'},
+  {t:'A river cuts through rock not because of its power but its persistence.',a:'Jim Watkins'},
+  {t:'There are no shortcuts to any place worth going.',a:'Beverly Sills'},
+  {t:'The harder the battle, the sweeter the victory.',a:'Les Brown'},
+  {t:'Strength does not come from physical capacity. It comes from an indomitable will.',a:'Mahatma Gandhi'},
+  {t:'Do what you can, with what you have, where you are.',a:'Theodore Roosevelt'},
+  {t:'What we fear of doing most is usually what we most need to do.',a:'Ralph Waldo Emerson'},
+  {t:'Our greatest glory is not in never falling, but in rising every time we fall.',a:'Confucius'},
+  {t:'The body is a temple. Keep it pure and clean for the soul to reside in.',a:'B.K.S. Iyengar'},
+  {t:'I don\u2019t count my sit-ups. I only start counting when it starts hurting.',a:'Muhammad Ali'},
+  {t:'You\u2019re going to fail. The question is how you respond.',a:'Kobe Bryant'},
+  {t:'Everything negative — pressure, challenges — is all an opportunity for me to rise.',a:'Kobe Bryant'},
+  {t:'Great things come from hard work and perseverance. No excuses.',a:'Kobe Bryant'},
+  {t:'Talent you have naturally. Skill is only developed by hours and hours of work.',a:'Will Smith'},
+  {t:'The separation of talent and skill is one of the greatest misunderstandings.',a:'Will Smith'},
 ];
 
 var quoteFilter='all';
 
 function initQuotes(){
-  var sel=document.getElementById('quote-filter');
-  if(!sel) return;
-  var authors=[]; QUOTES.forEach(function(q){ if(authors.indexOf(q.a)<0) authors.push(q.a); });
+  if(!document.getElementById('quote-text')) return;
+  renderQuotePeople();
+  newQuote();
+}
+
+function toggleQuotePicker(){
+  var p=document.getElementById('quote-picker');
+  p.classList.toggle('open');
+  if(p.classList.contains('open')){
+    renderQuotePeople();
+    var s=document.getElementById('quote-search'); if(s){s.value='';s.focus();renderQuotePeople();}
+  }
+}
+
+function renderQuotePeople(){
+  var box=document.getElementById('quote-people');
+  if(!box) return;
+  var q=(document.getElementById('quote-search')||{value:''}).value.toLowerCase();
+  var authors=[]; QUOTES.forEach(function(x){ if(authors.indexOf(x.a)<0) authors.push(x.a); });
   authors.sort();
-  sel.innerHTML='<option value="all">All voices</option>'+authors.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join('');
+  var list=['All voices'].concat(authors).filter(function(a){
+    return !q || a.toLowerCase().indexOf(q)>-1;
+  });
+  if(!list.length){ box.innerHTML='<div class="quote-person-empty">No one matches \u201C'+q+'\u201D</div>'; return; }
+  box.innerHTML=list.map(function(a){
+    var val=a==='All voices'?'all':a;
+    var active=(quoteFilter===val)?' active':'';
+    return '<button class="quote-person'+active+'" onclick="pickQuotePerson(\''+val.replace(/'/g,"\\'")+'\')">'+a+'</button>';
+  }).join('');
+}
+
+function pickQuotePerson(val){
+  quoteFilter=val;
+  document.getElementById('quote-current').textContent = val==='all'?'All':val;
+  document.getElementById('quote-picker').classList.remove('open');
   newQuote();
 }
 
 function newQuote(){
-  var sel=document.getElementById('quote-filter');
-  quoteFilter=sel?sel.value:'all';
   var pool=quoteFilter==='all'?QUOTES:QUOTES.filter(function(q){return q.a===quoteFilter;});
   if(!pool.length) pool=QUOTES;
   var cur=document.getElementById('quote-text').textContent;
-  var q;
-  // avoid repeating same quote twice in a row when possible
-  var tries=0;
+  var q; var tries=0;
   do{ q=pool[Math.floor(Math.random()*pool.length)]; tries++; }while(pool.length>1 && q.t===cur && tries<5);
   document.getElementById('quote-text').textContent=q.t;
   document.getElementById('quote-author').textContent='— '+q.a;
